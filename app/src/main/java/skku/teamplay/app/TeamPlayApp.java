@@ -8,4 +8,11 @@ import android.app.Application;
  */
 
 public class TeamPlayApp extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        //TODO
+    }
+
 }
