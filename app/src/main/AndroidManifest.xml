@@ -2,11 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="skku.teamplay">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".app.TeamPlayApp"
@@ -26,21 +26,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".activity.MainActivity"
+        <activity
+            android:name=".activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity android:name=".activity.test.KanbanBoardTestActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.test.KanbanBoardTestActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity android:name=".activity.test.ChartTestActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.test.ChartTestActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity android:name=".activity.test.ViewPagerTestActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.test.ViewPagerTestActivity"
             android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.test.UserProfileActivity"
+            android:label="TeamPlay"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".activity.test.TabTestActivity"

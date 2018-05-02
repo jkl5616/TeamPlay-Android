@@ -5,8 +5,7 @@ import android.support.v4.view.ViewPager;
 import skku.teamplay.activity.MainActivity;
 import skku.teamplay.activity.test.ChartTestActivity;
 import skku.teamplay.activity.test.KanbanBoardTestActivity;
-import skku.teamplay.activity.test.LoginActivity;
-import skku.teamplay.activity.test.TabTestActivity;
+import skku.teamplay.activity.test.UserProfileActivity;
 import skku.teamplay.activity.test.ViewPagerTestActivity;
 
 /**
