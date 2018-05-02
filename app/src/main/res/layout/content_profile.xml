@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:text="Summary\nCompleted: 2/5\nRating: 3\nIn progress:\n" />
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_team"
+            android:id="@+id/team_list_recyclerview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/userName"

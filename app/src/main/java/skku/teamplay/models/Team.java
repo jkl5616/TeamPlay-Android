@@ -9,6 +9,9 @@ public class Team {
     private int team_id;
     private int category_type;
 
+    public Team(String team_name){
+        this.team_name = team_name;
+    }
     public void setTeam_name(String team_name){
         this.team_name = team_name;
     }
