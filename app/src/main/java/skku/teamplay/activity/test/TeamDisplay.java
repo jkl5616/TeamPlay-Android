@@ -1,10 +1,17 @@
 package skku.teamplay.activity.test;
 
+/**
+ * Created by wantyouring on 2018-05-01.
+ */
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
 
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -23,12 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import skku.teamplay.R;
 
-/**
- * Created by woorim on 2018-04-16.
- * Test activity to test MPAndroidChart
- */
-
-public class ChartTestActivity extends AppCompatActivity{
+public class TeamDisplay extends AppCompatActivity {
 
     @BindView(R.id.rchart)
     RadarChart mChart;
@@ -39,10 +41,30 @@ public class ChartTestActivity extends AppCompatActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chart_test);
+        setContentView(R.layout.team_display);
         ButterKnife.bind(this);
-        toolbar.setTitle("MPChart Test");
+        toolbar.setTitle("TeamDisplay");
         setSupportActionBar(toolbar);
+
+        FloatingActionButton option = (FloatingActionButton)findViewById(R.id.button1);
+        FloatingActionButton kanban = (FloatingActionButton)findViewById(R.id.button2);
+
+        //칸반보드 activity 활성화
+        kanban.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                Intent intent = new Intent(TeamDisplay.this, KanbanBoardTestActivity.class);
+                startActivity(intent);
+            }
+        });
+        //TeamDisplayOption activity 활성화
+        option.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                Intent intent = new Intent(TeamDisplay.this, TeamDisplayOption.class);
+                startActivity(intent);
+            }
+        });
+
+
 
         mChart.getDescription().setEnabled(false);
 
@@ -52,7 +74,7 @@ public class ChartTestActivity extends AppCompatActivity{
         mChart.setWebColorInner(Color.GRAY);
         mChart.setWebAlpha(100);
 
-        //setData();
+        setData();
 
         Typeface mTfLight = Typeface.create("sans-serif-light", Typeface.NORMAL);
         XAxis xAxis = mChart.getXAxis();
@@ -90,8 +112,8 @@ public class ChartTestActivity extends AppCompatActivity{
         l.setYEntrySpace(5f);
         l.setTextColor(Color.BLACK);
 
-    }
-/*
+        };
+
     @Override
     public void onResume() {
         super.onResume();
@@ -145,6 +167,4 @@ public class ChartTestActivity extends AppCompatActivity{
         mChart.setData(data);
         mChart.invalidate();
     }
-*/
-
 }
