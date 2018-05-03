@@ -25,3 +25,67 @@
         android:layout_weight="1"
         android:text="패널티 설정" />
 </LinearLayout>
+<!--FloatingActionButton안에 글자 넣는 방법????
+    <?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="skku.teamplay.activity.MainActivity">
+
+<android.support.design.widget.FloatingActionButton
+    android:text="구성원 설정"
+    android:id="@+id/button1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_marginBottom="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="20dp"
+    android:layout_weight="1"
+    app:backgroundTint="@android:color/holo_blue_bright"
+    app:layout_anchor="@+id/constraintLayout"
+    app:layout_anchorGravity="left|bottom"
+    app:srcCompat="@android:drawable/ic_menu_preferences" />
+
+<android.support.design.widget.FloatingActionButton
+    android:text="룰 설정"
+    android:id="@+id/button2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_marginBottom="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="20dp"
+    android:layout_weight="1"
+    app:backgroundTint="@android:color/holo_blue_bright"
+    app:layout_anchorGravity="right|bottom"
+    app:srcCompat="@android:drawable/ic_menu_preferences" />
+
+<android.support.design.widget.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/AppTheme.AppBarOverlay">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+</android.support.design.widget.AppBarLayout>
+
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+</android.support.constraint.ConstraintLayout>
+
+</android.support.design.widget.CoordinatorLayout>
+-->
