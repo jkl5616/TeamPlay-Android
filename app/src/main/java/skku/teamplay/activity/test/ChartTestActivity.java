@@ -52,7 +52,7 @@ public class ChartTestActivity extends AppCompatActivity{
         mChart.setWebColorInner(Color.GRAY);
         mChart.setWebAlpha(100);
 
-        setData();
+        //setData();
 
         Typeface mTfLight = Typeface.create("sans-serif-light", Typeface.NORMAL);
         XAxis xAxis = mChart.getXAxis();
@@ -91,7 +91,7 @@ public class ChartTestActivity extends AppCompatActivity{
         l.setTextColor(Color.BLACK);
 
     }
-
+/*
     @Override
     public void onResume() {
         super.onResume();
@@ -145,6 +145,6 @@ public class ChartTestActivity extends AppCompatActivity{
         mChart.setData(data);
         mChart.invalidate();
     }
-
+*/
 
 }
