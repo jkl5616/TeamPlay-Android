@@ -5,6 +5,8 @@ import android.support.v4.view.ViewPager;
 import skku.teamplay.activity.MainActivity;
 import skku.teamplay.activity.test.ChartTestActivity;
 import skku.teamplay.activity.test.KanbanBoardTestActivity;
+import skku.teamplay.activity.test.LoginActivity;
+import skku.teamplay.activity.test.TabTestActivity;
 import skku.teamplay.activity.test.UserProfileActivity;
 import skku.teamplay.activity.test.ViewPagerTestActivity;
 
@@ -13,5 +15,5 @@ import skku.teamplay.activity.test.ViewPagerTestActivity;
  */
 
 public class Constants {
-    public static final Class[] ACTIVITES = {MainActivity.class, ChartTestActivity.class, KanbanBoardTestActivity.class, ViewPagerTestActivity.class, TabTestActivity.class, LoginActivity.class};
+    public static final Class[] ACTIVITES = {MainActivity.class, ChartTestActivity.class, KanbanBoardTestActivity.class, ViewPagerTestActivity.class, TabTestActivity.class, LoginActivity.class, UserProfileActivity.class};
 }
