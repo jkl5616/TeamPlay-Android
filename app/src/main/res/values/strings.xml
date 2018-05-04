@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">TeamPlay</string>
     <string name="action_settings">Settings</string>
+    <string name="hint_id">ID</string>
+    <string name="hint_pw">PW</string>
+    <string name="login_text">로그인</string>
 </resources>
