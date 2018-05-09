@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">TeamPlay</string>
     <string name="action_settings">Settings</string>
+    <string name="quest_title">퀘스트</string>
+    <string name="quest_description">설명</string>
+    <string name="quest_startAt">시작일</string>
+    <string name="quest_dueAt">목표일</string>
+    <string name="quest_endAt">종료일</string>
+    <string name="quest_owner">소유자</string>
+    <string name="quest_rewardType">타입</string>
+    <string name="quest_reward">점수</string>
+
 </resources>

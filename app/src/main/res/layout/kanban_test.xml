@@ -1,47 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 android:orientation="vertical">
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_marginRight="45dp"
-            android:layout_marginLeft="45dp"
-            android:layout_marginTop="9dp"
-            android:layout_marginBottom="9dp"
-            android:background="@color/colorPrimaryDark"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/tv_kanban_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textSize="23sp"
-                android:textColor="#fff"
-                android:fontFamily="@font/bmdohyeon"
-                android:text="발표자료 제작" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <View
-                android:layout_width="8dp"
-                android:layout_height="30dp"
-                android:background="@color/colorPrimaryDark">
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="9dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="9dp"
+                android:background="@color/colorPrimaryDark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            </View>
+                <TextView
+                    android:id="@+id/tv_kanban_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/bmdohyeon"
+                    android:text="발표자료 제작"
+                    android:textColor="#fff"
+                    android:textSize="23sp" />
 
-        </RelativeLayout>
+            </RelativeLayout>
 
-    </LinearLayout>
+            <ListView
+                android:id="@+id/quest_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-    <ListView
-        android:id="@+id/quest_list"
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addFAB"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:background="@color/colorPrimaryDark"
+        android:elevation="16dp"
+        android:src="@mipmap/ic_pac_icon"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:fabSize="mini"
+        app:theme="@style/AppTheme" />
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

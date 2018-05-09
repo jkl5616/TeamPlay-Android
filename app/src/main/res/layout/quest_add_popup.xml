@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical|center_horizontal|center"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="250dp"
+        android:background="#ffffff"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textTitle"
+                    style="@style/QuestAddPopupTextView"
+                    android:layout_weight="3"
+                    android:text="@string/quest_title" />
+
+                <EditText
+                    android:id="@+id/editTitle"
+                    style="@style/QuestAddPopupEditText"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="textShortMessage"
+                    android:text="Title" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textStartAt"
+                    style="@style/QuestAddPopupTextView"
+                    android:layout_weight="1"
+                    android:text="@string/quest_startAt" />
+
+
+                <EditText
+                    android:id="@+id/editDueAt"
+                    style="@style/QuestAddPopupEditText"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="date"
+                    android:text="date" />
+
+                <TextView
+                    android:id="@+id/textDueAt"
+                    style="@style/QuestAddPopupTextView"
+                    android:layout_weight="1"
+                    android:text="@string/quest_dueAt" />
+
+                <EditText
+                    android:id="@+id/editStartAt"
+                    style="@style/QuestAddPopupEditText"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="date"
+                    android:text="date" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textType"
+                    style="@style/QuestAddPopupTextView"
+                    android:layout_weight="1"
+                    android:text="@string/quest_rewardType" />
+
+                <EditText
+                    android:id="@+id/editType"
+                    style="@style/QuestAddPopupEditText"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="지갑" />
+
+                <TextView
+                    android:id="@+id/textReward"
+                    style="@style/QuestAddPopupTextView"
+                    android:layout_weight="1"
+                    android:text="@string/quest_reward" />
+
+                <EditText
+                    android:id="@+id/editReward"
+                    style="@style/QuestAddPopupEditText"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:text="0" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textDescription"
+                    style="@style/QuestAddPopupTextView"
+                    android:layout_weight="3"
+                    android:text="설명" />
+
+                <EditText
+                    android:id="@+id/editDescription"
+                    style="@style/QuestAddPopupEditText"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="textMultiLine|textLongMessage"
+                    android:text="Description" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnRemove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_round"
+                android:text="제거" />
+
+            <Button
+                android:id="@+id/btnFinish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_round"
+                android:text="완료" />
+
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_round"
+                android:text="추가" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
