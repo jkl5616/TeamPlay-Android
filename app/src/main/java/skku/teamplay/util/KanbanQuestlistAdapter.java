@@ -9,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -37,17 +40,22 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
         }
 
         // xml 링크
-        TextView titleTextView = (TextView) convertView.findViewById(R.id.postTitle);
-        TextView memoTextView = (TextView) convertView.findViewById(R.id.postMemo);
-        TextView dateTextView = (TextView) convertView.findViewById(R.id.postDate);
-        //   TextView writerTextView= (TextView) convertView.findViewById(R.id.postWriter);
+        ImageView user_profie = (ImageView)convertView.findViewById(R.id.user_profile);
+        ImageView rewardTypeIc = (ImageView)convertView.findViewById(R.id.rewardTypeIc);
+        ImageView rewardIc = (ImageView)convertView.findViewById(R.id.rewardIc);
+        ImageView dueAt = (ImageView)convertView.findViewById(R.id.dueAtIc);
+
+        TextView textTitle = (TextView) convertView.findViewById(R.id.textTitle);
+        TextView textRewardType = (TextView) convertView.findViewById(R.id.textRewardType);
+        TextView textReward = (TextView) convertView.findViewById(R.id.textReward);
+        TextView textDueAt = (TextView) convertView.findViewById(R.id.textDueAt);
 
         //
         Quest quest = QuestList.get(pos);
-        titleTextView.setText(quest.getTitle());
-        memoTextView.setText(quest.getDescription());
-        dateTextView.setText(quest.getDueAt());
-        //     writerTextView.setText(SecondhandPostItem.getWriterID());
+        textTitle.setText(quest.getTitle());
+        textRewardType.setText(Integer.toString(quest.getRewardType()));
+        textReward.setText(Integer.toString(quest.getReward()));
+        textDueAt.setText(quest.getDueAt());
 
         return convertView;
     }
@@ -64,9 +72,19 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
         return QuestList.get(position) ;
     }
 
+
     // 리스트에 새로운 글 추가
     public void addItem(Quest item) {
         QuestList.add(item);
+    }
+
+    public void deleteItem(int position) { QuestList.remove(position); }
+
+    public void modifyItem(int position, Quest modifiedQuest) { QuestList.set(position, modifiedQuest); }
+
+    public void makeFinish(int position, Quest finishedQuest) {
+        finishedQuest.makeFinish();
+        QuestList.set(position, finishedQuest);
     }
 }
 
