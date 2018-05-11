@@ -12,8 +12,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 import skku.teamplay.R;
@@ -36,7 +34,7 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.listitem_quest_test, parent, false);
+            convertView = inflater.inflate(R.layout.list_quest_template, parent, false);
         }
 
         // xml 링크

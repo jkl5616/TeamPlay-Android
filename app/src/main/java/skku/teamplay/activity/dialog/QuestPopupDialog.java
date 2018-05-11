@@ -1,4 +1,4 @@
-package skku.teamplay.activity.test.dialog;
+package skku.teamplay.activity.dialog;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import skku.teamplay.R;
 
@@ -16,7 +15,7 @@ import skku.teamplay.R;
  * Created by ddjdd on 2018-05-07.
  */
 
-public class QuestAddPopupDialog extends AppCompatActivity {
+public class QuestPopupDialog extends AppCompatActivity {
 
     TextView textTitle, textDescription, textStartAt, textDueAt, textType, textScore;
     EditText editTitle, editDescription, editStartAt, editDueAt, editType, editReward;
@@ -32,7 +31,7 @@ public class QuestAddPopupDialog extends AppCompatActivity {
         this.setFinishOnTouchOutside(false);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        setContentView(R.layout.quest_add_popup);
+        setContentView(R.layout.dialog_kanban_popup);
 
         textTitle = (TextView)findViewById(R.id.textTitle);
         textDescription = (TextView)findViewById(R.id.textDescription);
