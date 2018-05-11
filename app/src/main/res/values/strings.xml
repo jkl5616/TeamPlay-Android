@@ -9,5 +9,7 @@
     <string name="quest_owner">소유자</string>
     <string name="quest_rewardType">타입</string>
     <string name="quest_reward">점수</string>
-
+    <string name="hint_id">ID</string>
+    <string name="hint_pw">PW</string>
+    <string name="login_text">로그인</string>
 </resources>

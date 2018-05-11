@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        tools:showIn="@layout/activity_user_profile">
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Summary\nCompleted: 2/5\nRating: 3\nIn progress:\n" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/team_list_recyclerview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/userName"
+            >
+        </android.support.v7.widget.RecyclerView>
+        <!--<TextView-->
+            <!--android:id="@+id/textView02"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:layout_below="@id/userName"-->
+            <!--android:text="Hello World 02 !" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/textView03"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:layout_below="@id/textView02"-->
+            <!--android:text="Hello World 02 !" />-->
+        <!--<TextView-->
+            <!--android:id="@+id/textView04"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:layout_below="@id/textView03"-->
+            <!--android:text="Hello World 02 !" />-->
+        <!--<TextView-->
+            <!--android:id="@+id/textView05"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:layout_below="@id/textView04"-->
+            <!--android:text="Hello World 06 !" />-->
+
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>

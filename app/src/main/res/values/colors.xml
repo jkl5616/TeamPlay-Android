@@ -3,8 +3,8 @@
     <color name="colorPrimary">#1DE9B6</color>
     <color name="colorPrimaryDark">#00bfa5</color>
     <color name="colorAccent">#FF8080</color>
-
     <color name="gray">#404040</color>
     <color name="lightGray">#606060</color>
     <color name="brightGray">#808080</color>
+    <color name="btn_teal">#40CCB8</color>
 </resources>

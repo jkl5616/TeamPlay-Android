@@ -1,10 +1,12 @@
 package skku.teamplay.models;
 
+import android.content.Intent;
+
 public class Quest {
     private String title;
     private String description;
     private boolean finish;
-    private String startAt, dueAt, endAt;
+    private String startAt, dueAt;
     private String owner;
     private int rewardType, reward;
 
@@ -53,4 +55,13 @@ public class Quest {
     public void setOwner(String owner) { this.owner = owner; }
     public void setRewardType(int rewardType) { this.rewardType = rewardType; }
     public void setReward(int reward) { this.reward = reward; }
+
+    public void putExtraIntent(Intent newIntent) {
+        newIntent.putExtra("title", this.title);
+        newIntent.putExtra("description", this.description);
+        newIntent.putExtra("startAt", this.startAt);
+        newIntent.putExtra("dueAt", this.dueAt);
+        newIntent.putExtra("type", this.rewardType);
+        newIntent.putExtra("reward", this.reward);
+    }
 }

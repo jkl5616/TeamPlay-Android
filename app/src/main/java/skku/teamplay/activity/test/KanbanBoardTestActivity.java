@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
 import skku.teamplay.R;
 import skku.teamplay.activity.test.dialog.QuestAddPopupDialog;
 import skku.teamplay.models.Quest;
@@ -23,7 +22,6 @@ public class KanbanBoardTestActivity extends AppCompatActivity {
 
     private ListView QuestList;
     private KanbanQuestlistAdapter adapter;
-
     private FloatingActionButton addFAB;
 
     @Override
@@ -141,6 +139,7 @@ public class KanbanBoardTestActivity extends AppCompatActivity {
         Quest example2 = new Quest("커피사기", "2잔사기", false, "18.02.03", "18.02.03", "jinho", 1, 10);
         adapter.addItem(example);
         adapter.addItem(example2);
+
     }
 }
 
