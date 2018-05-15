@@ -25,7 +25,7 @@ public class TabTestActivity extends AppCompatActivity {
     @BindView(R.id.tab_container) ViewPager viewPager;
 
     MainFragment mainFragment;
-    TestFragment testFragment1, testFragment2, testFragment3, testFragment4;
+    TestFragment testFragment1;
     BottomNavigationView bottomNavigationView;
     MenuItem prevMenu;
     @Override
@@ -44,7 +44,7 @@ public class TabTestActivity extends AppCompatActivity {
     private void setViewPager(ViewPager viewPager){
         ScreenSlidePagerAdapter screenSlidePagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mainFragment = new MainFragment();
-        testFragment1 = testFragment2 = testFragment3 = testFragment4 = new TestFragment();
+        testFragment1 = new TestFragment();
 
         screenSlidePagerAdapter.addFragment(mainFragment);
         screenSlidePagerAdapter.addFragment(testFragment1);
@@ -79,26 +79,24 @@ public class TabTestActivity extends AppCompatActivity {
     BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            int idx = viewPager.getCurrentItem();
-            viewPager.setCurrentItem(idx);
-//            viewPager.setCurrentItem(idx);
-//            switch (item.getItemId()){
-//                case R.id.tab1:
-//                    viewPager.setCurrentItem(idx);
-//                    break;
-//                case R.id.tab2:
-//                    viewPager.setCurrentItem(idx);
-//                    break;
-//                case R.id.tab3:
-//                    viewPager.setCurrentItem(idx);
-//                    break;
-//                case R.id.tab4:
-//                    viewPager.setCurrentItem(idx);
-//                    break;
-//                case R.id.tab5:
-//                    viewPager.setCurrentItem(idx);
-//                    break;
-//            }
+
+            switch (item.getItemId()){
+                case R.id.tab1:
+                    viewPager.setCurrentItem(0);
+                    break;
+                case R.id.tab2:
+                    viewPager.setCurrentItem(1);
+                    break;
+                case R.id.tab3:
+                    viewPager.setCurrentItem(2);
+                    break;
+                case R.id.tab4:
+                    viewPager.setCurrentItem(3);
+                    break;
+                case R.id.tab5:
+                    viewPager.setCurrentItem(4);
+                    break;
+            }
             return true;
         }
     };
