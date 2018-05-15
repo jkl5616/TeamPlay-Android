@@ -29,12 +29,11 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.test.KanbanBoardTestActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activity.test.ChartTestActivity"
             android:label="@string/app_name"
@@ -47,19 +46,19 @@
             android:name=".activity.test.UserProfileActivity"
             android:label="TeamPlay"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.test.dialog.QuestAddPopupDialog"
-            android:theme="@style/Theme.AppCompat.Dialog.Alert"/>
+            android:theme="@style/Theme.AppCompat.Dialog.Alert" />
         <activity
             android:name=".activity.test.TabTestActivity"
             android:label="TeamPlay"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
-            android:name='.activity.test.LoginActivity'
+            android:name=".activity.test.LoginActivity"
             android:label="TeamPlay"
-            android:theme="@style/AppTheme"/>
-
+            android:theme="@style/AppTheme" />
+        <activity android:name=".fragment.test.MainFragment"></activity>
     </application>
 
 </manifest>
