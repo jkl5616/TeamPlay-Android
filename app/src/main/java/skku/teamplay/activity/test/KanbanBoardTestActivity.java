@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import skku.teamplay.R;
 import skku.teamplay.activity.adapter.KanbanFragmentAdapter;
+import skku.teamplay.activity.dialog.QuestPopupDialog;
 import skku.teamplay.fragment.test.KanbanFragment;
 
 
@@ -31,8 +32,12 @@ public class KanbanBoardTestActivity extends FragmentActivity {
         pager.setAdapter(adapter);
     }
 
-//    @OnClick(R.id.addFAB)
-//    void onAddFabClick (R.id.)
+    @OnClick(R.id.addFAB)
+    void onAddFabClick () {
+        Intent intent = new Intent(getApplicationContext(), QuestPopupDialog.class);
+        intent.putExtra("isNew", true);
+        startActivityForResult(intent, 1);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
