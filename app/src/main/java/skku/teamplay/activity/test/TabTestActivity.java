@@ -40,19 +40,6 @@ public class TabTestActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
 
         setViewPager(viewPager);
-//        PagerAdapter adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-//
-//            @Override
-//            public Fragment getItem(int position) {
-//                return new TestFragment();
-//            }
-//
-//            @Override
-//            public int getCount() {
-//                return 5;
-//            }
-//        };
-//        pager.setAdapter(adapter);
     }
     private void setViewPager(ViewPager viewPager){
         ScreenSlidePagerAdapter screenSlidePagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
