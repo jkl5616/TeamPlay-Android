@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "886592810421",
+    "firebase_url": "https://teamplay-6cb85.firebaseio.com",
+    "project_id": "teamplay-6cb85",
+    "storage_bucket": "teamplay-6cb85.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:886592810421:android:dcb4d5e29c67942a",
+        "android_client_info": {
+          "package_name": "skku.teamplay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "886592810421-lpc1r19ssmv7pg4eu0mu2le60hc6m897.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEMO0jh2RsWi5uhWyVpcMCZc1leEX3Zpg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
