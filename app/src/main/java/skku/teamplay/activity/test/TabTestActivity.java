@@ -79,26 +79,24 @@ public class TabTestActivity extends AppCompatActivity {
     BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            int idx = viewPager.getCurrentItem();
-            viewPager.setCurrentItem(idx);
-//            viewPager.setCurrentItem(idx);
-//            switch (item.getItemId()){
-//                case R.id.tab1:
-//                    viewPager.setCurrentItem(idx);
-//                    break;
-//                case R.id.tab2:
-//                    viewPager.setCurrentItem(idx);
-//                    break;
-//                case R.id.tab3:
-//                    viewPager.setCurrentItem(idx);
-//                    break;
-//                case R.id.tab4:
-//                    viewPager.setCurrentItem(idx);
-//                    break;
-//                case R.id.tab5:
-//                    viewPager.setCurrentItem(idx);
-//                    break;
-//            }
+
+            switch (item.getItemId()){
+                case R.id.tab1:
+                    viewPager.setCurrentItem(0);
+                    break;
+                case R.id.tab2:
+                    viewPager.setCurrentItem(1);
+                    break;
+                case R.id.tab3:
+                    viewPager.setCurrentItem(2);
+                    break;
+                case R.id.tab4:
+                    viewPager.setCurrentItem(3);
+                    break;
+                case R.id.tab5:
+                    viewPager.setCurrentItem(4);
+                    break;
+            }
             return true;
         }
     };
