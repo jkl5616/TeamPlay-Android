@@ -58,7 +58,9 @@
             android:name=".activity.test.LoginActivity"
             android:label="TeamPlay"
             android:theme="@style/AppTheme" />
-        <activity android:name=".fragment.test.MainFragment"></activity>
-    </application>
 
+        <activity
+            android:name=".activity.test.EverytimeParseTestActivity"
+            android:theme="@style/AppTheme" />
+    </application>
 </manifest>
