@@ -25,7 +25,7 @@ public class TabTestActivity extends AppCompatActivity {
     @BindView(R.id.tab_container) ViewPager viewPager;
 
     MainFragment mainFragment;
-    TestFragment testFragment1, testFragment2, testFragment3, testFragment4;
+    TestFragment testFragment1;
     BottomNavigationView bottomNavigationView;
     MenuItem prevMenu;
     @Override
@@ -44,7 +44,7 @@ public class TabTestActivity extends AppCompatActivity {
     private void setViewPager(ViewPager viewPager){
         ScreenSlidePagerAdapter screenSlidePagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mainFragment = new MainFragment();
-        testFragment1 = testFragment2 = testFragment3 = testFragment4 = new TestFragment();
+        testFragment1 = new TestFragment();
 
         screenSlidePagerAdapter.addFragment(mainFragment);
         screenSlidePagerAdapter.addFragment(testFragment1);
