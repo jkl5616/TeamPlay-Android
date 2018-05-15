@@ -16,14 +16,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
 import skku.teamplay.R;
 import skku.teamplay.activity.adapter.KanbanQuestlistAdapter;
 import skku.teamplay.activity.dialog.QuestPopupDialog;
 import skku.teamplay.models.Quest;
 
-import static android.content.ContentValues.TAG;
 
 
 /**
@@ -48,7 +46,6 @@ public class KanbanFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mPageNumber = getArguments().getInt("page");
     }
 
@@ -109,16 +106,16 @@ public class KanbanFragment extends Fragment {
                     break;
 
                 case 1000:      // 추가
-//                    title = data.getStringExtra("title");
-//                    description = data.getStringExtra("description");
-//                    startAt = data.getStringExtra("startAt");
-//                    dueAt = data.getStringExtra("dueAt");
-//                    type = Integer.parseInt(data.getStringExtra("type"));
-//                    reward = Integer.parseInt(data.getStringExtra("reward"));
-//                    Quest newQuest = new Quest(title, description, false, startAt, dueAt, "1111", type, reward);
-//
-//                    adapter.addItem(newQuest);
-//                    adapter.notifyDataSetChanged();
+                    title = data.getStringExtra("title");
+                    description = data.getStringExtra("description");
+                    startAt = data.getStringExtra("startAt");
+                    dueAt = data.getStringExtra("dueAt");
+                    type = Integer.parseInt(data.getStringExtra("type"));
+                    reward = Integer.parseInt(data.getStringExtra("reward"));
+                    Quest newQuest = new Quest(title, description, false, startAt, dueAt, "1111", type, reward);
+
+                    databaseReference.child("quest").push().setValue(newQuest);
+
                     break;
 
                 case 2000:      // 변경
@@ -150,29 +147,20 @@ public class KanbanFragment extends Fragment {
     private void showQuestList() {
         QuestList.setAdapter(adapter);
 
-        // sample
-        Quest example = new Quest("ppt 작성", "2페이지 만들기", false, "18.02.03", "18.12.03","jinho", 1, 10);
-        Quest example2 = new Quest("커피사기", "2잔사기", false, "18.02.03", "18.02.03", "jinho", 1, 10);
-        adapter.addItem(example);
-        adapter.addItem(example2);
-
         databaseReference.child("quest").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                Quest newQuest = dataSnapshot.getValue(Quest.class);
-                Log.e("LOG", "dataSnapshot.getKey() : " + dataSnapshot.getKey());
-//                adapter.addItem(dataSnapshot.getKey());
+                Quest newQuest = dataSnapshot.getValue(Quest.class);
+                adapter.addItem(newQuest);
+                adapter.notifyDataSetChanged();
             }
             @Override
             public void onCancelled(DatabaseError error) {
-                Log.w(TAG, "Failed to read value.", error.toException());
             }
-
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
             }
-
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
