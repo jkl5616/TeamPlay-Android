@@ -48,7 +48,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.test.dialog.QuestAddPopupDialog"
+            android:name=".activity.dialog.QuestPopupDialog"
             android:theme="@style/Theme.AppCompat.Dialog.Alert" />
         <activity
             android:name=".activity.test.TabTestActivity"
