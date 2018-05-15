@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -43,15 +44,18 @@ public class EverytimeParseTestActivity extends Activity{
         webView.getSettings().setAppCacheEnabled(false);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.addJavascriptInterface(this,"TeamPlay");
-        webView.loadUrl("https://everytime.kr/login");
+        CookieManager.getInstance().removeAllCookies(null);
+        CookieManager.getInstance().flush();
+        webView.loadUrl("https://everytime.kr/login?redirect=%2Ftimetable");
         webView.setWebViewClient(new WebViewClient() {
             String purl = "";
             @Override
             public void onPageFinished(WebView view, String url) {
-                Toast.makeText(EverytimeParseTestActivity.this, url, 0).show();
+                //Toast.makeText(EverytimeParseTestActivity.this, url, 0).show();
                 Log.e("TeamPlay", url);
-                if(purl.equals("https://everytime.kr/user/login") && url.equals("https://everytime.kr")) {
-                    Toast.makeText(EverytimeParseTestActivity.this, "로그인에 실패하였습니다", 0).show();
+                if(purl.equals(url)
+                        && url.equals("https://everytime.kr/login?redirect=%2Ftimetable")) {
+                    Toast.makeText(EverytimeParseTestActivity.this, "로그인에 실패하였습니다. 다시 시도하세요.", 0).show();
                 }
                 if(url.equals("https://everytime.kr/")) {
                     Toast.makeText(EverytimeParseTestActivity.this, "login succes", 0).show();
