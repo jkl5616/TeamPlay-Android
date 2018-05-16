@@ -4,11 +4,12 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -22,11 +23,16 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import skku.teamplay.R;
+import skku.teamplay.util.UnitConversion;
 
 public class MainFragment extends Fragment {
+    RelativeLayout layoutPlan;
     RadarChart mRadarChart;
+    TextView textInfo, textPlan;
+    List<TextView> listPlan = new ArrayList<>();
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +42,52 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.activity_main_fragment, container, false);
-        mRadarChart = (RadarChart) rootView.findViewById(R.id.main_radar_chart);
 
+        mRadarChart = (RadarChart) rootView.findViewById(R.id.main_radar_chart);
+        textInfo = (TextView) rootView.findViewById(R.id.main_text_my_info);
+        textPlan = (TextView) rootView.findViewById(R.id.main_plan_textview);
+        layoutPlan = (RelativeLayout) rootView.findViewById(R.id.main_plan_layout);
+
+        for (int i = 0; i < 10; i++)
+            addPlan("Added Plan #" + Integer.toString(i));
         setmRadarChart();
         return rootView;
     }
+
+/*Dynamically add a plan as textview on the layout*/
+    public void addPlan(String planTitle){
+        final int paddingPx = 20;
+        final int marginPx = 30;
+
+        TextView newPlan = new TextView(getContext());
+
+
+        layoutPlan.addView(newPlan);
+        newPlan.setText(planTitle);
+        newPlan.setBackgroundColor(Color.parseColor("#CCCCCC"));
+
+
+        newPlan.setPadding(paddingPx, paddingPx, paddingPx, paddingPx);
+        newPlan.setTextSize(16);
+        newPlan.setElevation(2f);
+        newPlan.setId(ViewGroup.generateViewId());
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) newPlan.getLayoutParams();
+        layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+        if (listPlan.size() == 0){
+            layoutParams.setMarginStart(marginPx);
+            layoutParams.setMarginEnd(marginPx);
+            layoutParams.addRule(RelativeLayout.BELOW, textPlan.getId());
+        }
+        else{
+            layoutParams.addRule(RelativeLayout.BELOW, listPlan.get(listPlan.size() - 1).getId());
+        }
+        layoutParams.setMargins(marginPx, marginPx/2, marginPx, marginPx/2);
+
+        newPlan.setLayoutParams(layoutParams);
+        listPlan.add(newPlan);
+    }
+
+
 
     private void setmRadarChart(){
         mRadarChart.getDescription().setEnabled(false);
