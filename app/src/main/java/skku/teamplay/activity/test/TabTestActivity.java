@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import skku.teamplay.R;
 import skku.teamplay.activity.adapter.ScreenSlidePagerAdapter;
 import skku.teamplay.fragment.test.MainFragment;
+import skku.teamplay.fragment.test.ReportFragment;
 import skku.teamplay.fragment.test.TestFragment;
 
 /**
@@ -26,6 +27,7 @@ public class TabTestActivity extends AppCompatActivity {
 
     MainFragment mainFragment;
     TestFragment testFragment1;
+    ReportFragment reportFragment;
     BottomNavigationView bottomNavigationView;
     MenuItem prevMenu;
     @Override
@@ -45,9 +47,11 @@ public class TabTestActivity extends AppCompatActivity {
         ScreenSlidePagerAdapter screenSlidePagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mainFragment = new MainFragment();
         testFragment1 = new TestFragment();
+        reportFragment = new ReportFragment();
 
         screenSlidePagerAdapter.addFragment(mainFragment);
         screenSlidePagerAdapter.addFragment(testFragment1);
+        screenSlidePagerAdapter.addFragment(reportFragment);
 
         viewPager.setAdapter(screenSlidePagerAdapter);
     }
