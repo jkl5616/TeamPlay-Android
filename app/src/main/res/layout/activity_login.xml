@@ -31,7 +31,7 @@
                 android:layout_marginBottom="8dp">
 
                 <EditText
-                    android:id="@+id/editID"
+                    android:id="@+id/editEmail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="24dp"
@@ -63,7 +63,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/btnSignin"
+                    android:id="@+id/btnSignup"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_gravity="bottom"

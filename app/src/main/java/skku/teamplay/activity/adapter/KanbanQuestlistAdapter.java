@@ -12,8 +12,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import butterknife.BindColor;
 import butterknife.ButterKnife;
@@ -37,6 +39,7 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         final int pos = position;
         final Context context = parent.getContext();
+//        ButterKnife.bind(this);
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -54,20 +57,28 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
         TextView textReward = (TextView) convertView.findViewById(R.id.textReward);
         TextView textDueAt = (TextView) convertView.findViewById(R.id.textDueAt);
 
-        //
         Quest quest = QuestList.get(pos);
         textTitle.setText(quest.getTitle());
         textRewardType.setText(quest.getRewardType());
         textReward.setText(quest.getReward());
         textDueAt.setText(quest.getDueAt());
 
-        if(!quest.getFinish()) {
-            convertView.setBackgroundColor(gray);
+        if(quest.getFinish()) {
+            convertView.setBackgroundColor(context.getColor(R.color.questFinished));
         }
         else {
-            convertView.setBackgroundColor(mint);
+            String mine = quest.getOwner();
+            if(Objects.equals(mine, "")) {
+                convertView.setBackgroundColor(context.getColor(R.color.questNew));
+            }
+            else if(Objects.equals(mine, "1111")) { // my id
+                convertView.setBackgroundColor(context.getColor(R.color.questMine));
+            }
+            else {
+                convertView.setBackgroundColor(context.getColor(R.color.questOther));
+            }
         }
-
+        notifyDataSetChanged();
         return convertView;
     }
 
