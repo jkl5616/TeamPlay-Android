@@ -16,14 +16,14 @@ import skku.teamplay.activity.adapter.KanbanFragmentAdapter;
 import skku.teamplay.activity.dialog.QuestPopupDialog;
 
 
-public class KanbanBoardTestActivity extends FragmentActivity {
+public class KanbanViewpagerActivity extends FragmentActivity {
     @BindView(R.id.pager) ViewPager pager;
     @BindView(R.id.addFAB) FloatingActionButton addFAB;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.kanban_viewpager_test);
+        setContentView(R.layout.activity_kanban_viewpager);
         ButterKnife.bind(this);
         PagerAdapter adapter = new KanbanFragmentAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
