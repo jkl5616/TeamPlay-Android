@@ -1,5 +1,6 @@
 package skku.teamplay.activity.test;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -45,11 +46,10 @@ public class LoginActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 if (user != null) {
-                    Toast.makeText(getApplicationContext(), "ㅎ2", Toast.LENGTH_LONG).show();
-
+                    Toast.makeText(getApplicationContext(), "user is not null", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "ㅂㅂ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "user is null", Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -72,8 +72,12 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnLogin)
     void onClickLogin() {
-        if(false) {
+        String email, password;
+        email = editEmail.getText().toString();
+        password = editPassword.getText().toString();
+        if(email.length() < 5 || password.length() < 6) {
             Toast.makeText(this, "Fill all", Toast.LENGTH_LONG).show();
+            // 메소드화 필요
         }
         else {
             mAuth.signInWithEmailAndPassword(editEmail.getText().toString(), editPassword.getText().toString())
@@ -82,12 +86,11 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(!task.isSuccessful()) {
                                 Toast.makeText(getApplicationContext(), "LogIn Fail", Toast.LENGTH_LONG).show();
-                                // start activity
-                                Intent intent = new Intent(getApplicationContext(), TabTestActivity.class);
-                                startActivity(intent);
+                                // 로그인 실패 이유 알림
                             }
                             else {
                                 Toast.makeText(getApplicationContext(), "LogIn Success", Toast.LENGTH_LONG).show();
+                                // 다음 액티비티로 넘어가기
                             }
                         }
                     });
@@ -97,8 +100,12 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnSignup)
     void onBtnSignup() {
-        if(false) {
+        String email, password;
+        email = editEmail.getText().toString();
+        password = editPassword.getText().toString();
+        if(email.length() < 5 || password.length() < 6) {
             Toast.makeText(this, "Fill all", Toast.LENGTH_LONG).show();
+            // 메소드화 필요
         }
         else {
             mAuth.createUserWithEmailAndPassword(editEmail.getText().toString(), editPassword.getText().toString())
@@ -108,13 +115,14 @@ public class LoginActivity extends AppCompatActivity {
 
                             if(task.isSuccessful()) {
                                 Toast.makeText(getApplicationContext(), "회원가입 시작", Toast.LENGTH_LONG).show();
+                                // 회원가입 다이얼로그 시작
                             }
                             else {
                                 Toast.makeText(getApplicationContext(), "회원가입 실패", Toast.LENGTH_LONG).show();
+                                // 회원가입 실패 이유 알림
                             }
                         }
                     });
         }
-
     }
 }
