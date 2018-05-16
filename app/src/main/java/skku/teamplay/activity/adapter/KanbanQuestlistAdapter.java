@@ -5,6 +5,7 @@ package skku.teamplay.activity.adapter;
  */
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +15,16 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.BindColor;
+import butterknife.ButterKnife;
 import skku.teamplay.R;
 import skku.teamplay.models.Quest;
 
 public class KanbanQuestlistAdapter extends BaseAdapter {
     private ArrayList<Quest> QuestList = new ArrayList<>();
+
+    @BindColor(R.color.gray) int gray;
+    @BindColor(R.color.colorPrimary) int mint;
 
     // 빈 생성자
     public KanbanQuestlistAdapter() { }
@@ -51,9 +57,16 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
         //
         Quest quest = QuestList.get(pos);
         textTitle.setText(quest.getTitle());
-        textRewardType.setText(Integer.toString(quest.getRewardType()));
-        textReward.setText(Integer.toString(quest.getReward()));
+        textRewardType.setText(quest.getRewardType());
+        textReward.setText(quest.getReward());
         textDueAt.setText(quest.getDueAt());
+
+        if(!quest.getFinish()) {
+            convertView.setBackgroundColor(gray);
+        }
+        else {
+            convertView.setBackgroundColor(mint);
+        }
 
         return convertView;
     }

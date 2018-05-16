@@ -9,7 +9,10 @@ public class Quest {
     private String startAt, dueAt;
     private String owner;
     private String id;
-    private int rewardType, reward;
+//    private int rewardType, reward;
+
+    private String rewardType;
+    private String reward;
 
     public Quest() {    }
 
@@ -19,7 +22,8 @@ public class Quest {
                  String startAt, String dueAt,
                  String owner,
                  String id,
-                 int rewardType, int reward) {
+                 String rewardType,
+                 String reward) {
         this.title = title;
         this.description = description;
         this.finish = finish;               // initial -> false
@@ -48,8 +52,8 @@ public class Quest {
     public String getStartAt() { return startAt; }
     public String getDueAt() { return dueAt; }
     public String getOwner() { return owner; }
-    public int getRewardType() { return rewardType; }
-    public int getReward() { return reward; }
+    public String getRewardType() { return rewardType; }
+    public String getReward() { return reward; }
 
     public void setID(String id) { this.id = id; }
     public void setTitle(String title) { this.title = title; }
@@ -58,8 +62,8 @@ public class Quest {
     public void setStartAt(String startAt) { this.startAt = startAt; }
     public void setDueAt(String dueAt) { this.dueAt = dueAt; }
     public void setOwner(String owner) { this.owner = owner; }
-    public void setRewardType(int rewardType) { this.rewardType = rewardType; }
-    public void setReward(int reward) { this.reward = reward; }
+    public void setRewardType(String rewardType) { this.rewardType = rewardType; }
+    public void setReward(String reward) { this.reward = reward; }
 
     public void putExtraIntent(Intent newIntent) {
         newIntent.putExtra("id", this.id);
@@ -77,7 +81,7 @@ public class Quest {
         this.description = data.getStringExtra("description");
         this.startAt = data.getStringExtra("startAt");
         this.dueAt = data.getStringExtra("dueAt");
-        this.reward = Integer.parseInt(data.getStringExtra("reward"));
-        this.rewardType = Integer.parseInt(data.getStringExtra("type"));
+        this.rewardType = data.getStringExtra("type");
+        this.reward = data.getStringExtra("reward");
     }
 }
