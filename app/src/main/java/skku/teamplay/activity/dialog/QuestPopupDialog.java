@@ -41,8 +41,8 @@ public class QuestPopupDialog extends Activity {
     @BindView(R.id.btnAdd) Button btnAdd;
 
     boolean isNew;
-    int pos = -1;
-    String id, title, description, startAt, dueAt, type, reward;
+    int pos = -1, page = -1;
+    String id, title, description, startAt, dueAt, owner, type, reward;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +70,9 @@ public class QuestPopupDialog extends Activity {
         dueAt = intent.getStringExtra("dueAt");
         type = intent.getStringExtra("type");
         reward = intent.getStringExtra("reward");
+        owner = intent.getStringExtra("owner");
+
+        page = intent.getIntExtra("page", -1);
 
         if(!isNew) {
             editTitle.setText(title);
@@ -87,6 +90,9 @@ public class QuestPopupDialog extends Activity {
         Intent retIntent = new Intent();
         retIntent.putExtra("pos", pos);
         retIntent.putExtra("id", id);
+        retIntent.putExtra("page", page);
+
+        retIntent.putExtra("owner", owner);
 
         setResult(10, retIntent);
         finish();
@@ -97,6 +103,9 @@ public class QuestPopupDialog extends Activity {
         Intent retIntent = new Intent();
         retIntent.putExtra("pos", pos);
         retIntent.putExtra("id", id);
+        retIntent.putExtra("page", page);
+
+        retIntent.putExtra("owner", owner);
 
         setResult(100, retIntent);
         finish();
@@ -107,6 +116,7 @@ public class QuestPopupDialog extends Activity {
         Intent retIntent = new Intent();
 
         retIntent.putExtra("id", id);
+        retIntent.putExtra("page", page);
 
         retIntent.putExtra("title", editTitle.getText().toString());
         retIntent.putExtra("description", editDescription.getText().toString());
@@ -114,6 +124,8 @@ public class QuestPopupDialog extends Activity {
         retIntent.putExtra("dueAt", editDueAt.getText().toString());
         retIntent.putExtra("type", editType.getText().toString());
         retIntent.putExtra("reward", editReward.getText().toString());
+
+        retIntent.putExtra("owner", owner);
 
         if(isNew) {
             setResult(1000, retIntent);
