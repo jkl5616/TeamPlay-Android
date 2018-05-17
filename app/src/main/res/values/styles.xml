@@ -14,6 +14,12 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="QuestDialogTheme" parent="@android:style/Theme.Material.Dialog.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
+
     <style name="QuestAddPopupTextView"  parent="@android:style/Widget.TextView">\
         <item name="android:fontFamily">@font/bmdohyeon</item>
         <item name="android:gravity">center</item>
