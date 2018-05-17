@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -32,12 +31,13 @@ import skku.teamplay.models.Quest;
 public class KanbanFragment extends Fragment {
     private int mPageNumber;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-//    private DatabaseReference databaseReference = firebaseDatabase.getReference().child("MainQuest");
     private DatabaseReference databaseReference;
     private  KanbanQuestlistAdapter adapter;
     ListView QuestList;
     TextView textKanbanTitle;
     MainQuest newMainQuest;
+
+    String GroupID = "G_0001";
 
     public static KanbanFragment create(int pageNumber) {
         KanbanFragment fragment = new KanbanFragment();
@@ -50,19 +50,19 @@ public class KanbanFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPageNumber = getArguments().getInt("page");
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentLayout = inflater.inflate(R.layout.fragment_kanban_test, container, false);
         textKanbanTitle = (TextView)fragmentLayout.findViewById(R.id.textKanbanTitle);
         QuestList = (ListView) fragmentLayout.findViewById(R.id.quest_list);
         adapter =  new KanbanQuestlistAdapter();
+        mPageNumber = getArguments().getInt("page");
 
-        showQuestList();
-//        String title = newMainQuest.getTitle();
-//        textKanbanTitle.setText(title);
+        databaseReference = firebaseDatabase.getReference().child("Groups").child(GroupID).child("MainQuest").child("MainQuest").child("Main"+ Integer.toString(mPageNumber));
+//        build();
+        addFirebaseListener();
 
         QuestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -71,6 +71,7 @@ public class KanbanFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), QuestPopupDialog.class);
                 intent.putExtra("isNew", false);
                 intent.putExtra("pos", position);
+                intent.putExtra("page", mPageNumber);
 
                 newQuest.putExtraIntent(intent);
 
@@ -95,7 +96,7 @@ public class KanbanFragment extends Fragment {
                         adapter.deleteItem(pos);
                         databaseReference.child("Quest").child(id).removeValue();
                         newMainQuest.setCount(Integer.toString(Integer.valueOf(newMainQuest.getCount()) - 1));
-                        databaseReference.child("Main Quest Info").child("Information").setValue(newMainQuest);
+                        databaseReference.child("Info").child("Info").setValue(newMainQuest);
                     }
                     break;
                 case 100:       // 완료
@@ -111,13 +112,11 @@ public class KanbanFragment extends Fragment {
                 case 1000:      // 추가
                     final Quest newQuest = new Quest();
                     newQuest.getExtraString(data);
-                    newQuest.setOwner("1111");
-
                     newQuest.setID(newMainQuest.getNextID());
                     databaseReference.child("Quest").child(newQuest.getID()).setValue(newQuest);
                     newMainQuest.setCount(Integer.toString(Integer.valueOf(newMainQuest.getCount()) + 1));
-                    newMainQuest.setNextID(Integer.toString(Integer.valueOf(newMainQuest.getNextID() + 1)));
-                    databaseReference.child("Main Quest Info").child("Information").setValue(newMainQuest);
+                    newMainQuest.setNextID(Integer.toString(Integer.valueOf(newMainQuest.getNextID()) + 1));
+                    databaseReference.child("Info").child("Info").setValue(newMainQuest);
 
                     break;
 
@@ -126,7 +125,6 @@ public class KanbanFragment extends Fragment {
                     if (pos != -1) {
                         Quest modifiedQuest = new Quest();
                         modifiedQuest.getExtraString(data);
-                        modifiedQuest.setOwner("1111");
                         adapter.modifyItem(pos, modifiedQuest);
                         databaseReference.child("Quest").child(modifiedQuest.getID()).setValue(modifiedQuest);
                     }
@@ -135,29 +133,37 @@ public class KanbanFragment extends Fragment {
         }
     }
 
-    private void showQuestList() {
+    private void build() {
+        String GroupID = "G_0001";
+        DatabaseReference d2 =  firebaseDatabase.getReference().child("Groups").child(GroupID).child("MainQuest").child("Info").child("Info");
+        MainQuest dm = new MainQuest("", "7", "7");
+        d2.setValue(dm);
+        DatabaseReference d1 =  firebaseDatabase.getReference().child("Groups").child(GroupID).child("MainQuest").child("MainQuest").child("Main"+ Integer.toString(mPageNumber));
+        MainQuest nm = new MainQuest("자료수집", "4", "4");
+        d1.child("Info").child("Info").setValue(nm);
+        Quest nq = new Quest("내것, 미완", "설명", false, "18.01.01", "18.01.01","1111", "0", "지갑", "10");
+        d1.child("Quest").child("0").setValue(nq);
+        nq.setTitle("남의것, 미완");
+        nq.setOwner("2222");
+        nq.setID("1");
+        d1.child("Quest").child("1").setValue(nq);
+        nq.setTitle("새것, 미완");
+        nq.setOwner("");
+        nq.setID("2");
+        d1.child("Quest").child("2").setValue(nq);
+        nq.makeFinish();
+        nq.setTitle("완료된것");
+        nq.setID("3");
+        d1.child("Quest").child("3").setValue(nq);
+    }
+
+    private void addFirebaseListener() {
         QuestList.setAdapter(adapter);
 
-        databaseReference = firebaseDatabase.getReference().child("MainQuest");
-
-//        databaseReference.child("Main Quest Info").addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot newIDSnapshot : dataSnapshot.getChildren()) {
-//                    newMainQuest = newIDSnapshot.getValue(MainQuest.class);
-//                }
-//            }
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-
-        databaseReference.child("Main Quest Info").addChildEventListener(new ChildEventListener() {
+        databaseReference.child("Info").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 newMainQuest = dataSnapshot.getValue(MainQuest.class);
-                Toast.makeText(getActivity(), newMainQuest.getTitle(), Toast.LENGTH_LONG).show();
                 textKanbanTitle.setText(newMainQuest.getTitle());
             }
 
