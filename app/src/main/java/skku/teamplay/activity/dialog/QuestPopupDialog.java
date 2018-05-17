@@ -1,5 +1,6 @@
 package skku.teamplay.activity.dialog;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +21,7 @@ import skku.teamplay.models.Quest;
  * Created by ddjdd on 2018-05-07.
  */
 
-public class QuestPopupDialog extends AppCompatActivity {
+public class QuestPopupDialog extends Activity {
     @BindView(R.id.textTitle) TextView textTitle;
     @BindView(R.id.textDescription) TextView textDescription;
     @BindView(R.id.textStartAt) TextView textStartAt;
