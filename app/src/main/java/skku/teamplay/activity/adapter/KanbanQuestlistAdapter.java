@@ -68,7 +68,7 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
         }
         else {
             String mine = quest.getOwner();
-            if(Objects.equals(mine, "")) {
+            if(Objects.equals(mine, " ")) {
                 convertView.setBackgroundColor(context.getColor(R.color.questNew));
             }
             else if(Objects.equals(mine, "1111")) { // my id

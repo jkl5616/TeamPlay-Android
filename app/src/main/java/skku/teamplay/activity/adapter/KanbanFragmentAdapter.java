@@ -5,6 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import skku.teamplay.fragment.test.KanbanFragment;
 
 /**
@@ -12,7 +15,7 @@ import skku.teamplay.fragment.test.KanbanFragment;
  */
 
 public class KanbanFragmentAdapter extends FragmentStatePagerAdapter {
-    Context context;
+    private final List<KanbanFragment> fragmentList = new ArrayList<>();
 
     public KanbanFragmentAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
@@ -20,12 +23,15 @@ public class KanbanFragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 5;
+        return fragmentList.size();
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public KanbanFragment getItem(int position) {
+        return fragmentList.get(position);
+    }
 
-        return KanbanFragment.create(position);
+    public void addFragment(int position) {
+        fragmentList.add(KanbanFragment.create(position));
     }
 }

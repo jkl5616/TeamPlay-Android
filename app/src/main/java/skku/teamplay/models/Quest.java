@@ -71,6 +71,7 @@ public class Quest {
         newIntent.putExtra("description", this.description);
         newIntent.putExtra("startAt", this.startAt);
         newIntent.putExtra("dueAt", this.dueAt);
+        newIntent.putExtra("owner", this.owner);
         newIntent.putExtra("type", this.rewardType);
         newIntent.putExtra("reward", this.reward);
     }
@@ -81,6 +82,7 @@ public class Quest {
         this.description = data.getStringExtra("description");
         this.startAt = data.getStringExtra("startAt");
         this.dueAt = data.getStringExtra("dueAt");
+        this.owner = data.getStringExtra("owner");
         this.rewardType = data.getStringExtra("type");
         this.reward = data.getStringExtra("reward");
     }
