@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="skku.teamplay">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -7,6 +8,11 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:name=".app.TeamPlayApp"
@@ -62,5 +68,23 @@
         <activity
             android:name=".activity.test.EverytimeParseTestActivity"
             android:theme="@style/AppTheme" />
+
+        <activity android:name=".activity.test.PenaltyTestActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity android:name=".activity.test.DummyActivity"
+            android:theme="@android:style/Theme.NoDisplay"></activity>
+
+        <receiver android:name=".receiver.BootCompletedReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".service.PenaltyService"
+            android:enabled="true"
+            android:exported="false"/>
     </application>
 </manifest>
