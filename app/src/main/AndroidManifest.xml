@@ -13,6 +13,7 @@
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".app.TeamPlayApp"
@@ -69,22 +70,29 @@
             android:name=".activity.test.EverytimeParseTestActivity"
             android:theme="@style/AppTheme" />
 
-        <activity android:name=".activity.test.PenaltyTestActivity"
+        <activity
+            android:name=".activity.test.PenaltyTestActivity"
             android:theme="@style/AppTheme" />
 
-        <activity android:name=".activity.test.DummyActivity"
+        <activity
+            android:name=".activity.test.DummyActivity"
             android:theme="@android:style/Theme.NoDisplay"></activity>
 
-        <receiver android:name=".receiver.BootCompletedReceiver"
+        <receiver
+            android:name=".receiver.BootCompletedReceiver"
             android:enabled="true"
+            android:directBootAware="true"
             android:exported="false">
             <intent-filter>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <!-- For pre-N devices -->
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.REBOOT"/>
             </intent-filter>
         </receiver>
-
-        <service android:name=".service.PenaltyService"
+        <service
+            android:name=".service.PenaltyService"
             android:enabled="true"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
 </manifest>

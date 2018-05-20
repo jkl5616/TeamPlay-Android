@@ -18,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import skku.teamplay.R;
 import skku.teamplay.service.PenaltyService;
+import skku.teamplay.util.SharedPreferencesUtil;
 
 public class PenaltyTestActivity extends Activity {
 
@@ -27,6 +28,7 @@ public class PenaltyTestActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_penalty_test);
+        //Check whether app has permission to ACTION_MANAGE_OVERLAY_PERMISSION
         if(Build.VERSION.SDK_INT >= 23) {
             if (!Settings.canDrawOverlays(PenaltyTestActivity.this)) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -34,6 +36,7 @@ public class PenaltyTestActivity extends Activity {
                 startActivityForResult(intent, 1234);
             }
         }
+        //Check whether app has permission to USAGE_STATS_SERVICE
         if (Build.VERSION.SDK_INT >= 21) {
             UsageStatsManager mUsageStatsManager = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
             long time = System.currentTimeMillis();
@@ -49,7 +52,8 @@ public class PenaltyTestActivity extends Activity {
         startSvc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(PenaltyTestActivity.this, "Service started", 0).show();
+                SharedPreferencesUtil.putInt("leftTime", 120);
+                Toast.makeText(PenaltyTestActivity.this, "Service started "+SharedPreferencesUtil.getInt("leftTime"), 0).show();
                 Intent intent = new Intent(PenaltyTestActivity.this, PenaltyService.class);
                 startService(intent);
             }
