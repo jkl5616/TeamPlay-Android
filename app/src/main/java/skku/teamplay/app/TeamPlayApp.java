@@ -8,10 +8,13 @@ import android.app.Application;
  */
 
 public class TeamPlayApp extends Application {
+    private static TeamPlayApp instance;
+    public static TeamPlayApp getAppInstance() { return instance; }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         //TODO
     }
 
