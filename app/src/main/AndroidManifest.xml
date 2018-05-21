@@ -62,6 +62,10 @@
             android:label="TeamPlay"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".activity.test.ProfileActivity"
+            android:label="TeamPlay"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".activity.test.LoginActivity"
             android:label="TeamPlay"
             android:theme="@style/AppTheme" />
