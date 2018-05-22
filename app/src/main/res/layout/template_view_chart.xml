@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Title"
-        android:textSize="20dp"
+        android:textSize="16dp"
         android:padding="8dp"/>
     <View
         android:layout_width="match_parent"
@@ -36,14 +36,15 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:gravity="center|left"
-            android:layout_margin="20dp"
-            >
+            android:layout_margin="20dp">
 
             <TextView
+                android:id="@+id/template_chart_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="chart description"/>
             <TextView
+                android:id="@+id/template_chart_values_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="data set"/>

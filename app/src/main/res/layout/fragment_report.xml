@@ -10,12 +10,13 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
                 android:id="@+id/report_text_contributor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="참여자"
-                android:textSize="20dp"
+                android:textSize="16dp"
                 android:padding="8dp"
                 />
             <View
@@ -25,6 +26,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_height="2dp"
                 android:background="#dddddd" />
+
             <HorizontalScrollView
                 android:id="@+id/report_scroll_contributor"
                 android:layout_below="@id/report_text_contributor"
@@ -32,54 +34,23 @@
                 android:layout_height="wrap_content"
                 >
                 <LinearLayout
+                    android:id="@+id/report_layout_contributor"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="10dp"
                     android:orientation="horizontal">
-                    <include
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        layout="@layout/template_contributor"
-                        />
-                    <include
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        layout="@layout/template_contributor"
-                        />
-                    <include
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        layout="@layout/template_contributor"
-                        />
-                    <include
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        layout="@layout/template_contributor"
-                        />
-                    <include
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        layout="@layout/template_contributor"
-                        />
-                    <include
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        layout="@layout/template_contributor"
-                        />
+
                 </LinearLayout>
             </HorizontalScrollView>
 
             <LinearLayout
+                android:id="@+id/report_layout_chart"
                 android:layout_below="@id/report_scroll_contributor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <include
-                    android:layout_marginTop="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    layout="@layout/template_view_chart"
-                    ></include>
+
+
             </LinearLayout>
         </RelativeLayout>
 
