@@ -22,6 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="4"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
     <RelativeLayout
@@ -31,12 +33,13 @@
         android:layout_weight="1">
         <LinearLayout
             android:layout_centerHorizontal="true"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <skku.teamplay.activity.widget.CircleCountdownView
-                android:layout_width="50dp"
-                android:layout_height="50dp">
+                android:id="@+id/template_circle_day"
+                android:layout_width="65dp"
+                android:layout_height="65dp">
             </skku.teamplay.activity.widget.CircleCountdownView>
             <TextView
                 android:layout_width="match_parent"
@@ -52,12 +55,13 @@
         android:layout_weight="1">
         <LinearLayout
             android:layout_centerHorizontal="true"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <skku.teamplay.activity.widget.CircleCountdownView
-                android:layout_width="50dp"
-                android:layout_height="50dp">
+                android:id="@+id/template_circle_hour"
+                android:layout_width="65dp"
+                android:layout_height="65dp">
             </skku.teamplay.activity.widget.CircleCountdownView>
             <TextView
                 android:layout_width="match_parent"
@@ -73,12 +77,13 @@
         android:layout_weight="1">
         <LinearLayout
             android:layout_centerHorizontal="true"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <skku.teamplay.activity.widget.CircleCountdownView
-                android:layout_width="50dp"
-                android:layout_height="50dp">
+                android:id="@+id/template_circle_min"
+                android:layout_width="65dp"
+                android:layout_height="65dp">
             </skku.teamplay.activity.widget.CircleCountdownView>
             <TextView
                 android:layout_width="match_parent"
@@ -94,12 +99,13 @@
         android:layout_weight="1">
         <LinearLayout
             android:layout_centerHorizontal="true"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <skku.teamplay.activity.widget.CircleCountdownView
-                android:layout_width="50dp"
-                android:layout_height="50dp">
+                android:id="@+id/template_circle_secs"
+                android:layout_width="65dp"
+                android:layout_height="65dp">
             </skku.teamplay.activity.widget.CircleCountdownView>
             <TextView
                 android:layout_width="match_parent"

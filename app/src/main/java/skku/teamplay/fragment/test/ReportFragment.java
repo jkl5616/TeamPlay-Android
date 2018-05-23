@@ -24,11 +24,14 @@ import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import skku.teamplay.R;
+import skku.teamplay.activity.adapter.CountDownAdapter;
+import skku.teamplay.activity.widget.CircleCountdownView;
 import skku.teamplay.models.Report;
 import skku.teamplay.models.User;
 
 public class ReportFragment extends Fragment {
     LinearLayout layoutContributor, layoutChart;
+    CircleCountdownView[] circleTimeView = new CircleCountdownView[4];
     ViewGroup rootView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,18 @@ public class ReportFragment extends Fragment {
 
         setContributors(userList);
         setCharts(reportList);
+        setCountDown();
         return rootView;
+    }
+
+    public void setCountDown(){
+        long[] time = new long[4];
+        time[0] = 10;
+        time[1] = 0;
+        time[2] = 1;
+        time[3] = 14;
+        CountDownAdapter countDownAdapter = new CountDownAdapter(circleTimeView, time);
+        countDownAdapter.start();
     }
     public void setCharts(List<Report>reportList){
         View view;
@@ -153,6 +167,10 @@ public class ReportFragment extends Fragment {
     private void bindViews(){
         layoutContributor = rootView.findViewById(R.id.report_layout_contributor);
         layoutChart = rootView.findViewById(R.id.report_layout_chart);
+        circleTimeView[0] = rootView.findViewById(R.id.template_circle_day);
+        circleTimeView[1] = rootView.findViewById(R.id.template_circle_hour);
+        circleTimeView[2] = rootView.findViewById(R.id.template_circle_min);
+        circleTimeView[3] = rootView.findViewById(R.id.template_circle_secs);
     }
 
 

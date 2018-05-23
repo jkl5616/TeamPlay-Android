@@ -13,7 +13,7 @@
             android:progressDrawable="@drawable/circular_progress_bar" />
 
         <TextView
-            android:textColor="#FFFFFF"
+            android:textColor="#00967f"
             android:id="@+id/view_progress_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
