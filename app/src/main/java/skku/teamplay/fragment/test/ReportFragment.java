@@ -1,6 +1,7 @@
 package skku.teamplay.fragment.test;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +49,10 @@ public class ReportFragment extends Fragment {
         }
         Random rand = new Random();
         for (int i = 0; i < 5; i++){
-            reportList.add(new Report("Chart description #" + i, "Title " + i, rand.nextInt(100), 100));
+            Report report = new Report("Chart description #" + i, "Title " + i, rand.nextInt(100), 100);
+            report.setRandomValues(rand.nextInt(6) + 2);
+            reportList.add(report);
+
         }
 
 
@@ -59,7 +64,7 @@ public class ReportFragment extends Fragment {
         View view;
         int idx = 0;
         for (Report report : reportList){
-            List<PieEntry> entries = new ArrayList<>();
+            List<PieEntry> entries;
             TextView textTitle, textDes, textVal;
             PieChart pieChart;
 
@@ -78,13 +83,42 @@ public class ReportFragment extends Fragment {
             textVal.setText(Integer.toString(report.getValue()));
             textVal.setTextColor(report.getColor());
 
-//            entries.add(new PieEntry(report.getValue(), "Blue"));
-//            entries.add(new PieEntry(100 - report.getValue(), "Empty"));
-//
-//            PieDataSet set = new PieDataSet(entries, "Report");
-//            PieData data = new PieData(set);
-//            pieChart.setData(data);
-//            pieChart.invalidate();
+
+            entries = report.getEntries();
+
+//            entries.add(new PieEntry(18.5f, "Green"));
+//            entries.add(new PieEntry(26.7f, "Yellow"));
+//            entries.add(new PieEntry(24.0f, "Red"));
+//            entries.add(new PieEntry(30.8f, "Blue"));
+
+            PieDataSet set = new PieDataSet(entries, "Report");
+            //set colors
+            Random rand = new Random();
+            switch(rand.nextInt(6)){
+                case 0:
+                    set.setColors(ColorTemplate.COLORFUL_COLORS);
+                    break;
+                case 1:
+                    set.setColors(ColorTemplate.JOYFUL_COLORS);
+                    break;
+                case 2:
+                    set.setColors(ColorTemplate.LIBERTY_COLORS);
+                    break;
+                case 3:
+                    set.setColors(ColorTemplate.MATERIAL_COLORS);
+                    break;
+                case 4:
+                    set.setColors(ColorTemplate.PASTEL_COLORS);
+                    break;
+                case 5:
+                    set.setColors(ColorTemplate.VORDIPLOM_COLORS);
+                    break;
+            }
+
+            PieData data = new PieData(set);
+            pieChart.setData(data);
+            if (idx == 0) pieChart.animateY(2000);
+            pieChart.invalidate();
         }
     }
     public void setContributors(List<User> userList){

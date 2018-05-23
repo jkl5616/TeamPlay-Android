@@ -2,9 +2,16 @@ package skku.teamplay.models;
 
 import android.graphics.Color;
 
+import com.github.mikephil.charting.data.PieEntry;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class Report{
     private String description, title;
     private int value, max, color;
+    private List<Integer> values = new ArrayList<>();
 
     public Report(String description, String title, int value, int max) {
         this.title = title;
@@ -41,5 +48,22 @@ public class Report{
     public int getColor(){
         return this.color;
     }
+
+    public void setRandomValues(int n){
+        Random rand = new Random();
+        for (int i = 0; i < n; i++){
+            values.add(rand.nextInt(100) + 1);
+        }
+    }
+
+    public List<PieEntry> getEntries(){
+        List<PieEntry> entries = new ArrayList<>();
+        for (Integer num : values){
+            entries.add(new PieEntry(num));
+        }
+
+        return entries;
+    }
+
 }
 

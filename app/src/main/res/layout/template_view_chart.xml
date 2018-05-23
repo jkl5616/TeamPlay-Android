@@ -23,20 +23,20 @@
         >
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/template_pie_chart"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
             android:layout_margin="20dp"
             >
         </com.github.mikephil.charting.charts.PieChart>
 
         <LinearLayout
             android:id="@+id/template_chart_text_layout"
-            android:layout_toRightOf="@+id/template_pie_chart"
+            android:layout_below="@+id/template_pie_chart"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:gravity="center|left"
-            android:layout_margin="20dp">
+            android:layout_margin="10dp">
 
             <TextView
                 android:id="@+id/template_chart_description"
