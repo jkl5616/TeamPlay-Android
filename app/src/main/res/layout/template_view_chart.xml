@@ -29,7 +29,6 @@
             >
         </com.github.mikephil.charting.charts.PieChart>
 
-
         <LinearLayout
             android:id="@+id/template_chart_text_layout"
             android:layout_below="@+id/template_pie_chart"
