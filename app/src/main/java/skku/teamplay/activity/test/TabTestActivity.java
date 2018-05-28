@@ -16,6 +16,7 @@ import skku.teamplay.R;
 import skku.teamplay.activity.adapter.ScreenSlidePagerAdapter;
 import skku.teamplay.fragment.test.MainFragment;
 import skku.teamplay.fragment.test.ReportFragment;
+import skku.teamplay.fragment.test.ResultFragment;
 import skku.teamplay.fragment.test.TestFragment;
 
 /**
@@ -28,6 +29,7 @@ public class TabTestActivity extends AppCompatActivity {
     MainFragment mainFragment;
     TestFragment testFragment1;
     ReportFragment reportFragment;
+    ResultFragment resultFragment;
     BottomNavigationView bottomNavigationView;
     MenuItem prevMenu;
     @Override
@@ -48,10 +50,12 @@ public class TabTestActivity extends AppCompatActivity {
         mainFragment = new MainFragment();
         testFragment1 = new TestFragment();
         reportFragment = new ReportFragment();
+        resultFragment = new ResultFragment();
 
         screenSlidePagerAdapter.addFragment(mainFragment);
         screenSlidePagerAdapter.addFragment(testFragment1);
         screenSlidePagerAdapter.addFragment(reportFragment);
+        screenSlidePagerAdapter.addFragment(resultFragment);
 
         viewPager.setAdapter(screenSlidePagerAdapter);
     }

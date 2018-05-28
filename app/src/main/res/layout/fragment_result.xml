@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:id="@+id/result_layout_character"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="#555555"
+                    android:elevation="5dp">
+
+                    <TextView
+                        android:id="@+id/result_layout_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:lines="2"
+                        android:text="Result of\nThis user"
+                        android:textColor="#ffffff"
+                        android:textSize="20dp" />
+                    <TextView
+                        android:id="@+id/result_layout_grade"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_above="@+id/result_layout_title"
+                        android:text="A+"
+                        android:textSize="45dp"
+                        android:textColor="#1cff36"/>
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="참여도"
+                    android:textSize="16dp"
+                    android:padding="8dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#dddddd"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"/>
+                <include layout="@layout/template_contribution_result" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="타임라인"
+                    android:textSize="16dp"
+                    android:padding="8dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#dddddd"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/result_timeline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+        </FrameLayout>
+    </ScrollView>
+
+</LinearLayout>
