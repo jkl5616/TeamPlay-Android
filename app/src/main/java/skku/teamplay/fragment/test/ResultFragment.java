@@ -4,6 +4,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,8 @@ import java.util.List;
 import java.util.Random;
 
 import skku.teamplay.R;
+import skku.teamplay.activity.adapter.TimelineAdapter;
+import skku.teamplay.models.Quest;
 
 public class ResultFragment extends Fragment {
     final static private float GROUP_SPACE= 0.15f;
@@ -28,7 +33,8 @@ public class ResultFragment extends Fragment {
     final static private float BAR_WIDTH = 0.45f;
 
     ViewGroup rootView;
-    BarChart barChart;
+    BarChart mBarChart;
+    RecyclerView mRecyclerView;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +48,7 @@ public class ResultFragment extends Fragment {
 
         bind_views();
         setBarChart();
+        setTimeline();
 
         return rootView;
     }
@@ -65,21 +72,40 @@ public class ResultFragment extends Fragment {
 
         BarData data = new BarData(setCont, setAvg);
         data.setBarWidth(BAR_WIDTH);
-        barChart.setData(data);
-        barChart.groupBars(0, GROUP_SPACE, BAR_SPACE);
+        mBarChart.setData(data);
+        mBarChart.groupBars(0, GROUP_SPACE, BAR_SPACE);
 
         Description desc = new Description();
         desc.setText("Contribution bar chart");
-        barChart.setDescription(desc);
+        mBarChart.setDescription(desc);
 
 
-        XAxis xAxis = barChart.getXAxis();
+        XAxis xAxis = mBarChart.getXAxis();
         xAxis.setAxisMaximum(xAxis.getAxisMaximum() + GROUP_SPACE + BAR_WIDTH);
         xAxis.setCenterAxisLabels(true);
-        barChart.invalidate();
+        mBarChart.invalidate();
 
     }
+
+    private void setTimeline(){
+        LinearLayoutManager layoutManager = new LinearLayoutManager(rootView.getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        List<Quest> quests = new ArrayList<>();
+        for (int i = 0; i < 20; i++){
+            quests.add(new Quest());
+            quests.get(i).setTitle("Quest Title #" + i);
+            quests.get(i).setDescription("Quest Description #" + i);
+            quests.get(i).setDueAt("0529");
+        }
+        TimelineAdapter timelineAdapter = new TimelineAdapter(quests);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setAdapter(timelineAdapter);
+    }
     private void bind_views(){
-        barChart = rootView.findViewById(R.id.template_contribution_barchart);
+        mBarChart = rootView.findViewById(R.id.template_contribution_barchart);
+        mRecyclerView = rootView.findViewById(R.id.result_timeline_recycler);
     }
 }
