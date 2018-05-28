@@ -13,6 +13,7 @@ public class CountDownAdapter {
     private final int formDays = (1000 * 60 * 60 * 24);
     private int[] endTime = new int[4];
     private int timerIdx;
+
     public CountDownAdapter(CircleCountdownView[] view, long[] remainTime) {
         this.mProgressView= view;
         this.remainTime = remainTime;
@@ -20,9 +21,19 @@ public class CountDownAdapter {
         endTime[0] = 30;
         endTime[1] = 24;
         endTime[2] = endTime[3] = 60;
-
     }
 
+    public CountDownAdapter(long[] remainTime) {
+        this.remainTime= remainTime;
+
+        endTime[0] = 30;
+        endTime[1] = 24;
+        endTime[2] = endTime[3] = 60;
+    }
+
+    public void setProgressView(CircleCountdownView[] views){
+        this.mProgressView = views;
+    }
 
     public void start(){
         showProgressBars();

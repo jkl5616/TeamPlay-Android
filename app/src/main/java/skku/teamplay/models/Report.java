@@ -13,11 +13,9 @@ public class Report{
     private int value, max, color;
     private List<Integer> values = new ArrayList<>();
 
-    public Report(String description, String title, int value, int max) {
+    public Report(String description, String title) {
         this.title = title;
         this.description = description;
-        this.value = value;
-        this.max = max;
 
         this.color = Color.BLUE;
     }

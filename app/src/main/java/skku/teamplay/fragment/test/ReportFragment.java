@@ -30,6 +30,7 @@ import skku.teamplay.models.Report;
 import skku.teamplay.models.User;
 
 public class ReportFragment extends Fragment {
+    private final int NUM_CHART_COLOR_THEME = 6;
     LinearLayout layoutContributor, layoutChart;
     CircleCountdownView[] circleTimeView = new CircleCountdownView[4];
     ViewGroup rootView;
@@ -52,7 +53,7 @@ public class ReportFragment extends Fragment {
         }
         Random rand = new Random();
         for (int i = 0; i < 5; i++){
-            Report report = new Report("Chart description #" + i, "Title " + i, rand.nextInt(100), 100);
+            Report report = new Report("Chart description #" + i, "Title " + i);
             report.setRandomValues(rand.nextInt(6) + 2);
             reportList.add(report);
 
@@ -71,12 +72,16 @@ public class ReportFragment extends Fragment {
         time[1] = 0;
         time[2] = 1;
         time[3] = 14;
-        CountDownAdapter countDownAdapter = new CountDownAdapter(circleTimeView, time);
+        CountDownAdapter countDownAdapter = new CountDownAdapter(time);
+        countDownAdapter.setProgressView(circleTimeView);
         countDownAdapter.start();
     }
     public void setCharts(List<Report>reportList){
         View view;
-        int idx = 0;
+        int idx, prev;
+        idx = 0;
+        prev = -1;
+        Random rand = new Random();
         for (Report report : reportList){
             List<PieEntry> entries;
             TextView textTitle, textDes, textVal;
@@ -100,15 +105,12 @@ public class ReportFragment extends Fragment {
 
             entries = report.getEntries();
 
-//            entries.add(new PieEntry(18.5f, "Green"));
-//            entries.add(new PieEntry(26.7f, "Yellow"));
-//            entries.add(new PieEntry(24.0f, "Red"));
-//            entries.add(new PieEntry(30.8f, "Blue"));
-
             PieDataSet set = new PieDataSet(entries, "Report");
             //set colors
-            Random rand = new Random();
-            switch(rand.nextInt(6)){
+            int color_theme = rand.nextInt(NUM_CHART_COLOR_THEME);
+            if (prev != -1 && prev == color_theme) color_theme += 1 % NUM_CHART_COLOR_THEME;
+            prev = color_theme;
+            switch(color_theme){
                 case 0:
                     set.setColors(ColorTemplate.COLORFUL_COLORS);
                     break;
