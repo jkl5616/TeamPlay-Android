@@ -13,6 +13,10 @@ public class Login extends RestApi {
     private String email;
     private String pw;
 
+    public Login(String email, String pw) {
+        this.email = email;
+        this.pw = pw;
+    }
     @Override
     public Class<? extends RestApiResult> getResultClass() {
         return LoginResult.class;

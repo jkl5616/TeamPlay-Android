@@ -58,6 +58,7 @@ public class RestApiTask extends AsyncTask<RestApi, Void, RestApiResult> {
                 .build();
         try (Response response = client.newCall(request).execute()) {
             String s = response.body().string();
+            if(LOG_CONTENT) Log.d(TAG, s);
             return new Gson().fromJson(s, restApi.getResultClass());
         } catch (Exception e) {
             e.printStackTrace();

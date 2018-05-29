@@ -12,11 +12,11 @@ public abstract class RestApi {
 
 
     public static String getBaseUrl() {
-        return "http://202.182.104.206/";
+        return "http://202.182.104.206:3000/";
     }
 
     public String getApiUrl() {
-        String apiName = getClass().getSimpleName();
+        String apiName = getClass().getSimpleName().toLowerCase();
         return getBaseUrl() + apiName;
     }
 
