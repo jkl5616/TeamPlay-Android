@@ -17,4 +17,5 @@ import skku.teamplay.activity.test.ViewPagerTestActivity;
 
 public class Constants {
     public static final Class[] ACTIVITES = {MainActivity.class, ChartTestActivity.class, KanbanViewpagerActivity.class, ViewPagerTestActivity.class, TabTestActivity.class, LoginActivity.class, UserProfileActivity.class, EverytimeParseTestActivity.class, PenaltyTestActivity.class, ProfileActivity.class};
+    public static final boolean DEBUG = true;
 }
