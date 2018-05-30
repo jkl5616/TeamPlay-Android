@@ -15,22 +15,9 @@ public class RestApiResultNull extends RestApiResult {
     public static RestApiResult get(int code) {
         // prints stack trace that this was made for debugging
         RestApiResultNull apiResult = new RestApiResultNull();
-        apiResult.resultCode = -1;
-        apiResult.resultMessage = "SERVER ERROR";
         apiResult.setErrorCode(code);
         return apiResult;
     }
-
-    @Override
-    public String getResultMessage() {
-        return "서버와의 통신에 오류가 발생했습니다.";
-    }
-
-    @Override
-    public boolean isResultSucceed() {
-        return false;
-    }
-
 
     public int getErrorCode() {
         return errorCode;

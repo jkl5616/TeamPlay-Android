@@ -19,12 +19,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import skku.teamplay.R;
+import skku.teamplay.api.OnRestApiListener;
+import skku.teamplay.api.RestApiResult;
+import skku.teamplay.api.RestApiTask;
+import skku.teamplay.api.impl.Login;
+import skku.teamplay.api.impl.Register;
+import skku.teamplay.api.impl.res.LoginResult;
 
 /**
  * Created by woorim on 2018-05-04.
  */
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements OnRestApiListener {
     @BindView(R.id.editEmail) EditText editEmail;
     @BindView(R.id.editPassword) EditText editPassword;
     @BindView(R.id.btnLogin) Button btnLogin;
@@ -80,6 +86,9 @@ public class LoginActivity extends AppCompatActivity {
             // 메소드화 필요
         }
         else {
+            Login login = new Login(editEmail.getText().toString(), editPassword.getText().toString());
+            new RestApiTask(this).execute(login);
+            /*
             mAuth.signInWithEmailAndPassword(editEmail.getText().toString(), editPassword.getText().toString())
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -93,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                                 // 다음 액티비티로 넘어가기
                             }
                         }
-                    });
+                    });*/
         }
 
     }
@@ -108,6 +117,12 @@ public class LoginActivity extends AppCompatActivity {
             // 메소드화 필요
         }
         else {
+            Register register = new Register();
+            register.setEmail(editEmail.getText().toString());
+            register.setPw(editPassword.getText().toString());
+            register.setName("TEST");
+            new RestApiTask(this).execute(register);
+            /*
             mAuth.createUserWithEmailAndPassword(editEmail.getText().toString(), editPassword.getText().toString())
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -122,7 +137,20 @@ public class LoginActivity extends AppCompatActivity {
                                 // 회원가입 실패 이유 알림
                             }
                         }
-                    });
+                    });(*/
+        }
+    }
+
+    @Override
+    public void onRestApiDone(RestApiResult restApiResult) {
+        switch(restApiResult.getApiName()) {
+            case "login":
+                LoginResult loginResult = (LoginResult) restApiResult;
+                Toast.makeText(this, loginResult.user.getName()+"", 0).show();
+                break;
+            case "register":
+                Toast.makeText(this, restApiResult.getResult()+"", 0).show();
+                break;
         }
     }
 }
