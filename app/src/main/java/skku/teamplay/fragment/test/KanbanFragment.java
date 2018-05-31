@@ -10,12 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-
 import skku.teamplay.R;
 import skku.teamplay.activity.adapter.KanbanQuestlistAdapter;
 import skku.teamplay.activity.dialog.QuestPopupDialog;
@@ -30,8 +24,6 @@ import skku.teamplay.models.Quest;
 
 public class KanbanFragment extends Fragment {
     private int mPageNumber;
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference;
     private  KanbanQuestlistAdapter adapter;
     ListView QuestList;
     TextView textKanbanTitle;
@@ -59,10 +51,7 @@ public class KanbanFragment extends Fragment {
         QuestList = (ListView) fragmentLayout.findViewById(R.id.quest_list);
         adapter =  new KanbanQuestlistAdapter();
         mPageNumber = getArguments().getInt("page");
-
-        databaseReference = firebaseDatabase.getReference().child("Groups").child(GroupID).child("MainQuest").child("MainQuest").child("Main"+ Integer.toString(mPageNumber));
-//        build();
-        addFirebaseListener();
+        QuestList.setAdapter(adapter);
 
         QuestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -94,9 +83,7 @@ public class KanbanFragment extends Fragment {
                     if (pos != -1) {
                         String id = data.getStringExtra("id");
                         adapter.deleteItem(pos);
-                        databaseReference.child("Quest").child(id).removeValue();
                         newMainQuest.setCount(Integer.toString(Integer.valueOf(newMainQuest.getCount()) - 1));
-                        databaseReference.child("Info").child("Info").setValue(newMainQuest);
                     }
                     break;
                 case 100:       // 완료
@@ -105,7 +92,6 @@ public class KanbanFragment extends Fragment {
                         String id = data.getStringExtra("id");
                         Quest finishedQuest = (Quest) adapter.getItem(pos);
                         adapter.makeFinish(pos, finishedQuest);
-                        databaseReference.child("Quest").child(id).child("finish").setValue(true);
                     }
                     break;
 
@@ -113,10 +99,8 @@ public class KanbanFragment extends Fragment {
                     final Quest newQuest = new Quest();
                     newQuest.getExtraString(data);
                     newQuest.setID(newMainQuest.getNextID());
-                    databaseReference.child("Quest").child(newQuest.getID()).setValue(newQuest);
                     newMainQuest.setCount(Integer.toString(Integer.valueOf(newMainQuest.getCount()) + 1));
                     newMainQuest.setNextID(Integer.toString(Integer.valueOf(newMainQuest.getNextID()) + 1));
-                    databaseReference.child("Info").child("Info").setValue(newMainQuest);
 
                     break;
 
@@ -126,90 +110,9 @@ public class KanbanFragment extends Fragment {
                         Quest modifiedQuest = new Quest();
                         modifiedQuest.getExtraString(data);
                         adapter.modifyItem(pos, modifiedQuest);
-                        databaseReference.child("Quest").child(modifiedQuest.getID()).setValue(modifiedQuest);
                     }
                     break;
             }
         }
-    }
-
-    private void build() {
-        String GroupID = "G_0001";
-        DatabaseReference d2 =  firebaseDatabase.getReference().child("Groups").child(GroupID).child("MainQuest").child("Info").child("Info");
-        MainQuest dm = new MainQuest("", "7", "7");
-        d2.setValue(dm);
-        DatabaseReference d1 =  firebaseDatabase.getReference().child("Groups").child(GroupID).child("MainQuest").child("MainQuest").child("Main"+ Integer.toString(mPageNumber));
-        MainQuest nm = new MainQuest("자료수집", "4", "4");
-        d1.child("Info").child("Info").setValue(nm);
-        Quest nq = new Quest("내것, 미완", "설명", false, "18.01.01", "18.01.01","1111", "0", "지갑", "10");
-        d1.child("Quest").child("0").setValue(nq);
-        nq.setTitle("남의것, 미완");
-        nq.setOwner("2222");
-        nq.setID("1");
-        d1.child("Quest").child("1").setValue(nq);
-        nq.setTitle("새것, 미완");
-        nq.setOwner("");
-        nq.setID("2");
-        d1.child("Quest").child("2").setValue(nq);
-        nq.makeFinish();
-        nq.setTitle("완료된것");
-        nq.setID("3");
-        d1.child("Quest").child("3").setValue(nq);
-    }
-
-    private void addFirebaseListener() {
-        QuestList.setAdapter(adapter);
-
-        databaseReference.child("Info").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                newMainQuest = dataSnapshot.getValue(MainQuest.class);
-                textKanbanTitle.setText(newMainQuest.getTitle());
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        databaseReference.child("Quest").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Quest newQuest = dataSnapshot.getValue(Quest.class);
-                adapter.addItem(newQuest);
-                adapter.notifyDataSetChanged();
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-            }
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                adapter.notifyDataSetChanged();
-            }
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                adapter.notifyDataSetChanged();
-            }
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                adapter.notifyDataSetChanged();
-            }
-        });
     }
 }
