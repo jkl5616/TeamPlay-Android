@@ -6,12 +6,13 @@
     android:layout_height="match_parent"
     android:gravity="center_vertical|center_horizontal|center"
     tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="81dp">
+    tools:layout_editor_absoluteY="81dp"
+    tools:context=".activity.dialog.QuestPopupDialog">
 
     <LinearLayout
         android:layout_width="300dp"
         android:layout_height="250dp"
-        android:background="#ffffff"
+        android:background="#000000"
         android:gravity="center_vertical|center_horizontal"
         android:orientation="vertical">
 
@@ -90,13 +91,12 @@
                     android:layout_weight="1"
                     android:text="@string/quest_rewardType" />
 
-                <EditText
-                    android:id="@+id/editType"
-                    style="@style/QuestAddPopupEditText"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="지갑" />
+                <Spinner
+                    android:id="@+id/spinnerRewardType"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/spinner_no_selector"
+                    android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/textReward"
@@ -146,38 +146,20 @@
 
             <Button
                 android:id="@+id/btnRemove"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="8dp"
+                style="@style/QuestAddPopupButton"
                 android:layout_weight="1"
-                android:background="@drawable/btn_round"
                 android:text="제거" />
 
             <Button
                 android:id="@+id/btnFinish"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="8dp"
+                style="@style/QuestAddPopupButton"
                 android:layout_weight="1"
-                android:background="@drawable/btn_round"
                 android:text="완료" />
 
             <Button
                 android:id="@+id/btnAdd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="8dp"
+                style="@style/QuestAddPopupButton"
                 android:layout_weight="1"
-                android:background="@drawable/btn_round"
                 android:text="추가" />
         </LinearLayout>
 

@@ -59,12 +59,12 @@ public class KanbanViewpagerActivity extends FragmentActivity {
 
     @OnClick(R.id.addFAB)
     void onAddFabClick () {
-//        Intent intent = new Intent(getApplicationContext(), QuestPopupDialog.class);
-//        intent.putExtra("isNew", true);
-//        intent.putExtra("id", "");
-//        intent.putExtra("page", currentPos);
-//        intent.putExtra("owner", " ");
-//        startActivityForResult(intent, 1);
+        Intent intent = new Intent(getApplicationContext(), QuestPopupDialog.class);
+        intent.putExtra("isNew", true);
+        intent.putExtra("page", currentPos);
+        intent.putExtra("questId", 0);
+        intent.putExtra("ownerId", 0);
+        startActivityForResult(intent, 1);
     }
 
 //    @Override
