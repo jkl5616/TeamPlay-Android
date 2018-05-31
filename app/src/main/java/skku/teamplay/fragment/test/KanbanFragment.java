@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 import skku.teamplay.R;
 import skku.teamplay.activity.adapter.KanbanQuestlistAdapter;
 import skku.teamplay.activity.dialog.QuestPopupDialog;
-import skku.teamplay.models.MainQuest;
+import skku.teamplay.model.MainQuest;
 import skku.teamplay.model.Quest;
 
 
@@ -29,7 +29,6 @@ public class KanbanFragment extends Fragment {
     private  KanbanQuestlistAdapter adapter;
     @BindView(R.id.quest_list) ListView QuestList;
     @BindView(R.id.textKanbanTitle) TextView textKanbanTitle;
-    MainQuest newMainQuest;
 
     public static KanbanFragment create(int pageNumber) {
         KanbanFragment fragment = new KanbanFragment();
@@ -74,7 +73,6 @@ public class KanbanFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         int pos;
-        Toast.makeText(getActivity(), "here", Toast.LENGTH_LONG).show();
 
         Quest retQuest;
         if (requestCode == 1) {
@@ -83,13 +81,11 @@ public class KanbanFragment extends Fragment {
 
             switch (resultCode) {
                 case 10:        // 제거
-                    Toast.makeText(getActivity(), "remove", Toast.LENGTH_LONG).show();
                     if (pos != -1) {
                         adapter.deleteItem(pos);
                     }
                     break;
                 case 100:       // 완료
-                    Toast.makeText(getActivity(), "fin", Toast.LENGTH_LONG).show();
                     if (pos != -1) {
                         adapter.modifyItem(pos, retQuest);
                     }
@@ -97,11 +93,9 @@ public class KanbanFragment extends Fragment {
 
                 case 1000:      // 추가
                     adapter.addItem(retQuest);
-                    Toast.makeText(getActivity(), "add", Toast.LENGTH_LONG).show();
                     break;
 
                 case 2000:      // 변경
-                    Toast.makeText(getActivity(), "modi", Toast.LENGTH_LONG).show();
                     if (pos != -1) {;
                         adapter.modifyItem(pos, retQuest);
                     }
