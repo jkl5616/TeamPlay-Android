@@ -9,7 +9,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import skku.teamplay.R;
-import skku.teamplay.models.Quest;
+import skku.teamplay.model.Quest;
 
 public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.TimelineHolder>{
     List<Quest> questList;

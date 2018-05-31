@@ -5,22 +5,19 @@ package skku.teamplay.activity.adapter;
  */
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 import butterknife.BindColor;
-import butterknife.ButterKnife;
 import skku.teamplay.R;
-import skku.teamplay.models.Quest;
+import skku.teamplay.model.Quest;
 
 public class KanbanQuestlistAdapter extends BaseAdapter {
     private ArrayList<Quest> QuestList = new ArrayList<>();

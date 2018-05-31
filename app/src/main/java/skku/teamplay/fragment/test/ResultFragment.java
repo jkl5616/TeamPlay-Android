@@ -1,6 +1,5 @@
 package skku.teamplay.fragment.test;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,7 +24,7 @@ import java.util.Random;
 
 import skku.teamplay.R;
 import skku.teamplay.activity.adapter.TimelineAdapter;
-import skku.teamplay.models.Quest;
+import skku.teamplay.model.Quest;
 
 public class ResultFragment extends Fragment {
     final static private float GROUP_SPACE= 0.15f;

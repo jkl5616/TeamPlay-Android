@@ -3,19 +3,15 @@ package skku.teamplay.activity.dialog;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import skku.teamplay.R;
-import skku.teamplay.models.Quest;
 
 /**
  * Created by ddjdd on 2018-05-07.
@@ -42,7 +38,7 @@ public class QuestPopupDialog extends Activity {
 
     boolean isNew;
     int pos = -1, page = -1;
-    String id, title, description, startAt, dueAt, owner, type, reward;
+    String id, mainQuestId, title, description, startAt, dueAt, owner, type, reward;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +51,6 @@ public class QuestPopupDialog extends Activity {
         Intent intent = new Intent(this.getIntent());
         isNew = intent.getBooleanExtra("isNew", false);
 
-
         if(!isNew) {
             btnAdd.setText("변경");
             pos = intent.getIntExtra("pos", -1);
@@ -63,7 +58,7 @@ public class QuestPopupDialog extends Activity {
 
 
         id = intent.getStringExtra("id");
-
+        mainQuestId = intent.getStringExtra("mainQuestId");
         title = intent.getStringExtra("title");
         description = intent.getStringExtra("description");
         startAt = intent.getStringExtra("startAt");
@@ -90,6 +85,7 @@ public class QuestPopupDialog extends Activity {
         Intent retIntent = new Intent();
         retIntent.putExtra("pos", pos);
         retIntent.putExtra("id", id);
+        retIntent.putExtra("mainQuestId", mainQuestId);
         retIntent.putExtra("page", page);
 
         retIntent.putExtra("owner", owner);
@@ -103,8 +99,8 @@ public class QuestPopupDialog extends Activity {
         Intent retIntent = new Intent();
         retIntent.putExtra("pos", pos);
         retIntent.putExtra("id", id);
+        retIntent.putExtra("mainQuestId", mainQuestId);
         retIntent.putExtra("page", page);
-
         retIntent.putExtra("owner", owner);
 
         setResult(100, retIntent);
@@ -116,7 +112,9 @@ public class QuestPopupDialog extends Activity {
         Intent retIntent = new Intent();
 
         retIntent.putExtra("id", id);
+        retIntent.putExtra("mainQuestId", mainQuestId);
         retIntent.putExtra("page", page);
+        retIntent.putExtra("owner", owner);
 
         retIntent.putExtra("title", editTitle.getText().toString());
         retIntent.putExtra("description", editDescription.getText().toString());
@@ -125,7 +123,6 @@ public class QuestPopupDialog extends Activity {
         retIntent.putExtra("type", editType.getText().toString());
         retIntent.putExtra("reward", editReward.getText().toString());
 
-        retIntent.putExtra("owner", owner);
 
         if(isNew) {
             setResult(1000, retIntent);

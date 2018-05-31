@@ -14,7 +14,7 @@ import skku.teamplay.R;
 import skku.teamplay.activity.adapter.KanbanQuestlistAdapter;
 import skku.teamplay.activity.dialog.QuestPopupDialog;
 import skku.teamplay.models.MainQuest;
-import skku.teamplay.models.Quest;
+import skku.teamplay.model.Quest;
 
 
 

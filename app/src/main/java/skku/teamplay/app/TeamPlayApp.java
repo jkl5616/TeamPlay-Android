@@ -17,7 +17,7 @@ public class TeamPlayApp extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+//        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
     }
 
 }
