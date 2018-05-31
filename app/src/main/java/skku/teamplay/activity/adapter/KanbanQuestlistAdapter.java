@@ -16,94 +16,88 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import butterknife.BindColor;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import skku.teamplay.R;
 import skku.teamplay.model.Quest;
 
 public class KanbanQuestlistAdapter extends BaseAdapter {
     private ArrayList<Quest> QuestList = new ArrayList<>();
 
-    @BindColor(R.color.gray) int gray;
-    @BindColor(R.color.colorPrimary) int mint;
+    @BindView(R.id.user_profile) ImageView user_profile;
+    @BindView(R.id.rewardTypeIc) ImageView rewardTypeIc;
+    @BindView(R.id.rewardIc) ImageView rewardIc;
+    @BindView(R.id.dueAtIc) ImageView dueAtIc;
 
-    // 빈 생성자
+    @BindView(R.id.textTitle) TextView textTitle;
+    @BindView(R.id.textRewardType) TextView textRewardType;
+    @BindView(R.id.textReward) TextView textReward;
+    @BindView(R.id.textDueAt) TextView textDueAt;
+
     public KanbanQuestlistAdapter() { }
 
-    // 만든 리스트의 개체수
     @Override
     public int getCount() { return QuestList.size(); }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View rootView, ViewGroup parent) {
         final int pos = position;
         final Context context = parent.getContext();
-//        ButterKnife.bind(this);
 
-        if (convertView == null) {
+        if (rootView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.list_quest_template, parent, false);
+            rootView = inflater.inflate(R.layout.list_quest_template, parent, false);
         }
-
-        // xml 링크
-        ImageView user_profie = (ImageView)convertView.findViewById(R.id.user_profile);
-        ImageView rewardTypeIc = (ImageView)convertView.findViewById(R.id.rewardTypeIc);
-        ImageView rewardIc = (ImageView)convertView.findViewById(R.id.rewardIc);
-        ImageView dueAt = (ImageView)convertView.findViewById(R.id.dueAtIc);
-
-        TextView textTitle = (TextView) convertView.findViewById(R.id.textTitle);
-        TextView textRewardType = (TextView) convertView.findViewById(R.id.textRewardType);
-        TextView textReward = (TextView) convertView.findViewById(R.id.textReward);
-        TextView textDueAt = (TextView) convertView.findViewById(R.id.textDueAt);
+        ButterKnife.bind(this, rootView);
 
         Quest quest = QuestList.get(pos);
         textTitle.setText(quest.getTitle());
-        textRewardType.setText(quest.getRewardType());
-        textReward.setText(quest.getReward());
+        textRewardType.setText(quest.getRewardType_String());
+        textReward.setText(Integer.toString(quest.getReward()));
 //        textDueAt.setText(quest.getDueAt());
 
         if(quest.getFinish()) {
-            convertView.setBackgroundColor(context.getColor(R.color.questFinished));
+            rootView.setBackgroundColor(context.getColor(R.color.questFinished));
         }
         else {
             int mine = quest.getOwnerId();
             if(mine == 0) {
-                convertView.setBackgroundColor(context.getColor(R.color.questNew));
+                rootView.setBackgroundColor(context.getColor(R.color.questNew));
             }
             else if(mine == 1) { // my id
-                convertView.setBackgroundColor(context.getColor(R.color.questMine));
+                rootView.setBackgroundColor(context.getColor(R.color.questMine));
             }
             else {
-                convertView.setBackgroundColor(context.getColor(R.color.questOther));
+                rootView.setBackgroundColor(context.getColor(R.color.questOther));
             }
         }
         notifyDataSetChanged();
-        return convertView;
+        return rootView;
     }
 
-    //
     @Override
     public long getItemId(int position) {
-        return position ;
+        return position;
     }
 
-    //
     @Override
     public Object getItem(int position) {
-        return QuestList.get(position) ;
+        return QuestList.get(position);
     }
 
-
-    // 리스트에 새로운 글 추가
     public void addItem(Quest item) {
         QuestList.add(item);
+        this.notifyDataSetChanged();
     }
 
-    public void deleteItem(int position) { QuestList.remove(position); }
+    public void deleteItem(int position) {
+        QuestList.remove(position);
+        this.notifyDataSetChanged();
+    }
 
-    public void modifyItem(int position, Quest modifiedQuest) { QuestList.set(position, modifiedQuest); }
-
-    public void makeFinish(int position, Quest finishedQuest) {
-        finishedQuest.makeFinish();
-        QuestList.set(position, finishedQuest);
+    public void modifyItem(int position, Quest modifiedQuest) {
+        QuestList.set(position, modifiedQuest);
+        this.notifyDataSetChanged();
     }
 }
 

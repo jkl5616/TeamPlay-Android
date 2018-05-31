@@ -129,15 +129,13 @@ public class QuestPopupDialog extends Activity {
         quest.setRewardType(spinnerRewardType.getSelectedItemPosition());
         quest.setReward(Integer.parseInt(editReward.getText().toString()));
 
-        if(pos != -1) {
+        if(pos == -1) {
             fillRetIntent();
             setResult(1000, retIntent);
             finish();
         }
         else {
-            retIntent.putExtra("pos", pos);
-            retIntent.putExtra("page", page);
-            retIntent.putExtra("quest", quest);
+            fillRetIntent();
             setResult(2000, retIntent);
             finish();
         }
@@ -160,7 +158,7 @@ public class QuestPopupDialog extends Activity {
     }
 
     private void fillRetIntent() {
-        retIntent.putExtra("pos", -1);
+        retIntent.putExtra("pos", pos);
         retIntent.putExtra("page", page);
         retIntent.putExtra("quest", quest);
     }
