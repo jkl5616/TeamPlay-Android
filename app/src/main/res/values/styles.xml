@@ -58,6 +58,24 @@
         <item name="android:background">@drawable/btn_round</item>
     </style>
 
+    <style name="ListQuestItemTextView" parent="@android:style/Widget.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:fontFamily">@font/bmjua</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="ListQuestItemImageView">
+        <item name="android:layout_height">16dp</item>
+        <item name="android:layout_width">16dp</item>
+        <item name="android:layout_margin">1dp</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
     <style name="GeneralCardView" parent="@android:style/Widget.TextView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

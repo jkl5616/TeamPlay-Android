@@ -5,6 +5,7 @@ package skku.teamplay.activity.adapter;
  */
 
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,9 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
     @BindView(R.id.textTitle) TextView textTitle;
     @BindView(R.id.textRewardType) TextView textRewardType;
     @BindView(R.id.textReward) TextView textReward;
+    @BindView(R.id.textStartAt) TextView textStartAt;
     @BindView(R.id.textDueAt) TextView textDueAt;
+    @BindView(R.id.const_layout) ConstraintLayout constLayout;
 
     public KanbanQuestlistAdapter() { }
 
@@ -57,7 +60,7 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
 //        textDueAt.setText(quest.getDueAt());
 
         if(quest.getFinish()) {
-            rootView.setBackgroundColor(context.getColor(R.color.questFinished));
+            constLayout.setBackgroundColor(context.getColor(R.color.questFinished));
         }
         else {
             int mine = quest.getOwnerId();
@@ -68,7 +71,7 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
                 rootView.setBackgroundColor(context.getColor(R.color.questMine));
             }
             else {
-                rootView.setBackgroundColor(context.getColor(R.color.questOther));
+                constLayout.setBackground(context.getDrawable(R.drawable.edittext_round_border));
             }
         }
         notifyDataSetChanged();
