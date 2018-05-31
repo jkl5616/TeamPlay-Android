@@ -2,9 +2,10 @@ package skku.teamplay.model;
 
 import android.content.Intent;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Quest {
+public class Quest implements Serializable {
     private int questId;
     private int mainQuestId;
     private String title;
@@ -38,7 +39,7 @@ public class Quest {
         this.dueAt = dueAt;
         this.writterId = writterId;
         this.ownerId = ownerId;
-        this.rewardType = rewardType;       // 1 전투력, 2 지갑, 3 서포트
+        this.rewardType = rewardType;       // 0 전투력, 1 지갑, 2 서포트
         this.reward = reward;
     }
 
@@ -53,6 +54,13 @@ public class Quest {
     public int getOwnerId() { return ownerId; }
     public int getRewardType() { return rewardType; }
     public int getReward() { return reward; }
+
+    public String getRewardType_String() {
+        if(this.rewardType == 0) return "전투력";
+        else if(this.rewardType == 1) return "지갑";
+        else if(this.rewardType == 2) return "서포트";
+        else return "";
+    }
 
     public void setID(int questId) { this.questId = questId; }
     public void setMainQuestId(int mainQuestId) { this.mainQuestId = mainQuestId; }
@@ -69,28 +77,4 @@ public class Quest {
     public void makeFinish(){
         this.finish = !this.finish;
     }
-
-//    public void putExtraIntent(Intent newIntent) {
-//        newIntent.putExtra("id", this.questId);
-//        newIntent.putExtra("mainQuestId", this.mainQuestId);
-//        newIntent.putExtra("title", this.title);
-//        newIntent.putExtra("description", this.description);
-//        newIntent.putExtra("startAt", this.startAt);
-//        newIntent.putExtra("dueAt", this.dueAt);
-//        newIntent.putExtra("owner", this.ownerId);
-//        newIntent.putExtra("rewardType", this.rewardType);
-//        newIntent.putExtra("reward", this.reward);
-//    }
-//
-//    public void getExtraString(Intent data) {
-//        this.questId = data.getStringExtra("id");
-//        this.mainQuestId = data.getStringExtra("mainQuestId");
-//        this.title = data.getStringExtra("title");
-//        this.description = data.getStringExtra("description");
-//        this.startAt = data.getStringExtra("startAt");
-//        this.dueAt = data.getStringExtra("dueAt");
-//        this.ownerId = data.getStringExtra("owner");
-//        this.rewardType = data.getStringExtra("rewardType");
-//        this.reward = data.getStringExtra("reward");
-//    }
 }

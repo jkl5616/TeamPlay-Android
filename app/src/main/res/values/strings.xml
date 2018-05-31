@@ -13,4 +13,8 @@
     <string name="hint_pw">PW</string>
     <string name="login_text">로그인</string>
     <string name="signin_text">회원가입</string>
+    <string name="remove_text">제거</string>
+    <string name="modify_text">변경</string>
+    <string name="finish_text">완료</string>
+    <string name="add_text">추가</string>
 </resources>

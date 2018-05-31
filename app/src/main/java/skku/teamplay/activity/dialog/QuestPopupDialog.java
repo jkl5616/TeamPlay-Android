@@ -27,6 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import skku.teamplay.R;
 import skku.teamplay.activity.adapter.RewardSpinnerAdapter;
+import skku.teamplay.model.Quest;
 
 /**
  * Created by ddjdd on 2018-05-07.
@@ -53,11 +54,15 @@ public class QuestPopupDialog extends Activity {
     @BindView(R.id.btnFinish) Button btnFinish;
     @BindView(R.id.btnAdd) Button btnAdd;
 
-    boolean isNew;
-    int pos = -1, page = -1;
+    RewardSpinnerAdapter spinnerAdapter;
+
+
+    int pos = -1, page = -1, startAtYear = 2016, startAtMonth = 10, startAtDay = 3, dueAtYear, dueAtMonth, dueAtDay;
     Date startAt, dueAt;
-    int startAtYear = 2016, startAtMonth = 10, startAtDay = 3;
-    int dueAtYear, dueAtMonth, dueAtDay;
+
+    Quest quest;
+
+    Intent retIntent = new Intent();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,48 +71,27 @@ public class QuestPopupDialog extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_kanban_popup);
         ButterKnife.bind(this);
-
-        List<String> data = new ArrayList<>();
-        data.add("지갑");        data.add("전투력");        data.add("서포트");
-        RewardSpinnerAdapter spinnerAdapter = new RewardSpinnerAdapter(this, data);
-        spinnerRewardType.setAdapter(spinnerAdapter);
-
-        SimpleDateFormat form = new SimpleDateFormat("yyyy/MM/dd");
-
+        setSpinner();
 
         Intent intent = new Intent(this.getIntent());
-        isNew = intent.getBooleanExtra("isNew", false);
-
-        if (!isNew) {
-            btnAdd.setText("변경");
-            pos = intent.getIntExtra("pos", -1);
-        }
-
-
-
-//        questId = intent.getStringExtra("questId");
-//        mainQuestId = intent.getStringExtra("mainQuestId");
-//        title = intent.getStringExtra("title");
-//        description = intent.getStringExtra("description");
-//        startAt = intent.getStringExtra("startAt");
-//        dueAt = intent.getStringExtra("dueAt");
-//        type = intent.getStringExtra("type");
-//        reward = intent.getStringExtra("reward");
-//        ownerId = intent.getStringExtra("ownerId");
-
+        quest = (Quest)intent.getSerializableExtra("quest");
+        pos = intent.getIntExtra("pos", -1);
         page = intent.getIntExtra("page", -1);
 
+        if(pos != -1) {
+            btnAdd.setText("변경");
+        }
+
+        editTitle.setText(quest.getTitle());
+        editDescription.setText(quest.getDescription());
+
+        // startAt, dueAt 미구현
         int time = startAtYear*10000 + startAtMonth*100 + startAtDay;
         editStartAt.setText(String.valueOf(time));
+        editDueAt.setText(String.valueOf(time));
 
-        if(!isNew) {
-//            editTitle.setText(title);
-//            editDescription.setText(description);
-//            editStartAt.setText(startAt);
-//            editDueAt.setText(dueAt);
-////            editType.setText(type);
-//            editReward.setText(reward);
-        }
+        spinnerRewardType.setSelection(quest.getRewardType());
+        editReward.setText(String.valueOf(quest.getReward()));
     }
 
     @OnClick (R.id.editStartAt)
@@ -122,68 +106,62 @@ public class QuestPopupDialog extends Activity {
         dialog.show();
     }
 
-    private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            String msg = String.format("%d / %d / %d", year, month+1, day);
-
-            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-        }
-    };
-
-
-
     @OnClick (R.id.btnRemove)
     void onBtnRemoveClick() {
-        Intent retIntent = new Intent();
-//        retIntent.putExtra("pos", pos);
-//        retIntent.putExtra("questId", questId);
-//        retIntent.putExtra("mainQuestId", mainQuestId);
-//        retIntent.putExtra("page", page);
-//        retIntent.putExtra("ownerId", ownerId);
-
+        fillRetIntent();
         setResult(10, retIntent);
         finish();
     }
 
     @OnClick (R.id.btnFinish)
     void onBtnFinishedClick() {
-        Intent retIntent = new Intent();
-//        retIntent.putExtra("pos", pos);
-//        retIntent.putExtra("questId", questId);
-//        retIntent.putExtra("mainQuestId", mainQuestId);
-//        retIntent.putExtra("page", page);
-//        retIntent.putExtra("ownerId", ownerId);
-
+        quest.makeFinish();
+        fillRetIntent();
         setResult(100, retIntent);
         finish();
     }
 
     @OnClick (R.id.btnAdd)
     void onBtnAddClick() {
-        Intent retIntent = new Intent();
+        quest.setTitle(editTitle.getText().toString());
+        quest.setDescription(editDescription.getText().toString());
+        // startAt, dueAt 미구현
+        quest.setRewardType(spinnerRewardType.getSelectedItemPosition());
+        quest.setReward(Integer.parseInt(editReward.getText().toString()));
 
-//        retIntent.putExtra("questId", questId);
-//        retIntent.putExtra("mainQuestId", mainQuestId);
-//        retIntent.putExtra("page", page);
-//        retIntent.putExtra("ownerId", ownerId);
-//
-//        retIntent.putExtra("title", editTitle.getText().toString());
-//        retIntent.putExtra("description", editDescription.getText().toString());
-//        retIntent.putExtra("startAt", editStartAt.getText().toString());
-//        retIntent.putExtra("dueAt", editDueAt.getText().toString());
-////        retIntent.putExtra("type", editType.getText().toString());
-//        retIntent.putExtra("reward", editReward.getText().toString());
-
-
-        if(isNew) {
+        if(pos != -1) {
+            fillRetIntent();
             setResult(1000, retIntent);
             finish();
         }
         else {
             retIntent.putExtra("pos", pos);
+            retIntent.putExtra("page", page);
+            retIntent.putExtra("quest", quest);
             setResult(2000, retIntent);
             finish();
         }
+    }
+
+    private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+//            String msg = String.format("%d / %d / %d", year, month+1, day);
+
+//            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private void setSpinner() {
+        List<String> data = new ArrayList<>();
+        data.add("전투력");        data.add("지갑");        data.add("서포트");
+        spinnerAdapter = new RewardSpinnerAdapter(this, data);
+        spinnerRewardType.setAdapter(spinnerAdapter);
+    }
+
+    private void fillRetIntent() {
+        retIntent.putExtra("pos", -1);
+        retIntent.putExtra("page", page);
+        retIntent.putExtra("quest", quest);
     }
 }
