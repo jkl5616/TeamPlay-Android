@@ -14,6 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import skku.teamplay.R;
 import skku.teamplay.activity.adapter.ScreenSlidePagerAdapter;
+import skku.teamplay.fragment.test.KanbanMainFragment;
 import skku.teamplay.fragment.test.MainFragment;
 import skku.teamplay.fragment.test.ReportFragment;
 import skku.teamplay.fragment.test.ResultFragment;
@@ -27,7 +28,7 @@ public class TabTestActivity extends AppCompatActivity {
     @BindView(R.id.tab_container) ViewPager viewPager;
 
     MainFragment mainFragment;
-    TestFragment testFragment1;
+    KanbanMainFragment kanbanMainFragment;
     ReportFragment reportFragment;
     ResultFragment resultFragment;
     BottomNavigationView bottomNavigationView;
@@ -48,12 +49,12 @@ public class TabTestActivity extends AppCompatActivity {
     private void setViewPager(ViewPager viewPager){
         ScreenSlidePagerAdapter screenSlidePagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mainFragment = new MainFragment();
-        testFragment1 = new TestFragment();
+        kanbanMainFragment = new KanbanMainFragment();
         reportFragment = new ReportFragment();
         resultFragment = new ResultFragment();
 
         screenSlidePagerAdapter.addFragment(mainFragment);
-        screenSlidePagerAdapter.addFragment(testFragment1);
+        screenSlidePagerAdapter.addFragment(kanbanMainFragment);
         screenSlidePagerAdapter.addFragment(reportFragment);
         screenSlidePagerAdapter.addFragment(resultFragment);
 
