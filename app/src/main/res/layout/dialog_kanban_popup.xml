@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="300dp"
         android:layout_height="250dp"
-        android:background="#000000"
+        android:background="#FFFFFF"
         android:gravity="center_vertical|center_horizontal"
         android:orientation="vertical">
 
@@ -56,12 +56,10 @@
                     android:text="@string/quest_startAt" />
 
 
-                <EditText
-                    android:id="@+id/editDueAt"
+                <TextView
+                    android:id="@+id/editStartAt"
                     style="@style/QuestAddPopupEditText"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="date"
                     android:text="date" />
 
                 <TextView
@@ -70,13 +68,12 @@
                     android:layout_weight="1"
                     android:text="@string/quest_dueAt" />
 
-                <EditText
-                    android:id="@+id/editStartAt"
+                <TextView
+                    android:id="@+id/editDueAt"
                     style="@style/QuestAddPopupEditText"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="date"
                     android:text="date" />
+
             </LinearLayout>
 
             <LinearLayout

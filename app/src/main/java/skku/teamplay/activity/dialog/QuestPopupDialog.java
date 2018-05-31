@@ -1,6 +1,7 @@
 package skku.teamplay.activity.dialog;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,12 +9,17 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -37,8 +43,8 @@ public class QuestPopupDialog extends Activity {
 
     @BindView(R.id.editTitle) EditText editTitle;
     @BindView(R.id.editDescription) EditText editDescription;
-    @BindView(R.id.editStartAt) EditText editStartAt;
-    @BindView(R.id.editDueAt) EditText editDueAt;
+    @BindView(R.id.editStartAt) TextView editStartAt;
+    @BindView(R.id.editDueAt) TextView editDueAt;
     @BindView(R.id.editReward) EditText editReward;
 
     @BindView(R.id.spinnerRewardType) Spinner spinnerRewardType;
@@ -49,7 +55,9 @@ public class QuestPopupDialog extends Activity {
 
     boolean isNew;
     int pos = -1, page = -1;
-    String questId, mainQuestId, title, description, startAt, dueAt, ownerId, type, reward;
+    Date startAt, dueAt;
+    int startAtYear = 2016, startAtMonth = 10, startAtDay = 3;
+    int dueAtYear, dueAtMonth, dueAtDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,18 +68,21 @@ public class QuestPopupDialog extends Activity {
         ButterKnife.bind(this);
 
         List<String> data = new ArrayList<>();
-        data.add("지갑");data.add("전투력");data.add("서포트");
+        data.add("지갑");        data.add("전투력");        data.add("서포트");
         RewardSpinnerAdapter spinnerAdapter = new RewardSpinnerAdapter(this, data);
         spinnerRewardType.setAdapter(spinnerAdapter);
+
+        SimpleDateFormat form = new SimpleDateFormat("yyyy/MM/dd");
 
 
         Intent intent = new Intent(this.getIntent());
         isNew = intent.getBooleanExtra("isNew", false);
 
-        if(!isNew) {
+        if (!isNew) {
             btnAdd.setText("변경");
             pos = intent.getIntExtra("pos", -1);
         }
+
 
 
 //        questId = intent.getStringExtra("questId");
@@ -86,6 +97,9 @@ public class QuestPopupDialog extends Activity {
 
         page = intent.getIntExtra("page", -1);
 
+        int time = startAtYear*10000 + startAtMonth*100 + startAtDay;
+        editStartAt.setText(String.valueOf(time));
+
         if(!isNew) {
 //            editTitle.setText(title);
 //            editDescription.setText(description);
@@ -96,6 +110,28 @@ public class QuestPopupDialog extends Activity {
         }
     }
 
+    @OnClick (R.id.editStartAt)
+    void onEditStartAtClick(){
+        DatePickerDialog dialog = new DatePickerDialog(QuestPopupDialog.this, dateSetListener, startAtYear, startAtMonth, startAtDay);
+        dialog.show();
+    }
+
+    @OnClick (R.id.editDueAt)
+    void onEditDueAtClick(){
+        DatePickerDialog dialog = new DatePickerDialog(QuestPopupDialog.this, dateSetListener, dueAtYear, dueAtMonth, dueAtDay);
+        dialog.show();
+    }
+
+    private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            String msg = String.format("%d / %d / %d", year, month+1, day);
+
+            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        }
+    };
+
+
 
     @OnClick (R.id.btnRemove)
     void onBtnRemoveClick() {
@@ -104,7 +140,6 @@ public class QuestPopupDialog extends Activity {
 //        retIntent.putExtra("questId", questId);
 //        retIntent.putExtra("mainQuestId", mainQuestId);
 //        retIntent.putExtra("page", page);
-//
 //        retIntent.putExtra("ownerId", ownerId);
 
         setResult(10, retIntent);

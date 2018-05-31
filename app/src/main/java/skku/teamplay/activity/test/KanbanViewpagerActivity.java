@@ -12,6 +12,9 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -60,10 +63,18 @@ public class KanbanViewpagerActivity extends FragmentActivity {
     @OnClick(R.id.addFAB)
     void onAddFabClick () {
         Intent intent = new Intent(getApplicationContext(), QuestPopupDialog.class);
+        Date startAt = new Date(), dueAt = startAt;
+        SimpleDateFormat form = new SimpleDateFormat("yyyy/MM/dd");
+
         intent.putExtra("isNew", true);
         intent.putExtra("page", currentPos);
+
         intent.putExtra("questId", 0);
         intent.putExtra("ownerId", 0);
+
+        intent.putExtra("startAt", form.format(startAt));
+        intent.putExtra("dueAt", form.format(dueAt));
+
         startActivityForResult(intent, 1);
     }
 
