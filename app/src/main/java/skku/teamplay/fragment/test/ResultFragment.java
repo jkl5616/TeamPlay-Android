@@ -96,7 +96,7 @@ public class ResultFragment extends Fragment {
             quests.add(new Quest());
             quests.get(i).setTitle("Quest Title #" + i);
             quests.get(i).setDescription("Quest Description #" + i);
-            quests.get(i).setDueAt("0529");
+//            quests.get(i).setDueAt("0529");
         }
         TimelineAdapter timelineAdapter = new TimelineAdapter(quests);
         mRecyclerView.setLayoutManager(layoutManager);

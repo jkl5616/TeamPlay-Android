@@ -28,7 +28,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     public void onBindViewHolder(TimelineHolder holder, int position) {
         holder.description.setText(questList.get(position).getDescription());
         holder.title.setText(questList.get(position).getTitle());
-        holder.date.setText(questList.get(position).getDueAt());
+//        holder.date.setText(questList.get(position).getDueAt());
     }
 
     @Override
