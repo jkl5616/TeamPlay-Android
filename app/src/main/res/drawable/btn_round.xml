@@ -3,9 +3,9 @@
     <item android:state_pressed="true" >
         <shape android:shape="rectangle"  >
             <corners android:radius="3dip" />
-            <solid android:color="@color/colorPrimary" />
+            <solid android:color="@color/colorPrimaryDark" />
             <stroke android:width="1dip" android:color="@color/colorPrimary"/>
-            <corners android:bottomLeftRadius="12dp" android:bottomRightRadius="12dp" android:topLeftRadius="12dp" android:topRightRadius="12dp" />
+            <corners android:radius="12dp"/>
         </shape>
     </item>
     <item android:state_pressed="false">
@@ -13,7 +13,7 @@
             <padding android:bottom="4dp" android:left="8dp" android:right="8dp" android:top="4dp" />
             <solid android:color="@color/colorPrimary" />
             <stroke android:width="1dip" android:color="@color/colorPrimary"/>
-            <corners android:bottomLeftRadius="12dp" android:bottomRightRadius="12dp" android:topLeftRadius="12dp" android:topRightRadius="12dp" />
+            <corners android:radius="12dp"/>
         </shape>
     </item>
 </selector>

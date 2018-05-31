@@ -39,8 +39,7 @@
                     style="@style/QuestAddPopupEditText"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textShortMessage"
-                    android:text="Title" />
+                    android:inputType="textShortMessage" />
             </LinearLayout>
 
             <LinearLayout
@@ -55,12 +54,10 @@
                     android:layout_weight="1"
                     android:text="@string/quest_startAt" />
 
-
                 <TextView
                     android:id="@+id/editStartAt"
                     style="@style/QuestAddPopupEditText"
-                    android:layout_weight="1"
-                    android:text="date" />
+                    android:layout_weight="1"/>
 
                 <TextView
                     android:id="@+id/textDueAt"
@@ -71,8 +68,7 @@
                 <TextView
                     android:id="@+id/editDueAt"
                     style="@style/QuestAddPopupEditText"
-                    android:layout_weight="1"
-                    android:text="date" />
+                    android:layout_weight="1"/>
 
             </LinearLayout>
 
@@ -106,8 +102,7 @@
                     style="@style/QuestAddPopupEditText"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="number"
-                    android:text="0" />
+                    android:inputType="number"/>
 
             </LinearLayout>
 
@@ -121,15 +116,14 @@
                     android:id="@+id/textDescription"
                     style="@style/QuestAddPopupTextView"
                     android:layout_weight="3"
-                    android:text="설명" />
+                    android:text="@string/quest_description"/>
 
                 <EditText
                     android:id="@+id/editDescription"
                     style="@style/QuestAddPopupEditText"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textMultiLine|textLongMessage"
-                    android:text="Description" />
+                    android:inputType="textMultiLine|textLongMessage"/>
 
             </LinearLayout>
 
@@ -145,19 +139,19 @@
                 android:id="@+id/btnRemove"
                 style="@style/QuestAddPopupButton"
                 android:layout_weight="1"
-                android:text="제거" />
+                android:text="@string/remove_text" />
 
             <Button
                 android:id="@+id/btnFinish"
                 style="@style/QuestAddPopupButton"
                 android:layout_weight="1"
-                android:text="완료" />
+                android:text="@string/finish_text" />
 
             <Button
                 android:id="@+id/btnAdd"
                 style="@style/QuestAddPopupButton"
                 android:layout_weight="1"
-                android:text="추가" />
+                android:text="@string/add_text" />
         </LinearLayout>
 
     </LinearLayout>
