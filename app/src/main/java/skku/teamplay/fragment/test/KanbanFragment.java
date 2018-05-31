@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import skku.teamplay.R;
 import skku.teamplay.activity.adapter.KanbanQuestlistAdapter;
 import skku.teamplay.activity.dialog.QuestPopupDialog;
@@ -25,12 +27,10 @@ import skku.teamplay.model.Quest;
 public class KanbanFragment extends Fragment {
     private int mPageNumber;
     private  KanbanQuestlistAdapter adapter;
-    ListView QuestList;
-    TextView textKanbanTitle;
+    @BindView(R.id.quest_list) ListView QuestList;
+    @BindView(R.id.textKanbanTitle) TextView textKanbanTitle;
     MainQuest newMainQuest;
-
-    String GroupID = "G_0001";
-
+    
     public static KanbanFragment create(int pageNumber) {
         KanbanFragment fragment = new KanbanFragment();
         Bundle args = new Bundle();
@@ -48,7 +48,7 @@ public class KanbanFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentLayout = inflater.inflate(R.layout.fragment_kanban_test, container, false);
         textKanbanTitle = (TextView)fragmentLayout.findViewById(R.id.textKanbanTitle);
-        QuestList = (ListView) fragmentLayout.findViewById(R.id.quest_list);
+        ButterKnife.bind(this, fragmentLayout);
         adapter =  new KanbanQuestlistAdapter();
         mPageNumber = getArguments().getInt("page");
         QuestList.setAdapter(adapter);
