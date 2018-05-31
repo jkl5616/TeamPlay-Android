@@ -19,7 +19,6 @@ import skku.teamplay.models.MainQuest;
 import skku.teamplay.model.Quest;
 
 
-
 /**
  * Created by ddjdd on 2018-05-11.
  */
@@ -48,70 +47,60 @@ public class KanbanFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentLayout = inflater.inflate(R.layout.fragment_kanban_test, container, false);
         ButterKnife.bind(this, fragmentLayout);
-        adapter =  new KanbanQuestlistAdapter();
         mPageNumber = getArguments().getInt("page");
+
+        adapter =  new KanbanQuestlistAdapter();
         QuestList.setAdapter(adapter);
 
         QuestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-//                Quest newQuest = (Quest)adapter.getItem(position);
-//                Intent intent = new Intent(getActivity(), QuestPopupDialog.class);
-//                intent.putExtra("isNew", false);
-//                intent.putExtra("pos", position);
-//                intent.putExtra("page", mPageNumber);
-//
-////                newQuest.putExtraIntent(intent);
-//
-//                getActivity().startActivityForResult(intent, 1);
+                Intent intent = new Intent(getActivity(), QuestPopupDialog.class);
+                Quest intentQuest = (Quest)adapter.getItem(position);
+
+                intent.putExtra("pos", position);
+                intent.putExtra("page", mPageNumber);
+                intent.putExtra("quest", intentQuest);
+
+                getActivity().startActivityForResult(intent, 1);
             }
             public void onClick(View v) { }
         });
         return fragmentLayout;
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        int pos;
-//
-//        if (requestCode == 1) {
-//            switch (resultCode) {
-//                case 10:        // 제거
-//                    pos = data.getIntExtra("pos", -1);
-//                    if (pos != -1) {
-//                        String id = data.getStringExtra("id");
-//                        adapter.deleteItem(pos);
-//                        newMainQuest.setCount(Integer.toString(Integer.valueOf(newMainQuest.getCount()) - 1));
-//                    }
-//                    break;
-//                case 100:       // 완료
-//                    pos = data.getIntExtra("pos", -1);
-//                    if (pos != -1) {
-//                        String id = data.getStringExtra("id");
-//                        Quest finishedQuest = (Quest) adapter.getItem(pos);
-//                        adapter.makeFinish(pos, finishedQuest);
-//                    }
-//                    break;
-//
-//                case 1000:      // 추가
-//                    final Quest newQuest = new Quest();
-//                    newQuest.getExtraString(data);
-//                    newQuest.setID(newMainQuest.getNextID());
-//                    newMainQuest.setCount(Integer.toString(Integer.valueOf(newMainQuest.getCount()) + 1));
-//                    newMainQuest.setNextID(Integer.toString(Integer.valueOf(newMainQuest.getNextID()) + 1));
-//
-//                    break;
-//
-//                case 2000:      // 변경
-//                    pos = data.getIntExtra("pos", -1);
-//                    if (pos != -1) {
-//                        Quest modifiedQuest = new Quest();
-//                        modifiedQuest.getExtraString(data);
-//                        adapter.modifyItem(pos, modifiedQuest);
-//                    }
-//                    break;
-//            }
-//        }
-//    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        int pos;
+
+        Quest retQuest;
+        if (requestCode == 1) {
+            pos = data.getIntExtra("pos", -1);
+            retQuest = (Quest)data.getSerializableExtra("quest");
+
+            switch (resultCode) {
+                case 10:        // 제거
+                    if (pos != -1) {
+                        adapter.deleteItem(pos);
+                    }
+                    break;
+                case 100:       // 완료
+                    if (pos != -1) {
+                        adapter.modifyItem(pos, retQuest);
+                    }
+                    break;
+
+                case 1000:      // 추가
+                    adapter.addItem(retQuest);
+                    break;
+
+                case 2000:      // 변경
+                    if (pos != -1) {;
+                        adapter.modifyItem(pos, retQuest);
+                    }
+                    break;
+            }
+        }
+    }
 }
