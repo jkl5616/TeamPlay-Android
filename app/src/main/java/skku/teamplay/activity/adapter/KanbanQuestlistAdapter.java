@@ -58,17 +58,17 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
         textTitle.setText(quest.getTitle());
         textRewardType.setText(quest.getRewardType());
         textReward.setText(quest.getReward());
-        textDueAt.setText(quest.getDueAt());
+//        textDueAt.setText(quest.getDueAt());
 
         if(quest.getFinish()) {
             convertView.setBackgroundColor(context.getColor(R.color.questFinished));
         }
         else {
-            String mine = quest.getOwner();
-            if(Objects.equals(mine, " ")) {
+            int mine = quest.getOwnerId();
+            if(mine == 0) {
                 convertView.setBackgroundColor(context.getColor(R.color.questNew));
             }
-            else if(Objects.equals(mine, "1111")) { // my id
+            else if(mine == 1) { // my id
                 convertView.setBackgroundColor(context.getColor(R.color.questMine));
             }
             else {
