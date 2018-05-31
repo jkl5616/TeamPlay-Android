@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +25,9 @@ import skku.teamplay.api.RestApiResult;
 import skku.teamplay.api.RestApiTask;
 import skku.teamplay.api.impl.Login;
 import skku.teamplay.api.impl.Register;
+import skku.teamplay.api.impl.UpdateToken;
 import skku.teamplay.api.impl.res.LoginResult;
+import skku.teamplay.util.SharedPreferencesUtil;
 
 /**
  * Created by woorim on 2018-05-04.
@@ -45,6 +48,15 @@ public class LoginActivity extends AppCompatActivity implements OnRestApiListene
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
+        //update push when login (test)
+        UpdateToken updateToken = new UpdateToken();
+        if(SharedPreferencesUtil.getString("user_email").length() > 5) {
+            updateToken.setEmail(SharedPreferencesUtil.getString("user_email"));
+            updateToken.setPw(SharedPreferencesUtil.getString("user_pw"));
+            updateToken.setToken(FirebaseInstanceId.getInstance().getToken());
+            new RestApiTask(this).execute(updateToken);
+        }
+
         mAuth = FirebaseAuth.getInstance();
         mAuthListener =  new FirebaseAuth.AuthStateListener() {
             @Override
@@ -59,7 +71,6 @@ public class LoginActivity extends AppCompatActivity implements OnRestApiListene
                 }
             }
         };
-
     }
 
     @Override
@@ -146,7 +157,13 @@ public class LoginActivity extends AppCompatActivity implements OnRestApiListene
         switch(restApiResult.getApiName()) {
             case "login":
                 LoginResult loginResult = (LoginResult) restApiResult;
-                Toast.makeText(this, loginResult.user.getName()+"", 0).show();
+                if(loginResult.getResult()) {
+                    Toast.makeText(this, loginResult.user.getName() + "", 0).show();
+                    SharedPreferencesUtil.putString("user_email", loginResult.user.getEmail());
+                    SharedPreferencesUtil.putString("user_pw", loginResult.user.getPw());
+                } else {
+                    Toast.makeText(this, "login failed", 0).show();
+                }
                 break;
             case "register":
                 Toast.makeText(this, restApiResult.getResult()+"", 0).show();
