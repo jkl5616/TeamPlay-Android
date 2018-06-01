@@ -1,5 +1,7 @@
 package skku.teamplay.model;
 
+import java.util.Date;
+
 /**
  * Created by woorim on 2018. 5. 31..
  */
@@ -10,6 +12,7 @@ public class User {
     private String name;
     private String firebase_token;
     private String timetable;
+    private Date lastlogin_date;
 
     public String getEmail() {
         return email;
@@ -49,5 +52,13 @@ public class User {
 
     public void setTimetable(String timetable) {
         this.timetable = timetable;
+    }
+
+    public Date getLastlogin_date() {
+        return lastlogin_date;
+    }
+
+    public void setLastlogin_date(Date lastlogin_date) {
+        this.lastlogin_date = lastlogin_date;
     }
 }

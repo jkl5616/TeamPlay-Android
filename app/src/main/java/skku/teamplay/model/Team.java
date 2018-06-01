@@ -1,6 +1,6 @@
 package skku.teamplay.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * Created by woorim on 2018. 5. 31..
