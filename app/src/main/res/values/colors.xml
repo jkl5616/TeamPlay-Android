@@ -8,10 +8,10 @@
     <color name="brightGray">#808080</color>
     <color name="btn_teal">#40CCB8</color>
 
-    <color name="questMine">#801DE8B6</color>
-    <color name="questOther">#80FF8080</color>
-    <color name="questFinished">#80999999</color>
-    <color name="questNew">#80FFCC99</color>
+    <color name="questMine">#301DE8B6</color>
+    <color name="questOther">#30FF8080</color>
+    <color name="questFinished">#30999999</color>
+    <color name="questNew">#30FFCC99</color>
 
     <color name="palateMint">#1DE9B6</color>
     <color name="palateRed">#FF8080</color>

@@ -1,13 +1,16 @@
 package skku.teamplay.model;
 
-import android.content.Intent;
-
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Quest implements Serializable {
+import skku.teamplay.api.GenericResult;
+import skku.teamplay.api.RestApi;
+import skku.teamplay.api.RestApiResult;
+
+
+public class Quest extends RestApi implements Serializable {
     private int questId;
     private int mainQuestId;
     private String title;
@@ -43,6 +46,11 @@ public class Quest implements Serializable {
         this.ownerId = ownerId;
         this.rewardType = rewardType;       // 0 전투력, 1 지갑, 2 서포트
         this.reward = reward;
+    }
+
+    @Override
+    public Class<? extends RestApiResult> getResultClass() {
+        return GenericResult.class;
     }
 
     public int getQuestId() { return questId; }

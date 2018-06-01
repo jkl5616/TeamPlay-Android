@@ -5,6 +5,7 @@ package skku.teamplay.activity.adapter;
  */
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +15,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
-import butterknife.BindColor;
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import skku.teamplay.R;
 import skku.teamplay.model.Quest;
+
+
 
 public class KanbanQuestlistAdapter extends BaseAdapter {
     private ArrayList<Quest> QuestList = new ArrayList<>();
@@ -29,13 +31,17 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
     @BindView(R.id.rewardTypeIc) ImageView rewardTypeIc;
     @BindView(R.id.rewardIc) ImageView rewardIc;
     @BindView(R.id.dueAtIc) ImageView dueAtIc;
-
     @BindView(R.id.textTitle) TextView textTitle;
     @BindView(R.id.textRewardType) TextView textRewardType;
     @BindView(R.id.textReward) TextView textReward;
     @BindView(R.id.textStartAt) TextView textStartAt;
     @BindView(R.id.textDueAt) TextView textDueAt;
     @BindView(R.id.const_layout) ConstraintLayout constLayout;
+
+    @BindDrawable(R.drawable.quest_list_item_mine) Drawable quest_mine;
+    @BindDrawable(R.drawable.quest_list_item_other) Drawable quest_other;
+    @BindDrawable(R.drawable.quest_list_item_finished) Drawable quest_finished;
+    @BindDrawable(R.drawable.quest_list_item_new) Drawable quest_new;
 
     public KanbanQuestlistAdapter() { }
 
@@ -62,18 +68,18 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
         textDueAt.setText(quest.getDueAtSimple());
 
         if(quest.getFinish()) {
-            constLayout.setBackgroundColor(context.getColor(R.color.questFinished));
+            constLayout.setBackground(quest_finished);
         }
         else {
             int mine = quest.getOwnerId();
-            if(mine == 0) {
-                rootView.setBackgroundColor(context.getColor(R.color.questNew));
+            if(mine == -1) {
+                constLayout.setBackground(quest_new);
             }
             else if(mine == 1111) { // my id
-                rootView.setBackgroundColor(context.getColor(R.color.questMine));
+                constLayout.setBackground(quest_mine);
             }
             else {
-                constLayout.setBackground(context.getDrawable(R.drawable.edittext_round_border));
+                constLayout.setBackground(quest_other);
             }
         }
         notifyDataSetChanged();
