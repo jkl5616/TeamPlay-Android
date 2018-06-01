@@ -28,16 +28,21 @@ import skku.teamplay.api.impl.Register;
 import skku.teamplay.api.impl.UpdateToken;
 import skku.teamplay.api.impl.res.LoginResult;
 import skku.teamplay.util.SharedPreferencesUtil;
+import skku.teamplay.util.Util;
 
 /**
  * Created by woorim on 2018-05-04.
  */
 
 public class LoginActivity extends AppCompatActivity implements OnRestApiListener {
-    @BindView(R.id.editEmail) EditText editEmail;
-    @BindView(R.id.editPassword) EditText editPassword;
-    @BindView(R.id.btnLogin) Button btnLogin;
-    @BindView(R.id.btnSignup) Button btnSignup;
+    @BindView(R.id.editEmail)
+    EditText editEmail;
+    @BindView(R.id.editPassword)
+    EditText editPassword;
+    @BindView(R.id.btnLogin)
+    Button btnLogin;
+    @BindView(R.id.btnSignup)
+    Button btnSignup;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -49,24 +54,16 @@ public class LoginActivity extends AppCompatActivity implements OnRestApiListene
         ButterKnife.bind(this);
 
         //update push when login (test)
-        UpdateToken updateToken = new UpdateToken();
-        if(SharedPreferencesUtil.getString("user_email").length() > 5) {
-            updateToken.setEmail(SharedPreferencesUtil.getString("user_email"));
-            updateToken.setPw(SharedPreferencesUtil.getString("user_pw"));
-            updateToken.setToken(FirebaseInstanceId.getInstance().getToken());
-            new RestApiTask(this).execute(updateToken);
-        }
-
+        Util.updateToken();
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener =  new FirebaseAuth.AuthStateListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 if (user != null) {
                     Toast.makeText(getApplicationContext(), "user is not null", Toast.LENGTH_LONG).show();
-                }
-                else {
+                } else {
                     Toast.makeText(getApplicationContext(), "user is null", Toast.LENGTH_LONG).show();
                 }
             }
@@ -82,7 +79,7 @@ public class LoginActivity extends AppCompatActivity implements OnRestApiListene
     @Override
     public void onStop() {
         super.onStop();
-        if(mAuthListener != null){
+        if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
@@ -92,11 +89,10 @@ public class LoginActivity extends AppCompatActivity implements OnRestApiListene
         String email, password;
         email = editEmail.getText().toString();
         password = editPassword.getText().toString();
-        if(email.length() < 5 || password.length() < 6) {
+        if (email.length() < 5 || password.length() < 6) {
             Toast.makeText(this, "Fill all", Toast.LENGTH_LONG).show();
             // 메소드화 필요
-        }
-        else {
+        } else {
             Login login = new Login(editEmail.getText().toString(), editPassword.getText().toString());
             new RestApiTask(this).execute(login);
             /*
@@ -123,11 +119,10 @@ public class LoginActivity extends AppCompatActivity implements OnRestApiListene
         String email, password;
         email = editEmail.getText().toString();
         password = editPassword.getText().toString();
-        if(email.length() < 5 || password.length() < 6) {
+        if (email.length() < 5 || password.length() < 6) {
             Toast.makeText(this, "Fill all", Toast.LENGTH_LONG).show();
             // 메소드화 필요
-        }
-        else {
+        } else {
             Register register = new Register();
             register.setEmail(editEmail.getText().toString());
             register.setPw(editPassword.getText().toString());
@@ -154,19 +149,21 @@ public class LoginActivity extends AppCompatActivity implements OnRestApiListene
 
     @Override
     public void onRestApiDone(RestApiResult restApiResult) {
-        switch(restApiResult.getApiName()) {
+        switch (restApiResult.getApiName()) {
             case "login":
                 LoginResult loginResult = (LoginResult) restApiResult;
-                if(loginResult.getResult()) {
+                if (loginResult.getResult()) {
                     Toast.makeText(this, loginResult.user.getName() + "", 0).show();
                     SharedPreferencesUtil.putString("user_email", loginResult.user.getEmail());
                     SharedPreferencesUtil.putString("user_pw", loginResult.user.getPw());
+                    if (loginResult.user.getLastlogin_date() != null)
+                        Toast.makeText(this, loginResult.user.getLastlogin_date().toString(), 0).show();
                 } else {
                     Toast.makeText(this, "login failed", 0).show();
                 }
                 break;
             case "register":
-                Toast.makeText(this, restApiResult.getResult()+"", 0).show();
+                Toast.makeText(this, restApiResult.getResult() + "", 0).show();
                 break;
         }
     }

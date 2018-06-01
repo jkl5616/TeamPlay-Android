@@ -10,6 +10,7 @@ import skku.teamplay.api.RestApiResult;
 import skku.teamplay.api.RestApiTask;
 import skku.teamplay.api.impl.UpdateToken;
 import skku.teamplay.util.SharedPreferencesUtil;
+import skku.teamplay.util.Util;
 
 
 public class FmsInstanceService extends FirebaseInstanceIdService implements OnRestApiListener {
@@ -22,13 +23,7 @@ public class FmsInstanceService extends FirebaseInstanceIdService implements OnR
     }
 
     private void sendRegistrationToServer(String token) {
-        UpdateToken updateToken = new UpdateToken();
-        if(SharedPreferencesUtil.getString("user_email").length() > 5) {
-            updateToken.setEmail(SharedPreferencesUtil.getString("user_email"));
-            updateToken.setPw(SharedPreferencesUtil.getString("user_pw"));
-            updateToken.setToken(token);
-            new RestApiTask(this).execute(updateToken);
-        }
+        Util.updateToken();
     }
 
     @Override
