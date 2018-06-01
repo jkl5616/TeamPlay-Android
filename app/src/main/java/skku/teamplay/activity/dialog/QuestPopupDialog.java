@@ -57,8 +57,7 @@ public class QuestPopupDialog extends Activity {
     RewardSpinnerAdapter spinnerAdapter;
 
 
-    int pos = -1, page = -1, startAtYear = 2016, startAtMonth = 10, startAtDay = 3, dueAtYear, dueAtMonth, dueAtDay;
-    Date startAt, dueAt;
+    int pos = -1, page = -1;
 
     Quest quest;
 
@@ -84,25 +83,29 @@ public class QuestPopupDialog extends Activity {
 
         editTitle.setText(quest.getTitle());
         editDescription.setText(quest.getDescription());
-
-        // startAt, dueAt 미구현
-        int time = startAtYear*10000 + startAtMonth*100 + startAtDay;
-        editStartAt.setText(String.valueOf(time));
-        editDueAt.setText(String.valueOf(time));
-
+        editStartAt.setText(quest.getStartAtSimple());
+        editDueAt.setText(quest.getDueAtSimple());
         spinnerRewardType.setSelection(quest.getRewardType());
         editReward.setText(String.valueOf(quest.getReward()));
     }
 
     @OnClick (R.id.editStartAt)
     void onEditStartAtClick(){
-        DatePickerDialog dialog = new DatePickerDialog(QuestPopupDialog.this, dateSetListener, startAtYear, startAtMonth, startAtDay);
+        int year, month, day;
+        year = quest.getStartAtYear();
+        month = quest.getStartAtMonth();
+        day = quest.getStartAtDay();
+        DatePickerDialog dialog = new DatePickerDialog(QuestPopupDialog.this, dateSetListener1, year, month-1, day);
         dialog.show();
     }
 
     @OnClick (R.id.editDueAt)
     void onEditDueAtClick(){
-        DatePickerDialog dialog = new DatePickerDialog(QuestPopupDialog.this, dateSetListener, dueAtYear, dueAtMonth, dueAtDay);
+        int year, month, day;
+        year = quest.getDueAtYear();
+        month = quest.getDueAtMonth();
+        day = quest.getDueAtDay();
+        DatePickerDialog dialog = new DatePickerDialog(QuestPopupDialog.this, dateSetListener2, year, month-1, day);
         dialog.show();
     }
 
@@ -125,28 +128,58 @@ public class QuestPopupDialog extends Activity {
     void onBtnAddClick() {
         quest.setTitle(editTitle.getText().toString());
         quest.setDescription(editDescription.getText().toString());
-        // startAt, dueAt 미구현
-        quest.setRewardType(spinnerRewardType.getSelectedItemPosition());
-        quest.setReward(Integer.parseInt(editReward.getText().toString()));
 
-        if(pos == -1) {
-            fillRetIntent();
-            setResult(1000, retIntent);
-            finish();
+        quest.setStartAtSimple(editStartAt.getText().toString());
+        quest.setDueAtSimple(editDueAt.getText().toString());
+
+        quest.setRewardType(spinnerRewardType.getSelectedItemPosition());
+        int reward = Integer.parseInt(editReward.getText().toString());
+
+        if(reward <= 0){
+            Toast.makeText(getApplicationContext(), "보상은 0보다 커야 합니다.", Toast.LENGTH_LONG).show();
         }
         else {
-            fillRetIntent();
-            setResult(2000, retIntent);
-            finish();
+            quest.setReward(reward);
+
+            if(pos == -1) {
+                fillRetIntent();
+                setResult(1000, retIntent);
+                finish();
+            }
+            else {
+                fillRetIntent();
+                setResult(2000, retIntent);
+                finish();
+            }
         }
+
     }
 
-    private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+    private DatePickerDialog.OnDateSetListener dateSetListener1 = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int day) {
-//            String msg = String.format("%d / %d / %d", year, month+1, day);
+            String tmp = (Integer.toString(year%100)+'.'+String.format("%02d", month+1)+'.'+String.format("%02d",day));
 
-//            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+            if(tmp.compareTo(editDueAt.getText().toString()) >= 0){
+                Toast.makeText(getApplicationContext(), "종료일보다 앞의 시간을 입력해 주세요", Toast.LENGTH_LONG).show();
+            }
+            else {
+                editStartAt.setText(tmp);
+            }
+        }
+    };
+
+    private DatePickerDialog.OnDateSetListener dateSetListener2 = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            String tmp = (Integer.toString(year%100)+'.'+String.format("%02d", month+1)+'.'+String.format("%02d",day));
+
+            if(tmp.compareTo(editStartAt.getText().toString()) <= 0){
+                Toast.makeText(getApplicationContext(), "시작일보다 뒤의 시간을 입력해 주세요", Toast.LENGTH_LONG).show();
+            }
+            else {
+                editDueAt.setText(tmp);
+            }
         }
     };
 

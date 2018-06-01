@@ -3,6 +3,8 @@ package skku.teamplay.model;
 import android.content.Intent;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Quest implements Serializable {
@@ -61,6 +63,44 @@ public class Quest implements Serializable {
         else if(this.rewardType == 2) return "서포트";
         else return "";
     }
+    public int getStartAtYear() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy");
+        String year = format.format(startAt);
+        return Integer.valueOf(year);
+    }
+    public int getStartAtMonth() {
+        SimpleDateFormat format = new SimpleDateFormat("MM");
+        String month = format.format(startAt);
+        return Integer.valueOf(month);
+    }
+    public int getStartAtDay() {
+        SimpleDateFormat format = new SimpleDateFormat("dd");
+        String day = format.format(startAt);
+        return Integer.valueOf(day);
+    }
+    public int getDueAtYear() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy");
+        String year = format.format(dueAt);
+        return Integer.valueOf(year);
+    }
+    public int getDueAtMonth() {
+        SimpleDateFormat format = new SimpleDateFormat("MM");
+        String month = format.format(dueAt);
+        return Integer.valueOf(month);
+    }
+    public int getDueAtDay() {
+        SimpleDateFormat format = new SimpleDateFormat("dd");
+        String day = format.format(dueAt);
+        return Integer.valueOf(day);
+    }
+    public String getStartAtSimple(){
+        SimpleDateFormat format = new SimpleDateFormat("yy.MM.dd");
+        return format.format(startAt);
+    }
+    public String getDueAtSimple(){
+        SimpleDateFormat format = new SimpleDateFormat("yy.MM.dd");
+        return format.format(dueAt);
+    }
 
     public void setID(int questId) { this.questId = questId; }
     public void setMainQuestId(int mainQuestId) { this.mainQuestId = mainQuestId; }
@@ -73,6 +113,34 @@ public class Quest implements Serializable {
     public void setOwner(int ownerId) { this.ownerId = ownerId; }
     public void setRewardType(int rewardType) { this.rewardType = rewardType; }
     public void setReward(int reward) { this.reward = reward; }
+
+    public void setStartAtInt(int year, int month, int day) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+        String tmp = (Integer.toString(year*10000 + month*100 + day));
+        startAt = format.parse(tmp);
+    }
+    public void setDueAtIntint(int year, int month, int day) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+        String tmp = (Integer.toString(year * 10000 + month * 100 + day));
+        dueAt = format.parse(tmp);
+    }
+    public void setStartAtSimple(String startAtSimple) {
+        SimpleDateFormat format = new SimpleDateFormat("yy.MM.dd");
+        try {
+            startAt = format.parse(startAtSimple);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+    public void setDueAtSimple(String dueAtSimple) {
+        SimpleDateFormat format = new SimpleDateFormat("yy.MM.dd");
+        try {
+            dueAt = format.parse(dueAtSimple);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void makeFinish(){
         this.finish = !this.finish;

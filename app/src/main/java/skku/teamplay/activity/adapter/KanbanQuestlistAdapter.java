@@ -57,7 +57,9 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
         textTitle.setText(quest.getTitle());
         textRewardType.setText(quest.getRewardType_String());
         textReward.setText(Integer.toString(quest.getReward()));
-//        textDueAt.setText(quest.getDueAt());
+
+        textStartAt.setText(quest.getStartAtSimple());
+        textDueAt.setText(quest.getDueAtSimple());
 
         if(quest.getFinish()) {
             constLayout.setBackgroundColor(context.getColor(R.color.questFinished));
@@ -67,7 +69,7 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
             if(mine == 0) {
                 rootView.setBackgroundColor(context.getColor(R.color.questNew));
             }
-            else if(mine == 1) { // my id
+            else if(mine == 1111) { // my id
                 rootView.setBackgroundColor(context.getColor(R.color.questMine));
             }
             else {
