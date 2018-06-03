@@ -1,4 +1,4 @@
-package skku.teamplay.models;
+package skku.teamplay.model;
 
 import android.graphics.Color;
 

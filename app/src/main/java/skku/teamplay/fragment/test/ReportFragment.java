@@ -23,9 +23,9 @@ import java.util.Random;
 import de.hdodenhof.circleimageview.CircleImageView;
 import skku.teamplay.R;
 import skku.teamplay.adapter.CountDownAdapter;
+import skku.teamplay.model.User;
 import skku.teamplay.widget.CircleCountdownView;
-import skku.teamplay.models.Report;
-import skku.teamplay.models.User;
+import skku.teamplay.model.Report;
 
 public class ReportFragment extends Fragment {
     private final int NUM_CHART_COLOR_THEME = 6;
@@ -147,7 +147,7 @@ public class ReportFragment extends Fragment {
             textView = view.findViewById(R.id.template_contributor_name);
             imageView = view.findViewById(R.id.template_contributor_image);
 
-            textView.setText(user.getUserName());
+            textView.setText(user.getName());
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -155,7 +155,9 @@ public class ReportFragment extends Fragment {
                     Toast.makeText(rootView.getContext(), textName.getText() + " clicked", Toast.LENGTH_LONG).show();
                 }
             });
-            switch(user.getImageNum()){
+
+            //temporarily
+            switch(1){
                 case 1:
                     imageView.setImageResource(R.mipmap.basic_profile_pic);
                     break;

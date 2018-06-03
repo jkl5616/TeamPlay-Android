@@ -15,6 +15,12 @@ public class User {
     private String timetable;
     private Date lastlogin_date;
 
+    //for test only
+    public User(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+
     public String getEmail() {
         return email;
     }
