@@ -6,6 +6,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 
+import skku.teamplay.model.Team;
 import skku.teamplay.model.User;
 
 /**
@@ -21,6 +22,8 @@ public class TeamPlayApp extends Application {
     private User user;
     //같은 팀에 있는 유저 저장
     private ArrayList<User> userList;
+    //현재 팀
+    private Team team;
 
     @Override
     public void onCreate() {
@@ -43,5 +46,13 @@ public class TeamPlayApp extends Application {
 
     public void setUserList(ArrayList<User> userList) {
         this.userList = userList;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }
