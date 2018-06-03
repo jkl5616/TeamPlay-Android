@@ -56,22 +56,7 @@ public class LoginActivity extends AppCompatActivity implements OnRestApiListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
-        //update push when login (test)
         Util.updateToken();
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                if (user != null) {
-                    Toast.makeText(getApplicationContext(), "user is not null", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "user is null", Toast.LENGTH_LONG).show();
-                }
-            }
-        };
     }
 
     @Override
@@ -89,7 +74,7 @@ public class LoginActivity extends AppCompatActivity implements OnRestApiListene
     }
 
     @OnClick(R.id.btnLogin)
-    void onClickLogin() {
+    public void onClickLogin() {
         String email, password;
         email = editEmail.getText().toString();
         password = editPassword.getText().toString();
@@ -99,23 +84,7 @@ public class LoginActivity extends AppCompatActivity implements OnRestApiListene
         } else {
             Login login = new Login(editEmail.getText().toString(), editPassword.getText().toString());
             new RestApiTask(this).execute(login);
-            /*
-            mAuth.signInWithEmailAndPassword(editEmail.getText().toString(), editPassword.getText().toString())
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(!task.isSuccessful()) {
-                                Toast.makeText(getApplicationContext(), "LogIn Fail", Toast.LENGTH_LONG).show();
-                                // 로그인 실패 이유 알림
-                            }
-                            else {
-                                Toast.makeText(getApplicationContext(), "LogIn Success", Toast.LENGTH_LONG).show();
-                                // 다음 액티비티로 넘어가기
-                            }
-                        }
-                    });*/
         }
-
     }
 
     @OnClick(R.id.btnSignup)
