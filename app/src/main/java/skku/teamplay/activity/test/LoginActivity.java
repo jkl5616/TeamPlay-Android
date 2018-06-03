@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -115,36 +118,32 @@ public class LoginActivity extends AppCompatActivity implements OnRestApiListene
     }
 
     @OnClick(R.id.btnSignup)
-    void onBtnSignup() {
-        String email, password;
-        email = editEmail.getText().toString();
-        password = editPassword.getText().toString();
-        if (email.length() < 5 || password.length() < 6) {
-            Toast.makeText(this, "Fill all", Toast.LENGTH_LONG).show();
-            // 메소드화 필요
-        } else {
-            Register register = new Register();
-            register.setEmail(editEmail.getText().toString());
-            register.setPw(editPassword.getText().toString());
-            register.setName("TEST");
-            new RestApiTask(this).execute(register);
-            /*
-            mAuth.createUserWithEmailAndPassword(editEmail.getText().toString(), editPassword.getText().toString())
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+    public void onBtnSignup() {
+        MaterialDialog dialog =
+                new MaterialDialog.Builder(this)
+                        .title("가입")
+                        .customView(R.layout.dialog_register, true)
+                        .positiveText("가입하기")
+                        .negativeText(android.R.string.cancel)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                doRegister(dialog.getCustomView());
+                            }
+                        })
+                        .build();
+        dialog.show();
+    }
 
-                            if(task.isSuccessful()) {
-                                Toast.makeText(getApplicationContext(), "회원가입 시작", Toast.LENGTH_LONG).show();
-                                // 회원가입 다이얼로그 시작
-                            }
-                            else {
-                                Toast.makeText(getApplicationContext(), "회원가입 실패", Toast.LENGTH_LONG).show();
-                                // 회원가입 실패 이유 알림
-                            }
-                        }
-                    });(*/
-        }
+    private void doRegister(View registerView) {
+        String id = ((EditText) registerView.findViewById(R.id.edittext_register_id)).getText().toString();
+        String pw = ((EditText) registerView.findViewById(R.id.edittext_register_password)).getText().toString();
+        String name = ((EditText) registerView.findViewById(R.id.edittext_register_name)).getText().toString();
+        Register register = new Register();
+        register.setEmail(id);
+        register.setPw(pw);
+        register.setName(name);
+        new RestApiTask(this).execute(register);
     }
 
     @Override
@@ -163,7 +162,7 @@ public class LoginActivity extends AppCompatActivity implements OnRestApiListene
                 }
                 break;
             case "register":
-                Toast.makeText(this, restApiResult.getResult() + "", 0).show();
+                new MaterialDialog.Builder(this).content("가입이 완료되었습니다.").show();
                 break;
         }
     }
