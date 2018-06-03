@@ -59,20 +59,6 @@ public class LoginActivity extends AppCompatActivity implements OnRestApiListene
         Util.updateToken();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-    }
-
     @OnClick(R.id.btnLogin)
     public void onClickLogin() {
         String email, password;
