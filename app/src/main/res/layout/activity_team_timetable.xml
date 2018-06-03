@@ -180,9 +180,10 @@
         </LinearLayout>
 
         <!-- 전체 시간표 -->
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/layout_timetable"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></LinearLayout>
+            android:layout_height="match_parent"></RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>

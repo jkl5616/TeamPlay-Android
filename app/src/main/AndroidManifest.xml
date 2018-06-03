@@ -82,6 +82,9 @@
             android:name=".activity.test.DummyActivity"
             android:theme="@android:style/Theme.NoDisplay"></activity>
 
+        <activity android:name=".activity.test.TimetableViewActivity"
+            android:theme="@style/AppTheme"></activity>
+
         <receiver
             android:name=".receiver.BootCompletedReceiver"
             android:enabled="true"
