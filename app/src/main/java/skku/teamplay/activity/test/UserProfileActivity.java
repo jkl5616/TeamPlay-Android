@@ -28,7 +28,7 @@ import skku.teamplay.model.Team;
 import skku.teamplay.model.User;
 import skku.teamplay.util.RecyclerItemClickListener;
 
-public class UserProfileActivity extends AppCompatActivity implements OnRestApiListener{
+public class UserProfileActivity extends AppCompatActivity implements OnRestApiListener {
     @BindView(R.id.team_list_recyclerview)
     RecyclerView mRecyclerView;
 
@@ -56,7 +56,7 @@ public class UserProfileActivity extends AppCompatActivity implements OnRestApiL
 
     @Override
     public void onRestApiDone(RestApiResult restApiResult) {
-        switch(restApiResult.getApiName()) {
+        switch (restApiResult.getApiName()) {
             case "getteambyuser":
                 //해당 유저의 팀 가져옴
                 TeamListResult result = (TeamListResult) restApiResult;
@@ -66,8 +66,9 @@ public class UserProfileActivity extends AppCompatActivity implements OnRestApiL
                 mRecyclerView.setItemAnimator(new DefaultItemAnimator());
                 mRecyclerView.setAdapter(teamListAdapter);
                 mRecyclerView.addOnItemTouchListener(
-                        new RecyclerItemClickListener(UserProfileActivity.this, mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override public void onItemClick(View view, int position) {
+                        new RecyclerItemClickListener(UserProfileActivity.this, mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
                                 Toast.makeText(UserProfileActivity.this, "clicked", 0).show();
                                 //해당 팀
                                 Team team = teamList.get(position);
@@ -75,7 +76,8 @@ public class UserProfileActivity extends AppCompatActivity implements OnRestApiL
                                 new RestApiTask(UserProfileActivity.this).execute(new GetAllUsersByTeam(team.getId()));
                             }
 
-                            @Override public void onLongItemClick(View view, int position) {
+                            @Override
+                            public void onLongItemClick(View view, int position) {
                                 // do whatever
                             }
                         })
