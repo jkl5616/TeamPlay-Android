@@ -4,29 +4,29 @@
         android:id="@+id/tab1"
         app:showAsAction="ifRoom"
         android:enabled="true"
-        android:icon="@android:drawable/ic_dialog_info"
+        android:icon="@drawable/ic_home_black_24dp"
         android:title="메인" />
     <item
         android:id="@+id/tab2"
         app:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_dialog_info"
+        android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="Test2" />
     <item
         android:id="@+id/tab3"
         app:showAsAction="ifRoom"
         android:enabled="true"
-        android:icon="@android:drawable/ic_dialog_info"
+        android:icon="@drawable/ic_event_black_24dp"
         android:title="Test3" />
     <item
         android:id="@+id/tab4"
         app:showAsAction="ifRoom"
         android:enabled="true"
-        android:icon="@android:drawable/ic_dialog_info"
+        android:icon="@drawable/ic_description_black_24dp"
         android:title="Test4" />
     <item
         android:id="@+id/tab5"
         app:showAsAction="ifRoom"
         android:enabled="true"
-        android:icon="@android:drawable/ic_dialog_info"
+        android:icon="@drawable/ic_supervised_black_24dp"
         android:title="Test5" />
 </menu>
