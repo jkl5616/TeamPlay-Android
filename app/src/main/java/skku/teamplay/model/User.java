@@ -7,6 +7,7 @@ import java.util.Date;
  */
 
 public class User {
+    private int id;
     private String email;
     private String pw;
     private String name;
@@ -60,5 +61,13 @@ public class User {
 
     public void setLastlogin_date(Date lastlogin_date) {
         this.lastlogin_date = lastlogin_date;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
