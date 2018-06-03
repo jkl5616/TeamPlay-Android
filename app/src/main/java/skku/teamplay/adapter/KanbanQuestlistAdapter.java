@@ -1,4 +1,4 @@
-package skku.teamplay.activity.adapter;
+package skku.teamplay.adapter;
 
 /**
  * Created by ddjdd on 2018-04-18.

@@ -1,10 +1,10 @@
-package skku.teamplay.activity.adapter;
+package skku.teamplay.adapter;
 
 import android.os.CountDownTimer;
 import android.view.View;
 
-import skku.teamplay.activity.widget.AnimationUtil;
-import skku.teamplay.activity.widget.CircleCountdownView;
+import skku.teamplay.widget.AnimationUtil;
+import skku.teamplay.widget.CircleCountdownView;
 
 public class CountDownAdapter {
     CircleCountdownView[] mProgressView;//day, hour, min, secs

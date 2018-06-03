@@ -1,4 +1,4 @@
-package skku.teamplay.activity.adapter;
+package skku.teamplay.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,10 +7,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import skku.teamplay.R;
-import skku.teamplay.models.Team;
 
 public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.TeamListHolder>{
     ArrayList teamList;

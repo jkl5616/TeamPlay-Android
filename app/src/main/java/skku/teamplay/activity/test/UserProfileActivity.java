@@ -1,23 +1,15 @@
 package skku.teamplay.activity.test;
 
-import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import skku.teamplay.R;
-import skku.teamplay.activity.adapter.TeamListAdapter;
+import skku.teamplay.adapter.TeamListAdapter;
 import skku.teamplay.models.Team;
 
 public class UserProfileActivity extends AppCompatActivity{

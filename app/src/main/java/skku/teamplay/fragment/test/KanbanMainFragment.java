@@ -16,7 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import skku.teamplay.R;
-import skku.teamplay.activity.adapter.KanbanQuestlistAdapter;
+import skku.teamplay.adapter.KanbanQuestlistAdapter;
 import skku.teamplay.activity.test.KanbanViewpagerActivity;
 
 /**

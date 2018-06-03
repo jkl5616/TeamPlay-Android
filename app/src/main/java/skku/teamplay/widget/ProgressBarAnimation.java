@@ -1,4 +1,4 @@
-package skku.teamplay.activity.widget;
+package skku.teamplay.widget;
 
 
 import android.view.animation.Animation;

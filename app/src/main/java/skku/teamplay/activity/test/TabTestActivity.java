@@ -1,24 +1,21 @@
 package skku.teamplay.activity.test;
 
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import skku.teamplay.R;
-import skku.teamplay.activity.adapter.ScreenSlidePagerAdapter;
+import skku.teamplay.adapter.ScreenSlidePagerAdapter;
 import skku.teamplay.fragment.test.KanbanMainFragment;
 import skku.teamplay.fragment.test.MainFragment;
 import skku.teamplay.fragment.test.ReportFragment;
 import skku.teamplay.fragment.test.ResultFragment;
-import skku.teamplay.fragment.test.TestFragment;
 
 /**
  * Created by woorim on 2018. 4. 17..

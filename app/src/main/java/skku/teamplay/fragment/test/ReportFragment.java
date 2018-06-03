@@ -1,9 +1,7 @@
 package skku.teamplay.fragment.test;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +22,8 @@ import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import skku.teamplay.R;
-import skku.teamplay.activity.adapter.CountDownAdapter;
-import skku.teamplay.activity.widget.CircleCountdownView;
+import skku.teamplay.adapter.CountDownAdapter;
+import skku.teamplay.widget.CircleCountdownView;
 import skku.teamplay.models.Report;
 import skku.teamplay.models.User;
 

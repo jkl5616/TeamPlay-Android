@@ -1,4 +1,4 @@
-package skku.teamplay.activity.adapter;
+package skku.teamplay.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

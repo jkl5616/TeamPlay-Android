@@ -9,14 +9,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import skku.teamplay.R;
-import skku.teamplay.activity.adapter.KanbanQuestlistAdapter;
+import skku.teamplay.adapter.KanbanQuestlistAdapter;
 import skku.teamplay.activity.dialog.QuestPopupDialog;
-import skku.teamplay.model.MainQuest;
 import skku.teamplay.model.Quest;
 
 

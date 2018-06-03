@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Random;
 
 import skku.teamplay.R;
-import skku.teamplay.activity.adapter.TimelineAdapter;
+import skku.teamplay.adapter.TimelineAdapter;
 import skku.teamplay.model.Quest;
 
 public class ResultFragment extends Fragment {

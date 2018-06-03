@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.widget.Toast;
 
 import java.util.Date;
 
@@ -13,7 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import skku.teamplay.R;
-import skku.teamplay.activity.adapter.KanbanFragmentAdapter;
+import skku.teamplay.adapter.KanbanFragmentAdapter;
 import skku.teamplay.activity.dialog.QuestPopupDialog;
 import skku.teamplay.model.Quest;
 
