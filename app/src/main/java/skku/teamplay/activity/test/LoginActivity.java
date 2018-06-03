@@ -30,6 +30,7 @@ import skku.teamplay.api.impl.Login;
 import skku.teamplay.api.impl.Register;
 import skku.teamplay.api.impl.UpdateToken;
 import skku.teamplay.api.impl.res.LoginResult;
+import skku.teamplay.app.TeamPlayApp;
 import skku.teamplay.util.SharedPreferencesUtil;
 import skku.teamplay.util.Util;
 
@@ -152,13 +153,14 @@ public class LoginActivity extends AppCompatActivity implements OnRestApiListene
             case "login":
                 LoginResult loginResult = (LoginResult) restApiResult;
                 if (loginResult.getResult()) {
-                    Toast.makeText(this, loginResult.user.getName() + "", 0).show();
+                    //로그인 성공
                     SharedPreferencesUtil.putString("user_email", loginResult.user.getEmail());
                     SharedPreferencesUtil.putString("user_pw", loginResult.user.getPw());
-                    if (loginResult.user.getLastlogin_date() != null)
-                        Toast.makeText(this, loginResult.user.getLastlogin_date().toString(), 0).show();
+                    TeamPlayApp.getAppInstance().setUser(loginResult.user);
+                    //팀 선택 액티비티로 넘어감
+
                 } else {
-                    Toast.makeText(this, "login failed", 0).show();
+                    new MaterialDialog.Builder(this).content("로그인에 실패했습니다.").show();
                 }
                 break;
             case "register":
