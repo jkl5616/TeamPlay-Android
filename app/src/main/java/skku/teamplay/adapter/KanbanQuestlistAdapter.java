@@ -20,12 +20,11 @@ import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import skku.teamplay.R;
-import skku.teamplay.model.Quest;
-
+import skku.teamplay.model.KanbanPost;
 
 
 public class KanbanQuestlistAdapter extends BaseAdapter {
-    private ArrayList<Quest> QuestList = new ArrayList<>();
+    private ArrayList<KanbanPost> kanbanPostList = new ArrayList<>();
 
     @BindView(R.id.user_profile) ImageView user_profile;
     @BindView(R.id.rewardTypeIc) ImageView rewardTypeIc;
@@ -46,7 +45,7 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
     public KanbanQuestlistAdapter() { }
 
     @Override
-    public int getCount() { return QuestList.size(); }
+    public int getCount() { return kanbanPostList.size(); }
 
     @Override
     public View getView(int position, View rootView, ViewGroup parent) {
@@ -59,19 +58,19 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
         }
         ButterKnife.bind(this, rootView);
 
-        Quest quest = QuestList.get(pos);
-        textTitle.setText(quest.getTitle());
-        textRewardType.setText(quest.getRewardType_String());
-        textReward.setText(Integer.toString(quest.getReward()));
+        KanbanPost kanbanPost = kanbanPostList.get(pos);
+        textTitle.setText(kanbanPost.getTitle());
+        textRewardType.setText(kanbanPost.getRewardType_String());
+        textReward.setText(Integer.toString(kanbanPost.getReward()));
 
-        textStartAt.setText(quest.getStartAtSimple());
-        textDueAt.setText(quest.getDueAtSimple());
+        textStartAt.setText(kanbanPost.getStartAtSimple());
+        textDueAt.setText(kanbanPost.getDueAtSimple());
 
-        if(quest.getFinish()) {
+        if(kanbanPost.getFinished()) {
             constLayout.setBackground(quest_finished);
         }
         else {
-            int mine = quest.getOwnerId();
+            int mine = kanbanPost.getOwner_id();
             if(mine == -1) {
                 constLayout.setBackground(quest_new);
             }
@@ -93,21 +92,21 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return QuestList.get(position);
+        return kanbanPostList.get(position);
     }
 
-    public void addItem(Quest item) {
-        QuestList.add(item);
+    public void addItem(KanbanPost item) {
+        kanbanPostList.add(item);
         this.notifyDataSetChanged();
     }
 
     public void deleteItem(int position) {
-        QuestList.remove(position);
+        kanbanPostList.remove(position);
         this.notifyDataSetChanged();
     }
 
-    public void modifyItem(int position, Quest modifiedQuest) {
-        QuestList.set(position, modifiedQuest);
+    public void modifyItem(int position, KanbanPost modifiedKanbanPost) {
+        kanbanPostList.set(position, modifiedKanbanPost);
         this.notifyDataSetChanged();
     }
 }

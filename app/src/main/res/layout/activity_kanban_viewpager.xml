@@ -17,8 +17,21 @@
 </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addFAB"
+        android:id="@+id/FabAddPost"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:background="@color/colorPrimaryDark"
+        android:elevation="16dp"
+        android:src="@mipmap/ic_pac_icon"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:fabSize="mini"
+        app:theme="@style/AppTheme" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/FabAddBoard"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"

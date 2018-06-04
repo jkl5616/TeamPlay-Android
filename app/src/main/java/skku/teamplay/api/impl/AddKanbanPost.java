@@ -9,26 +9,33 @@ import skku.teamplay.api.RestApiResult;
 public class AddKanbanPost extends RestApi {
 
     int kanban_board_id;
+    String title;
+    String description;
+    boolean finished;
     Date startDate;
     Date endDate;
-    int type;
-    int score;
-    int description;
     int writer_user_id;
-    int title;
     int owner_id;
     int reward_type;
     int reward;
 
-    public AddKanbanPost(int kanban_board_id, Date startDate, Date endDate, int type, int score, int description, int writer_user_id, int title, int owner_id, int reward_type, int reward) {
+    public AddKanbanPost(int kanban_board_id,
+                         String title,
+                         String description,
+                         boolean finished,
+                         Date startDate,
+                         Date endDate,
+                         int writer_user_id,
+                         int owner_id,
+                         int reward_type,
+                         int reward) {
         this.kanban_board_id = kanban_board_id;
+        this.title = title;
+        this.description = description;
+        this.finished = finished;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.type = type;
-        this.score = score;
-        this.description = description;
         this.writer_user_id = writer_user_id;
-        this.title = title;
         this.owner_id = owner_id;
         this.reward_type = reward_type;
         this.reward = reward;
@@ -58,27 +65,11 @@ public class AddKanbanPost extends RestApi {
         this.endDate = endDate;
     }
 
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public int getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(int description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -90,11 +81,11 @@ public class AddKanbanPost extends RestApi {
         this.writer_user_id = writer_user_id;
     }
 
-    public int getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(int title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 

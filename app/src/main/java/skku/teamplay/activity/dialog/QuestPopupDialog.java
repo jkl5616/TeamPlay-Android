@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import skku.teamplay.R;
 import skku.teamplay.adapter.RewardSpinnerAdapter;
-import skku.teamplay.model.Quest;
+import skku.teamplay.model.KanbanPost;
 
 /**
  * Created by ddjdd on 2018-05-07.
@@ -52,7 +52,7 @@ public class QuestPopupDialog extends Activity {
 
     int pos = -1, page = -1;
 
-    Quest quest;
+    KanbanPost kanbanPost;
 
     Intent retIntent = new Intent();
 
@@ -66,7 +66,7 @@ public class QuestPopupDialog extends Activity {
         setSpinner();
 
         Intent intent = new Intent(this.getIntent());
-        quest = (Quest)intent.getSerializableExtra("quest");
+        kanbanPost = (KanbanPost)intent.getSerializableExtra("kanbanPost");
         pos = intent.getIntExtra("pos", -1);
         page = intent.getIntExtra("page", -1);
 
@@ -74,20 +74,20 @@ public class QuestPopupDialog extends Activity {
             btnAdd.setText("변경");
         }
 
-        editTitle.setText(quest.getTitle());
-        editDescription.setText(quest.getDescription());
-        editStartAt.setText(quest.getStartAtSimple());
-        editDueAt.setText(quest.getDueAtSimple());
-        spinnerRewardType.setSelection(quest.getRewardType());
-        editReward.setText(String.valueOf(quest.getReward()));
+        editTitle.setText(kanbanPost.getTitle());
+        editDescription.setText(kanbanPost.getDescription());
+        editStartAt.setText(kanbanPost.getStartAtSimple());
+        editDueAt.setText(kanbanPost.getDueAtSimple());
+        spinnerRewardType.setSelection(kanbanPost.getRewardType());
+        editReward.setText(String.valueOf(kanbanPost.getReward()));
     }
 
     @OnClick (R.id.editStartAt)
     void onEditStartAtClick(){
         int year, month, day;
-        year = quest.getStartAtYear();
-        month = quest.getStartAtMonth();
-        day = quest.getStartAtDay();
+        year = kanbanPost.getStartAtYear();
+        month = kanbanPost.getStartAtMonth();
+        day = kanbanPost.getStartAtDay();
         DatePickerDialog dialog = new DatePickerDialog(QuestPopupDialog.this, dateSetListener1, year, month-1, day);
         dialog.show();
     }
@@ -95,9 +95,9 @@ public class QuestPopupDialog extends Activity {
     @OnClick (R.id.editDueAt)
     void onEditDueAtClick(){
         int year, month, day;
-        year = quest.getDueAtYear();
-        month = quest.getDueAtMonth();
-        day = quest.getDueAtDay();
+        year = kanbanPost.getDueAtYear();
+        month = kanbanPost.getDueAtMonth();
+        day = kanbanPost.getDueAtDay();
         DatePickerDialog dialog = new DatePickerDialog(QuestPopupDialog.this, dateSetListener2, year, month-1, day);
         dialog.show();
     }
@@ -111,7 +111,7 @@ public class QuestPopupDialog extends Activity {
 
     @OnClick (R.id.btnFinish)
     void onBtnFinishedClick() {
-        quest.makeFinish();
+        kanbanPost.makeFinish();
         fillRetIntent();
         setResult(100, retIntent);
         finish();
@@ -119,20 +119,20 @@ public class QuestPopupDialog extends Activity {
 
     @OnClick (R.id.btnAdd)
     void onBtnAddClick() {
-        quest.setTitle(editTitle.getText().toString());
-        quest.setDescription(editDescription.getText().toString());
+        kanbanPost.setTitle(editTitle.getText().toString());
+        kanbanPost.setDescription(editDescription.getText().toString());
 
-        quest.setStartAtSimple(editStartAt.getText().toString());
-        quest.setDueAtSimple(editDueAt.getText().toString());
+        kanbanPost.setStartAtSimple(editStartAt.getText().toString());
+        kanbanPost.setDueAtSimple(editDueAt.getText().toString());
 
-        quest.setRewardType(spinnerRewardType.getSelectedItemPosition());
+        kanbanPost.setRewardType(spinnerRewardType.getSelectedItemPosition());
         int reward = Integer.parseInt(editReward.getText().toString());
 
         if(reward <= 0){
             Toast.makeText(getApplicationContext(), "보상은 0보다 커야 합니다.", Toast.LENGTH_LONG).show();
         }
         else {
-            quest.setReward(reward);
+            kanbanPost.setReward(reward);
 
             if(pos == -1) {
                 fillRetIntent();
@@ -186,6 +186,6 @@ public class QuestPopupDialog extends Activity {
     private void fillRetIntent() {
         retIntent.putExtra("pos", pos);
         retIntent.putExtra("page", page);
-        retIntent.putExtra("quest", quest);
+        retIntent.putExtra("kanbanPost", kanbanPost);
     }
 }

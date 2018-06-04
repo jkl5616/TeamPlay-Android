@@ -9,13 +9,13 @@ import android.widget.TextView;
 import java.util.List;
 
 import skku.teamplay.R;
-import skku.teamplay.model.Quest;
+import skku.teamplay.model.KanbanPost;
 
 public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.TimelineHolder>{
-    List<Quest> questList;
+    List<KanbanPost> kanbanPostList;
 
-    public TimelineAdapter(List<Quest> questList) {
-        this.questList = questList;
+    public TimelineAdapter(List<KanbanPost> kanbanPostList) {
+        this.kanbanPostList = kanbanPostList;
     }
 
     @Override
@@ -26,14 +26,14 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
     @Override
     public void onBindViewHolder(TimelineHolder holder, int position) {
-        holder.description.setText(questList.get(position).getDescription());
-        holder.title.setText(questList.get(position).getTitle());
-//        holder.date.setText(questList.get(position).getDueAt());
+        holder.description.setText(kanbanPostList.get(position).getDescription());
+        holder.title.setText(kanbanPostList.get(position).getTitle());
+//        holder.date.setText(kanbanPostList.get(position).getEndDate());
     }
 
     @Override
     public int getItemCount() {
-        return questList.size();
+        return kanbanPostList.size();
     }
 
     public static class TimelineHolder extends RecyclerView.ViewHolder{

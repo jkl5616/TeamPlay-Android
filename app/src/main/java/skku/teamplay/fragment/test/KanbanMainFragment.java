@@ -27,7 +27,7 @@ public class KanbanMainFragment extends  Fragment{
     private KanbanQuestlistAdapter adapter;
 
     @BindView(R.id.textProfileInfo) TextView textProfileInfo;
-    @BindView(R.id.questList) ListView questList;
+    @BindView(R.id.kanbanPostList) ListView questList;
     @BindView(R.id.btnKanban) Button btnKanban;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class KanbanMainFragment extends  Fragment{
         questList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-//                Quest newQuest = (Quest)adapter.getItem(position);
+//                KanbanPost newQuest = (KanbanPost)adapter.getItem(position);
 //                Intent intent = new Intent(getActivity(), QuestPopupDialog.class);
 //                newQuest.putExtraIntent(intent);
 //                getActivity().startActivityForResult(intent, 1);

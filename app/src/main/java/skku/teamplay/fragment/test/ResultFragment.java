@@ -24,7 +24,7 @@ import java.util.Random;
 
 import skku.teamplay.R;
 import skku.teamplay.adapter.TimelineAdapter;
-import skku.teamplay.model.Quest;
+import skku.teamplay.model.KanbanPost;
 
 public class ResultFragment extends Fragment {
     final static private float GROUP_SPACE= 0.15f;
@@ -91,14 +91,14 @@ public class ResultFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        List<Quest> quests = new ArrayList<>();
+        List<KanbanPost> kanbanPosts = new ArrayList<>();
         for (int i = 0; i < 20; i++){
-            quests.add(new Quest());
-            quests.get(i).setTitle("Quest Title #" + i);
-            quests.get(i).setDescription("Quest Description #" + i);
-//            quests.get(i).setDueAt("0529");
+            kanbanPosts.add(new KanbanPost());
+            kanbanPosts.get(i).setTitle("KanbanPost Title #" + i);
+            kanbanPosts.get(i).setDescription("KanbanPost Description #" + i);
+//            kanbanPosts.get(i).setEndDate("0529");
         }
-        TimelineAdapter timelineAdapter = new TimelineAdapter(quests);
+        TimelineAdapter timelineAdapter = new TimelineAdapter(kanbanPosts);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(timelineAdapter);
