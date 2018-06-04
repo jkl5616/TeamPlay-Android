@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#dddddd"
+    android:background="#f0f0f0"
     tools:context=".fragment.test.MainFragment">
     <ScrollView
         android:layout_width="match_parent"
