@@ -114,6 +114,7 @@ public class LoginActivity extends AppCompatActivity implements OnRestApiListene
                     TeamPlayApp.getAppInstance().setUser(loginResult.user);
                     //팀 선택 액티비티로 넘어감
                     startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+                    finish();
                 } else {
                     new MaterialDialog.Builder(this).content("로그인에 실패했습니다.").show();
                 }
