@@ -22,7 +22,7 @@ public class Util {
             if (email != null && pw != null) {
                 updateToken.setEmail(SharedPreferencesUtil.getString("user_email"));
                 updateToken.setPw(SharedPreferencesUtil.getString("user_pw"));
-                updateToken.setToken(SharedPreferencesUtil.getString("token"));
+                updateToken.setToken(SharedPreferencesUtil.getString("firebase_token"));
                 new RestApiTask(new OnRestApiListener() {
                     @Override
                     public void onRestApiDone(RestApiResult restApiResult) {
