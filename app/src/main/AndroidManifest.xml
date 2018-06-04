@@ -85,6 +85,9 @@
         <activity android:name=".activity.test.TimetableViewActivity"
             android:theme="@style/AppTheme"></activity>
 
+        <activity android:name=".activity.test.MakeTeamActivity"
+            android:theme="@style/AppTheme"></activity>
+
         <receiver
             android:name=".receiver.BootCompletedReceiver"
             android:enabled="true"
