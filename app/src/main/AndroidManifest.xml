@@ -37,18 +37,22 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.test.KanbanViewpagerActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activity.test.ChartTestActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.test.ViewPagerTestActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.test.UserProfileActivity"
@@ -57,37 +61,46 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.dialog.QuestPopupDialog"
+            android:screenOrientation="portrait"
             android:theme="@style/QuestDialogTheme" />
         <activity
             android:name=".activity.test.TabTestActivity"
             android:label="TeamPlay"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.test.ProfileActivity"
             android:label="TeamPlay"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.test.LoginActivity"
             android:label="TeamPlay"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
         <activity
             android:name=".activity.test.EverytimeParseTestActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
         <activity
             android:name=".activity.test.PenaltyTestActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
         <activity
             android:name=".activity.test.DummyActivity"
-            android:theme="@android:style/Theme.NoDisplay"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoDisplay"/>
 
         <activity android:name=".activity.test.TimetableViewActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
 
         <activity android:name=".activity.test.MakeTeamActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <receiver
             android:name=".receiver.BootCompletedReceiver"
