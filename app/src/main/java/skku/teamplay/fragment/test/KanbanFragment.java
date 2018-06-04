@@ -24,10 +24,16 @@ import skku.teamplay.api.RestApiResult;
 import skku.teamplay.api.RestApiTask;
 import skku.teamplay.api.impl.AddKanbanPost;
 import skku.teamplay.api.impl.GetKanbanPostByBoard;
+import skku.teamplay.api.impl.GetKanbansByTeam;
 import skku.teamplay.api.impl.GetTeamByUser;
+import skku.teamplay.api.impl.res.KanbanBoardListResult;
 import skku.teamplay.api.impl.res.KanbanPostListResult;
 import skku.teamplay.app.TeamPlayApp;
+import skku.teamplay.model.KanbanBoard;
 import skku.teamplay.model.KanbanPost;
+import skku.teamplay.model.Team;
+import skku.teamplay.model.User;
+import skku.teamplay.util.KanbanQuestlist;
 
 
 /**
@@ -35,15 +41,19 @@ import skku.teamplay.model.KanbanPost;
  */
 
 public class KanbanFragment extends Fragment implements OnRestApiListener {
-    private int mPageNumber;
+    private int mPage, mKanbanId;
     private  KanbanQuestlistAdapter adapter;
     @BindView(R.id.quest_list) ListView QuestList;
     @BindView(R.id.textKanbanTitle) TextView textKanbanTitle;
 
-    public static KanbanFragment create(int pageNumber) {
+    ArrayList<KanbanPost> kanbanPosts;
+
+    public static KanbanFragment create(int page, int kanbanId, String title) {
         KanbanFragment fragment = new KanbanFragment();
         Bundle args = new Bundle();
-        args.putInt("page", pageNumber);
+        args.putInt("page", page);
+        args.putInt("kanbanId", kanbanId);
+        args.putString("title", title);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,27 +67,24 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentLayout = inflater.inflate(R.layout.fragment_kanban_test, container, false);
         ButterKnife.bind(this, fragmentLayout);
-        mPageNumber = getArguments().getInt("page");
+        textKanbanTitle.setText(getArguments().getString("title"));
+        mPage = getArguments().getInt("page");
+        new RestApiTask(this).execute(new GetKanbanPostByBoard(getArguments().getInt("kanbanId")));
 
-        adapter =  new KanbanQuestlistAdapter();
-        QuestList.setAdapter(adapter);
+        QuestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                Intent intent = new Intent(getActivity(), QuestPopupDialog.class);
+                KanbanPost intentKanbanPost = (KanbanPost)adapter.getItem(position);
 
-//        new RestApiTask(this).execute(new GetKanbanPostByBoard(1));
+                intent.putExtra("pos", position);
+                intent.putExtra("page", mPage);
+                intent.putExtra("kanbanPost", intentKanbanPost);
 
-//        QuestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-//                Intent intent = new Intent(getActivity(), QuestPopupDialog.class);
-//                KanbanPost intentKanbanPost = (KanbanPost)adapter.getItem(position);
-//
-//                intent.putExtra("pos", position);
-//                intent.putExtra("page", mPageNumber);
-//                intent.putExtra("kanbanPost", intentKanbanPost);
-//
-//                getActivity().startActivityForResult(intent, 1);
-//            }
-//            public void onClick(View v) { }
-//        });
+                getActivity().startActivityForResult(intent, 1);
+            }
+            public void onClick(View v) { }
+        });
         return fragmentLayout;
     }
 
@@ -106,7 +113,6 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
                 case 1000:      // 추가
                     adapter.addItem(retKanbanPost);
                     new RestApiTask(this).execute(retKanbanPost.makeAddKanbanPost());
-                    Toast.makeText(getActivity(), retKanbanPost.makeAddKanbanPost().getTitle(), Toast.LENGTH_LONG).show();
                     break;
 
                 case 2000:      // 변경
@@ -120,17 +126,16 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
 
     @Override
     public void onRestApiDone(RestApiResult restApiResult) {
-        Toast.makeText(getActivity(), "추가되었습니다.", Toast.LENGTH_LONG).show();
         switch (restApiResult.getApiName()) {
-            case "addkanbanpost":
-                Toast.makeText(getActivity(), "추가되었습니다.", Toast.LENGTH_LONG).show();
+            case "getkanbanpostbyboard":
+                KanbanPostListResult result = (KanbanPostListResult) restApiResult;
+                kanbanPosts = result.getPostList();
+                adapter = new KanbanQuestlistAdapter(kanbanPosts);
+                QuestList.setAdapter(adapter);
                 break;
-//            case "getkanbanpostbyboard":
-//                KanbanPostListResult result = (KanbanPostListResult) restApiResult;
-//                final ArrayList<KanbanPost> postList = result.getPostList();
-//                QuestList.setAdapter((ListAdapter) postList);
-//
-//                break;
+
+            case "addkanbanpost":
+                Toast.makeText(getActivity(), "done", Toast.LENGTH_SHORT).show();
         }
     }
 }

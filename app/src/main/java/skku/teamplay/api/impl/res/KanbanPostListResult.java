@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import skku.teamplay.api.RestApiResult;
 import skku.teamplay.model.KanbanPost;
-import skku.teamplay.model.temp;
 
 public class KanbanPostListResult extends RestApiResult {
     private ArrayList<KanbanPost> postList;

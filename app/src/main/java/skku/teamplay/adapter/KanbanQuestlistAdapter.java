@@ -20,7 +20,10 @@ import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import skku.teamplay.R;
+import skku.teamplay.app.TeamPlayApp;
 import skku.teamplay.model.KanbanPost;
+import skku.teamplay.model.Team;
+import skku.teamplay.model.User;
 
 
 public class KanbanQuestlistAdapter extends BaseAdapter {
@@ -43,6 +46,7 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
     @BindDrawable(R.drawable.quest_list_item_new) Drawable quest_new;
 
     public KanbanQuestlistAdapter() { }
+    public KanbanQuestlistAdapter(ArrayList kanbanPostList) { this.kanbanPostList = kanbanPostList; }
 
     @Override
     public int getCount() { return kanbanPostList.size(); }
@@ -66,7 +70,9 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
         textStartAt.setText(kanbanPost.getStartAtSimple());
         textDueAt.setText(kanbanPost.getDueAtSimple());
 
-        if(kanbanPost.getFinished()) {
+        User user = TeamPlayApp.getAppInstance().getUser();
+
+        if(kanbanPost.getFinished() == 1) {
             constLayout.setBackground(quest_finished);
         }
         else {
@@ -74,7 +80,7 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
             if(mine == -1) {
                 constLayout.setBackground(quest_new);
             }
-            else if(mine == 1111) { // my id
+            else if(mine == user.getId() ) { // my id
                 constLayout.setBackground(quest_mine);
             }
             else {

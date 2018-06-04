@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/const_layout"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="60dp"
     android:layout_margin="4dp"
     android:background="@drawable/edittext_round_border"
     android:padding="2dp">
@@ -43,7 +43,7 @@
                 android:id="@+id/textTitle"
                 style="@style/ListQuestItemTextView"
                 android:layout_marginLeft="15dp"
-                android:layout_weight="1"
+                android:layout_weight="21"
                 android:textAlignment="viewStart"
                 android:textSize="25sp" />
 
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="3dp"
-                android:layout_weight="2"
+                android:layout_weight="32"
                 android:orientation="horizontal">
 
                 <LinearLayout

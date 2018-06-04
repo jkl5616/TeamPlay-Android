@@ -2,11 +2,17 @@ package skku.teamplay.activity.test;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import java.util.ArrayList;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -20,17 +26,20 @@ import skku.teamplay.api.RestApiResult;
 import skku.teamplay.api.RestApiTask;
 import skku.teamplay.api.impl.AddKanbanBoard;
 import skku.teamplay.api.impl.GetKanbansByTeam;
+import skku.teamplay.api.impl.res.KanbanBoardListResult;
 import skku.teamplay.app.TeamPlayApp;
 import skku.teamplay.model.KanbanBoard;
 import skku.teamplay.model.KanbanPost;
 import skku.teamplay.model.Team;
 import skku.teamplay.model.User;
+import skku.teamplay.util.SharedPreferencesUtil;
 
 /**
  * Created by ddjdd on 2018-05-07.
  */
 
-public class KanbanViewpagerActivity extends FragmentActivity implements OnRestApiListener {
+public class
+KanbanViewpagerActivity extends FragmentActivity implements OnRestApiListener {
     @BindView(R.id.pager) ViewPager pager;
     @BindView(R.id.FabAddPost) FloatingActionButton FabAddPost;
     KanbanFragmentAdapter adapter;
@@ -38,25 +47,24 @@ public class KanbanViewpagerActivity extends FragmentActivity implements OnRestA
 
     private Team team;
     private User user;
-
+    ArrayList<KanbanBoard> kanbanBoards;
+    int maxLen;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kanban_viewpager);
         ButterKnife.bind(this);
-        setAdapter();
         team = TeamPlayApp.getAppInstance().getTeam();
-        user = TeamPlayApp.getAppInstance().getUser();
-        new RestApiTask(this).execute(new GetKanbansByTeam(team.getId());
-
+        new RestApiTask(this).execute(new GetKanbansByTeam(team.getId()));
     }
 
     @OnClick(R.id.FabAddPost)
     void onFabAddPostClick () {
         Intent intent = new Intent(getApplicationContext(), QuestPopupDialog.class);
         Date startDate = new Date(), endDate = startDate;
-        KanbanPost intentKanbanPost = new KanbanPost(-1,-1, "title", "example", false, startDate, endDate, user.getId(), -1, 0, 0);
+        user = TeamPlayApp.getAppInstance().getUser();
+        KanbanPost intentKanbanPost = new KanbanPost(-1,-1, "title", "example", 0, startDate, endDate, user.getId(), -1, 0, 0);
 
         intent.putExtra("pos", -1);
         intent.putExtra("page", currentPos);
@@ -67,17 +75,25 @@ public class KanbanViewpagerActivity extends FragmentActivity implements OnRestA
 
     @OnClick(R.id.FabAddBoard)
     void onFabAddBoardClick () {
-//        Intent intent = new Intent(getApplicationContext(), QuestPopupDialog.class);
-//        Date startAt = new Date(), dueAt = startAt;
-//        KanbanPost intentKanbanPost = new KanbanPost(-1,-1, "title", "example", false, startAt, dueAt, 1111, -1, 0, 0);
-//
-//        intent.putExtra("pos", -1);
-//        intent.putExtra("page", currentPos);
-//        intent.putExtra("kanbanPost", intentKanbanPost);
-//
-//        startActivityForResult(intent, 1);
-        AddKanbanBoard AddKanbanBoard = new AddKanbanBoard(team.getId(), "test", 0);
+        MaterialDialog dialog =
+                new MaterialDialog.Builder(this)
+                        .title("칸반보드 추가하기")
+                        .customView(R.layout.dialog_add_kanban_board, true)
+                        .positiveText("추가")
+                        .negativeText(android.R.string.cancel)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                addBoard();
+                            }
+                        })
+                        .build();
+        dialog.show();
+    }
 
+    void addBoard() {
+        AddKanbanBoard addKanbanBoard = new AddKanbanBoard(team.getId(), "test", kanbanBoards.size()+1);
+        new RestApiTask(this).execute(addKanbanBoard);
     }
 
     @Override
@@ -89,10 +105,9 @@ public class KanbanViewpagerActivity extends FragmentActivity implements OnRestA
 
     private void setAdapter() {
         adapter = new KanbanFragmentAdapter(getSupportFragmentManager());
-        for(int i = 0; i < 7; i++) {
-            adapter.addFragment(i);
+        for(int i = 0; i < maxLen; i++) {
+            adapter.addFragment(i, kanbanBoards.get(i).getId(), kanbanBoards.get(i).getName());
         }
-
         pager.setAdapter(adapter);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -110,15 +125,17 @@ public class KanbanViewpagerActivity extends FragmentActivity implements OnRestA
         });
     }
 
-
     @Override
     public void onRestApiDone(RestApiResult restApiResult) {
         switch (restApiResult.getApiName()) {
             case "getkanbansbyteam":
-                Toast.makeText(getApplicationContext(), "보드 가져오기.", Toast.LENGTH_LONG).show();
+                KanbanBoardListResult kanbanBoardListResult = (KanbanBoardListResult) restApiResult;
+                kanbanBoards = kanbanBoardListResult.getKanbanList();
+                maxLen = kanbanBoards.size();
+                setAdapter();
                 break;
-            case "register":
-//                new MaterialDialog.Builder(this).content("가입이 완료되었습니다.").show();
+            case "addkanbanpost":
+                Toast.makeText(getApplicationContext(), "추가됨", Toast.LENGTH_LONG).show();
                 break;
         }
     }

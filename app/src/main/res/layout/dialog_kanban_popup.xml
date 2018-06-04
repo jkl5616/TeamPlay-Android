@@ -138,8 +138,9 @@
             <Button
                 android:id="@+id/btnRemove"
                 style="@style/QuestAddPopupButton"
+                android:background="@drawable/btn_red_round"
                 android:layout_weight="1"
-                android:text="@string/remove_text" />
+                android:text="@string/cancle_text" />
 
             <Button
                 android:id="@+id/btnFinish"

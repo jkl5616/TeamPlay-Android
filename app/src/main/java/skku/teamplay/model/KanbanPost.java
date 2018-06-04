@@ -13,7 +13,7 @@ public class KanbanPost implements Serializable {
     private int kanban_board_id;
     private String title;
     private String description;
-    private boolean finished;
+    private int finished;
     private Date startDate, endDate;
     private int writter_user_id;
     private int owner_id;
@@ -26,7 +26,7 @@ public class KanbanPost implements Serializable {
                       int kanban_board_id,
                       String title,
                       String description,
-                      boolean finished,
+                      int finished,
                       Date startDate,
                       Date endDate,
                       int writter_user_id,
@@ -51,7 +51,7 @@ public class KanbanPost implements Serializable {
     public int getKanban_board_id() { return kanban_board_id; }
     public String getTitle() { return title; }
     public String getDescription() { return description; }
-    public boolean getFinished() { return finished; }
+    public int getFinished() { return finished; }
     public Date getStartDate() { return startDate; }
     public Date getEndDate() { return endDate; }
     public int getWritter_user_id() { return writter_user_id; }
@@ -108,7 +108,7 @@ public class KanbanPost implements Serializable {
     public void setKanban_board_id(int kanban_board_id) { this.kanban_board_id = kanban_board_id; }
     public void setTitle(String title) { this.title = title; }
     public void setDescription(String description) { this.description = description; }
-    public void setFinished(boolean finished) { this.finished = finished; }
+    public void setFinished(int finished) { this.finished = finished; }
     public void setStartDate(Date startDate) { this.startDate = startDate; }
     public void setEndDate(Date endDate) { this.endDate = endDate; }
     public void setWritter_user_id(int writter_user_id) { this.writter_user_id = writter_user_id; }
@@ -143,9 +143,8 @@ public class KanbanPost implements Serializable {
         }
     }
 
-
     public void makeFinish(){
-        this.finished = !this.finished;
+        this.finished = 1;
     }
 
     public AddKanbanPost makeAddKanbanPost() {

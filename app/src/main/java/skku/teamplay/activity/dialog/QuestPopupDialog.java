@@ -20,7 +20,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import skku.teamplay.R;
 import skku.teamplay.adapter.RewardSpinnerAdapter;
+import skku.teamplay.app.TeamPlayApp;
 import skku.teamplay.model.KanbanPost;
+import skku.teamplay.model.User;
 
 /**
  * Created by ddjdd on 2018-05-07.
@@ -72,6 +74,10 @@ public class QuestPopupDialog extends Activity {
 
         if(pos != -1) {
             btnAdd.setText("변경");
+            btnRemove.setText("제거");
+        }
+        if(kanbanPost.getOwner_id() == -1) {
+            btnFinish.setText("내꺼");
         }
 
         editTitle.setText(kanbanPost.getTitle());
@@ -111,9 +117,17 @@ public class QuestPopupDialog extends Activity {
 
     @OnClick (R.id.btnFinish)
     void onBtnFinishedClick() {
-        kanbanPost.makeFinish();
-        fillRetIntent();
-        setResult(100, retIntent);
+        if(kanbanPost.getOwner_id() == -1) {
+            User user = TeamPlayApp.getAppInstance().getUser();
+            kanbanPost.setOwner(user.getId());
+            fillRetIntent();
+            setResult(80, retIntent);
+        }
+        else {
+            kanbanPost.makeFinish();
+            fillRetIntent();
+            setResult(100, retIntent);
+        }
         finish();
     }
 
@@ -121,14 +135,12 @@ public class QuestPopupDialog extends Activity {
     void onBtnAddClick() {
         kanbanPost.setTitle(editTitle.getText().toString());
         kanbanPost.setDescription(editDescription.getText().toString());
-
         kanbanPost.setStartAtSimple(editStartAt.getText().toString());
         kanbanPost.setDueAtSimple(editDueAt.getText().toString());
-
         kanbanPost.setRewardType(spinnerRewardType.getSelectedItemPosition());
-        int reward = Integer.parseInt(editReward.getText().toString());
 
-        if(reward <= 0){
+        int reward = Integer.parseInt(editReward.getText().toString());
+        if(reward < 0){
             Toast.makeText(getApplicationContext(), "보상은 0보다 커야 합니다.", Toast.LENGTH_LONG).show();
         }
         else {

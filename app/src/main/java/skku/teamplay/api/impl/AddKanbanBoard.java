@@ -21,23 +21,17 @@ public class AddKanbanBoard extends RestApi {
     public int getTeam_id() {
         return team_id;
     }
-
-    public void setTeam_id(int team_id) {
-        this.team_id = team_id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    public String getName() { return name; }
     public int getPage() {
         return page;
     }
 
+    public void setTeam_id(int team_id) {
+        this.team_id = team_id;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
     public void setPage(int page) {
         this.page = page;
     }

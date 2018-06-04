@@ -29,7 +29,7 @@ public class KanbanFragmentAdapter extends FragmentStatePagerAdapter {
         return fragmentList.get(position);
     }
 
-    public void addFragment(int position) {
-        fragmentList.add(KanbanFragment.create(position));
+    public void addFragment(int position, int id, String title) {
+        fragmentList.add(KanbanFragment.create(position, id, title));
     }
 }
