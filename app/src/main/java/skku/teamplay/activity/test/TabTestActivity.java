@@ -16,6 +16,7 @@ import skku.teamplay.fragment.test.KanbanMainFragment;
 import skku.teamplay.fragment.test.MainFragment;
 import skku.teamplay.fragment.test.ReportFragment;
 import skku.teamplay.fragment.test.ResultFragment;
+import skku.teamplay.fragment.test.SettingsFragment;
 
 /**
  * Created by woorim on 2018. 4. 17..
@@ -28,6 +29,8 @@ public class TabTestActivity extends AppCompatActivity {
     KanbanMainFragment kanbanMainFragment;
     ReportFragment reportFragment;
     ResultFragment resultFragment;
+    SettingsFragment settingsFragment;
+
     BottomNavigationView bottomNavigationView;
     MenuItem prevMenu;
     @Override
@@ -49,11 +52,13 @@ public class TabTestActivity extends AppCompatActivity {
         kanbanMainFragment = new KanbanMainFragment();
         reportFragment = new ReportFragment();
         resultFragment = new ResultFragment();
+        settingsFragment = new SettingsFragment();
 
         screenSlidePagerAdapter.addFragment(mainFragment);
         screenSlidePagerAdapter.addFragment(kanbanMainFragment);
         screenSlidePagerAdapter.addFragment(reportFragment);
         screenSlidePagerAdapter.addFragment(resultFragment);
+        screenSlidePagerAdapter.addFragment(settingsFragment);
 
         viewPager.setAdapter(screenSlidePagerAdapter);
     }
