@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f0f0f0"
     tools:context="skku.teamplay.activity.MainActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -41,18 +42,148 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ListView
-            android:id="@+id/listview_activity_test"
+        <android.support.v7.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@null"
-            android:layout_margin="8dp"/>
+            app:cardCornerRadius="1dp"
+            app:cardElevation="1dp"
+            app:cardUseCompatPadding="true">
 
-    </android.support.constraint.ConstraintLayout>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="2dp"
+                    android:text="팀 정보"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/edittext_team_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="팀 이름"
+                        android:singleLine="true" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/edittext_team_deadline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="종강 날짜"
+                        android:focusable="false"
+                        android:singleLine="true" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/edittext_team_coursename"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="과목"
+                        android:focusable="false"
+                        android:singleLine="true" />
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_width="match_parent"
+            app:cardCornerRadius="1dp"
+            app:cardElevation="1dp"
+            app:cardUseCompatPadding="true">
+
+            <RelativeLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/tv_info_add_member"
+                    android:layout_alignParentTop="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="2dp"
+                    android:text="팀원 추가"/>
+
+                <GridView
+                    android:id="@+id/gridview_members"
+                    android:layout_below="@+id/tv_info_add_member"
+                    android:layout_above="@+id/btn_bottom_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></GridView>
+
+                <LinearLayout
+                    android:id="@+id/btn_bottom_layout"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp">
+                    <Button
+                        android:id="@+id/btn_search_by_id"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:text="아이디로 검색"
+                        android:background="@android:color/transparent"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_height="36dp" />
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#dddddd"></View>
+                    <Button
+                        android:id="@+id/btn_search_by_timetable"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:text="과목 참가자 검색"
+                        android:background="@android:color/transparent"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_height="36dp" />
+                </LinearLayout>
+
+
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
