@@ -14,11 +14,18 @@ import android.webkit.WebViewClient;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import skku.teamplay.api.OnRestApiListener;
+import skku.teamplay.api.RestApiResult;
+import skku.teamplay.api.RestApiTask;
+import skku.teamplay.api.impl.UpdateTimeTable;
+import skku.teamplay.app.TeamPlayApp;
+import skku.teamplay.model.User;
+
 /**
  * Created by woorim on 2018. 5. 15..
  */
 
-public class EverytimeParseTestActivity extends Activity{
+public class EverytimeParseTestActivity extends Activity implements OnRestApiListener{
 
     Handler handler = new Handler();
     Dialog dialog;
@@ -33,6 +40,8 @@ public class EverytimeParseTestActivity extends Activity{
                 TextView textView = new TextView(EverytimeParseTestActivity.this);
                 textView.setText(json);
                 setContentView(textView);
+                User user = TeamPlayApp.getAppInstance().getUser();
+                new RestApiTask(EverytimeParseTestActivity.this).execute(new UpdateTimeTable(user.getEmail(), user.getPw(), json));
             }
         });
     }
@@ -88,4 +97,8 @@ public class EverytimeParseTestActivity extends Activity{
         dialog.show();
     }
 
+    @Override
+    public void onRestApiDone(RestApiResult restApiResult) {
+
+    }
 }
