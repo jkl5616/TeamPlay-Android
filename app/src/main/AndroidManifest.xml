@@ -86,7 +86,7 @@
             android:theme="@style/AppTheme"></activity>
 
         <activity android:name=".activity.test.MakeTeamActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <receiver
             android:name=".receiver.BootCompletedReceiver"
