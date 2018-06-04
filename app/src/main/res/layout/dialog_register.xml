@@ -4,53 +4,41 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:text="이름"
-        android:textColor="#80000000"
-        android:textSize="14sp" />
-
-    <EditText
-        android:id="@+id/edittext_register_name"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:textColor="#000000"
-        android:textSize="18sp" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:text="아이디"
-        android:textColor="#80000000"
-        android:textSize="14sp" />
+        <EditText
+            android:id="@+id/edittext_register_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:hint="이름" />
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/edittext_register_id"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:textColor="#000000"
-        android:textSize="18sp" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:text="비밀번호"
-        android:textColor="#80000000"
-        android:textSize="14sp" />
+        <EditText
+            android:id="@+id/edittext_register_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:hint="아이디" />
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/edittext_register_password"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:inputType="textPassword"
-        android:textColor="#000000"
-        android:textSize="18sp" />
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edittext_register_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:inputType="textPassword"
+            android:hint="비밀번호" />
+    </android.support.design.widget.TextInputLayout>
 
 </LinearLayout>
