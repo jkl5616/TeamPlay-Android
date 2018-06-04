@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import skku.teamplay.R;
 import skku.teamplay.app.TeamPlayApp;
 import skku.teamplay.model.Course;
+import skku.teamplay.model.Team;
 import skku.teamplay.model.User;
 import skku.teamplay.util.CourseList;
 
@@ -48,7 +49,15 @@ public class TimetableViewActivity extends AppCompatActivity {
     private void drawTimeTable() {
         Gson gson = new Gson();
         ArrayList<User> userList = TeamPlayApp.getAppInstance().getUserList();
-        int colors[] = {Color.parseColor("#77ff0000"), Color.parseColor("#7700ff00"), Color.parseColor("#770000ff")};
+        String cols[] = {"#FE816D","#68C4AF","#45B4E7","#D187FE","#ffb331","#4573E7","#6AECF4","#ADA7FC","#95CB9C","#01579B"};
+        ArrayList<Integer> colArray = new ArrayList<Integer>();
+        String alpha = "77";
+        for(int i = 0; i < cols.length; i++) {
+            colArray.add(Color.parseColor("#"+alpha+cols[i].split("#")[1]));
+        }
+
+        Integer colors[] =  colArray.toArray(new Integer[colArray.size()]);
+
         int i = 0;
         int layoutHeight = layout_timetable.getMeasuredHeight();
         int layoutWidth = layout_timetable.getMeasuredWidth();
