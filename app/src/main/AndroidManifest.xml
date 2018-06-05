@@ -82,7 +82,7 @@
         <activity
             android:name=".activity.test.EverytimeParseTestActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/QuestDialogTheme" />
 
         <activity
             android:name=".activity.test.PenaltyTestActivity"
