@@ -4,6 +4,7 @@ package skku.teamplay.activity.test;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import skku.teamplay.R;
 import skku.teamplay.adapter.ScreenSlidePagerAdapter;
+import skku.teamplay.fragment.test.AppointmentFragment;
 import skku.teamplay.fragment.test.KanbanMainFragment;
 import skku.teamplay.fragment.test.MainFragment;
 import skku.teamplay.fragment.test.ReportFragment;
@@ -27,7 +29,7 @@ public class TabTestActivity extends AppCompatActivity {
 
     MainFragment mainFragment;
     KanbanMainFragment kanbanMainFragment;
-    ReportFragment reportFragment;
+    AppointmentFragment appointmentFragment;
     ResultFragment resultFragment;
     SettingsFragment settingsFragment;
 
@@ -50,13 +52,13 @@ public class TabTestActivity extends AppCompatActivity {
         ScreenSlidePagerAdapter screenSlidePagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mainFragment = new MainFragment();
         kanbanMainFragment = new KanbanMainFragment();
-        reportFragment = new ReportFragment();
+        appointmentFragment = new AppointmentFragment();
         resultFragment = new ResultFragment();
         settingsFragment = new SettingsFragment();
 
         screenSlidePagerAdapter.addFragment(mainFragment);
         screenSlidePagerAdapter.addFragment(kanbanMainFragment);
-        screenSlidePagerAdapter.addFragment(reportFragment);
+        screenSlidePagerAdapter.addFragment(appointmentFragment);
         screenSlidePagerAdapter.addFragment(resultFragment);
         screenSlidePagerAdapter.addFragment(settingsFragment);
 
