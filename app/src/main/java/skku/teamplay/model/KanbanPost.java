@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import skku.teamplay.api.impl.AddKanbanPost;
+import skku.teamplay.api.impl.DeleteKanbanPost;
+import skku.teamplay.api.impl.ModifyKanbanPost;
 
 
 public class KanbanPost implements Serializable {
@@ -15,7 +17,7 @@ public class KanbanPost implements Serializable {
     private String description;
     private int finished;
     private Date startDate, endDate;
-    private int writter_user_id;
+    private int writer_user_id;
     private int owner_id;
     private int rewardType;
     private int reward;
@@ -29,7 +31,7 @@ public class KanbanPost implements Serializable {
                       int finished,
                       Date startDate,
                       Date endDate,
-                      int writter_user_id,
+                      int writer_user_id,
                       int owner_id,
                       int rewardType,
                       int reward) {
@@ -40,7 +42,7 @@ public class KanbanPost implements Serializable {
         this.finished = finished;               // initial -> false
         this.startDate = startDate;           // initial -> current time
         this.endDate = endDate;
-        this.writter_user_id = writter_user_id;
+        this.writer_user_id = writer_user_id;
         this.owner_id = owner_id;
         this.rewardType = rewardType;       // 0 전투력, 1 지갑, 2 서포트
         this.reward = reward;
@@ -54,7 +56,7 @@ public class KanbanPost implements Serializable {
     public int getFinished() { return finished; }
     public Date getStartDate() { return startDate; }
     public Date getEndDate() { return endDate; }
-    public int getWritter_user_id() { return writter_user_id; }
+    public int getWriter_user_id() { return writer_user_id; }
     public int getOwner_id() { return owner_id; }
     public int getRewardType() { return rewardType; }
     public int getReward() { return reward; }
@@ -154,11 +156,18 @@ public class KanbanPost implements Serializable {
                 this.finished,
                 this.startDate,
                 this.endDate,
-                this.writter_user_id,
+                this.writer_user_id,
                 this.owner_id,
                 this.rewardType,
                 this.reward
                 );
         return addKanbanPost;
+        return new AddKanbanPost(this.kanban_board_id, this.title, this.description, this.finished, this.startDate, this.endDate, this.writter_user_id, this.owner_id, this.rewardType, this.reward);
+    }
+    public ModifyKanbanPost makeModifiyKanbanPost() {
+        return new ModifyKanbanPost(this.id, this.kanban_board_id, this.title, this.description, this.finished, this.startDate, this.endDate, this.writter_user_id, this.owner_id, this.rewardType, this.reward);
+    }
+    public DeleteKanbanPost makeDeleteKanbanPost() {
+        return new DeleteKanbanPost(this.id);
     }
 }

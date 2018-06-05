@@ -157,7 +157,6 @@ public class QuestPopupDialog extends Activity {
                 finish();
             }
         }
-
     }
 
     private DatePickerDialog.OnDateSetListener dateSetListener1 = new DatePickerDialog.OnDateSetListener() {
