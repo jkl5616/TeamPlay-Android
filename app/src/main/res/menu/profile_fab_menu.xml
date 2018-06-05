@@ -3,11 +3,11 @@
     <item
         android:id="@+id/menu1"
         android:icon="@mipmap/ic_pac_icon"
-        android:title="Title 1" />
+        android:title="팀 만들기" />
     <item
         android:id="@+id/menu2"
         android:icon="@mipmap/ic_pac_icon"
-        android:title="Title 2"/>
+        android:title="내 시간표 보기"/>
     <item
         android:id="@+id/menu3"
         android:icon="@mipmap/ic_pac_icon"

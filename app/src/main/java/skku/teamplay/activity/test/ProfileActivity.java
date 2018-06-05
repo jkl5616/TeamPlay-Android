@@ -27,6 +27,7 @@ import skku.teamplay.api.RestApiResult;
 import skku.teamplay.api.RestApiTask;
 import skku.teamplay.api.impl.GetAllUsersByTeam;
 import skku.teamplay.api.impl.GetTeamByUser;
+import skku.teamplay.api.impl.MakeTeam;
 import skku.teamplay.api.impl.res.TeamListResult;
 import skku.teamplay.api.impl.res.UserListResult;
 import skku.teamplay.app.TeamPlayApp;
@@ -71,6 +72,8 @@ public class ProfileActivity extends AppCompatActivity implements OnRestApiListe
                 int temp = 0;
                 switch (menuItem.getItemId()){
                     case R.id.menu1:
+                        Intent intent = new Intent(ProfileActivity.this, MakeTeamActivity.class);
+                        startActivity(intent);
                         temp = 1;
                         break;
                     case R.id.menu2:
