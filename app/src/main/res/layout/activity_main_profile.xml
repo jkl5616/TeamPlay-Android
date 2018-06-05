@@ -1,135 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/tools"
     android:background="#f0f0f0"
     android:orientation="vertical">
-
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
         android:orientation="vertical">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:background="@color/colorPrimary"
             android:orientation="vertical">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/main_profile_pic"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="10dp"
-                android:elevation="2dp"
-                android:src="@mipmap/basic_profile_pic"
-                app:civ_border_color="#dddddd"
-                app:civ_border_width="5dp" />
-
-            <TextView
-                android:id="@+id/tv_profile_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:gravity="center"
-                android:textColor="#fff"
-                android:textSize="23sp" />
-
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
-        app:cardCornerRadius="1dp"
-        app:cardElevation="1dp"
-        app:cardUseCompatPadding="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp">
-
             <LinearLayout
-                android:id="@+id/layout_update_timetable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="16dp"
                 android:orientation="vertical">
 
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/main_profile_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:elevation="2dp"
+                    android:src="@mipmap/basic_profile_pic"
+                    app:civ_border_color="#dddddd"
+                    app:civ_border_width="5dp" />
+
                 <TextView
+                    android:id="@+id/tv_profile_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:layout_marginTop="12dp"
-                    android:gravity="center|left"
-                    android:text="시간표 설정"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:gravity="center|left"
-                    android:text="5월 21에 업데이트"
-                    android:textSize="12sp" />
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:textSize="23sp" />
 
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="5dp"
-                    android:background="#ccc"></View>
             </LinearLayout>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:gravity="center|left"
-                android:text="일정"
-                android:textSize="18sp" />
-
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"></ListView>
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="1dp"
+            app:cardElevation="1dp"
+            app:cardUseCompatPadding="true">
 
-    <ListView
-        android:id="@+id/lv_team_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
 
-    </ListView>
+                <LinearLayout
+                    android:id="@+id/layout_update_timetable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center|left"
+                        android:text="시간표 설정"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:gravity="center|left"
+                        android:text="5월 21에 업데이트"
+                        android:textSize="12sp" />
 
 
-</LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="#ccc"></View>
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:gravity="center|left"
+                    android:text="일정"
+                    android:textSize="18sp" />
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></ListView>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+        <ListView
+            android:id="@+id/lv_team_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+        </ListView>
+    </LinearLayout>
+    <io.github.yavski.fabspeeddial.FabSpeedDial
+        android:id="@+id/fab_main_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="10dp"
+        app:fabMenu="@menu/profile_fab_menu"
+        app:fabGravity="bottom_end"
+        app:miniFabBackgroundTint="@android:color/white"
+        app:miniFabDrawableTint="?attr/colorPrimaryDark"
+        app:miniFabTitleTextColor="?attr/colorPrimaryDark"
+></io.github.yavski.fabspeeddial.FabSpeedDial>
+</FrameLayout>
+

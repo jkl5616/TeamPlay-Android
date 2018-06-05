@@ -10,23 +10,23 @@
         android:id="@+id/tab2"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="Test2" />
+        android:title="칸반" />
     <item
         android:id="@+id/tab3"
         app:showAsAction="ifRoom"
         android:enabled="true"
         android:icon="@drawable/ic_event_black_24dp"
-        android:title="Test3" />
+        android:title="일정" />
     <item
         android:id="@+id/tab4"
         app:showAsAction="ifRoom"
         android:enabled="true"
         android:icon="@drawable/ic_description_black_24dp"
-        android:title="Test4" />
+        android:title="보고서" />
     <item
         android:id="@+id/tab5"
         app:showAsAction="ifRoom"
         android:enabled="true"
         android:icon="@drawable/ic_supervised_black_24dp"
-        android:title="Test5" />
+        android:title="설정" />
 </menu>
