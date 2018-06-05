@@ -1,5 +1,8 @@
 package skku.teamplay.util;
 
+import android.graphics.Color;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -48,5 +51,27 @@ public class Util {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal;
+    }
+
+    private static boolean inited = false;
+    private static Integer colors[];
+    private static int index = 0;
+
+    private static void initColors() {
+        String cols[] = {"#FE816D","#68C4AF","#45B4E7","#D187FE","#ffb331","#4573E7","#6AECF4","#ADA7FC","#95CB9C","#01579B"};
+        ArrayList<Integer> colArray = new ArrayList<Integer>();
+        String alpha = "ff";
+        for(int i = 0; i < cols.length; i++) {
+            colArray.add(Color.parseColor("#"+alpha+cols[i].split("#")[1]));
+        }
+        colors = colArray.toArray(new Integer[colArray.size()]);
+    }
+
+    public static int nextColor() {
+        if(!inited) {
+            initColors();
+        }
+        return colors[(index++) % colors.length];
+
     }
 }
