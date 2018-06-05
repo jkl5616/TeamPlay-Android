@@ -72,7 +72,7 @@
             android:name=".activity.test.ProfileActivity"
             android:label="TeamPlay"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.test.LoginActivity"
             android:label="TeamPlay"
@@ -82,7 +82,7 @@
         <activity
             android:name=".activity.test.EverytimeParseTestActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/QuestDialogTheme" />
 
         <activity
             android:name=".activity.test.PenaltyTestActivity"
@@ -99,6 +99,10 @@
             android:theme="@style/AppTheme"/>
 
         <activity android:name=".activity.test.MakeTeamActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".activity.test.ModifyTeamActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 

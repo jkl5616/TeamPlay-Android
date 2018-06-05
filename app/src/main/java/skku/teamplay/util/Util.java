@@ -18,11 +18,12 @@ public class Util {
             UpdateToken updateToken = new UpdateToken();
             String email = SharedPreferencesUtil.getString("user_email");
             String pw = SharedPreferencesUtil.getString("user_pw");
+            String token = SharedPreferencesUtil.getString("firebase_token");
 
-            if (email != null && pw != null) {
-                updateToken.setEmail(SharedPreferencesUtil.getString("user_email"));
-                updateToken.setPw(SharedPreferencesUtil.getString("user_pw"));
-                updateToken.setToken(SharedPreferencesUtil.getString("firebase_token"));
+            if (email != null && pw != null && token != null && token.length() > 0) {
+                updateToken.setEmail(email);
+                updateToken.setPw(pw);
+                updateToken.setToken(token);
                 new RestApiTask(new OnRestApiListener() {
                     @Override
                     public void onRestApiDone(RestApiResult restApiResult) {
@@ -35,7 +36,7 @@ public class Util {
         }
     }
 
-    public Date dateFromYMD(int year, int month, int day) {
+    public static Date dateFromYMD(int year, int month, int day) {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, month);
@@ -43,7 +44,7 @@ public class Util {
         return cal.getTime();
     }
 
-    public Calendar calendarFromDate(Date date) {
+    public static Calendar calendarFromDate(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal;

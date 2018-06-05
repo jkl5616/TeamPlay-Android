@@ -3,6 +3,7 @@ package skku.teamplay.activity.test;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -95,10 +96,22 @@ public class EverytimeParseTestActivity extends Activity implements OnRestApiLis
         });
         dialog = new AlertDialog.Builder(this).setView(webView).create();
         dialog.show();
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                finish();
+            }
+        });
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                finish();
+            }
+        });
     }
 
     @Override
     public void onRestApiDone(RestApiResult restApiResult) {
-
+        finish();
     }
 }

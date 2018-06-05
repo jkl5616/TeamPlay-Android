@@ -9,19 +9,21 @@ import skku.teamplay.api.RestApiResult;
 import skku.teamplay.model.Course;
 import skku.teamplay.model.User;
 
-public class MakeTeam extends RestApi {
+public class ModifyTeam extends RestApi {
+    private int id;
     private String name;
     private Date deadline;
-    private Course course;
+    private String coursename;
     private int leader_id;
-    private ArrayList<User> members;
+    private ArrayList<User> addmembers;
 
-    public MakeTeam(String name, Date deadline, Course course, int leader_id, ArrayList<User> members) {
+    public ModifyTeam(int id, String name, Date deadline, String coursename, int leader_id, ArrayList<User> addmembers) {
+        this.id = id;
         this.name = name;
         this.deadline = deadline;
-        this.course = course;
+        this.coursename = coursename;
         this.leader_id = leader_id;
-        this.members = members;
+        this.addmembers = addmembers;
     }
 
     public String getName() {
@@ -53,20 +55,30 @@ public class MakeTeam extends RestApi {
         return GenericResult.class;
     }
 
-    public Course getCourse() {
-        return course;
+
+
+    public ArrayList<User> getAddmembers() {
+        return addmembers;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setAddmembers(ArrayList<User> addmembers) {
+        this.addmembers = addmembers;
     }
 
-    public ArrayList<User> getMembers() {
-        return members;
+    public String getCoursename() {
+        return coursename;
     }
 
-    public void setMembers(ArrayList<User> members) {
-        this.members = members;
+    public void setCoursename(String coursename) {
+        this.coursename = coursename;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
 
