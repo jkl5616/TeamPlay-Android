@@ -78,7 +78,7 @@ public class ModifyTeamActivity extends AppCompatActivity implements DatePickerD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_team);
         ButterKnife.bind(this);
-        ((TextView)findViewById(R.id.custom_title)).setText("팀 정보 수정하기");
+        ((TextView) findViewById(R.id.custom_title)).setText("팀 정보 수정하기");
         user = TeamPlayApp.getAppInstance().getUser();
         teamMembers = TeamPlayApp.getAppInstance().getUserList();
         addMembers = new ArrayList<>();
@@ -125,6 +125,10 @@ public class ModifyTeamActivity extends AppCompatActivity implements DatePickerD
                 } else if (edittext_team_name.getText().toString().length() == 0) {
                     Snackbar.make(findViewById(android.R.id.content), "팀 이름을 써주세요.", 0).show();
                 } else {
+                    TeamPlayApp.getAppInstance().getTeam().setName(edittext_team_name.getText().toString());
+                    TeamPlayApp.getAppInstance().getTeam().setDeadline(deadline);
+                    if (t_course != null)
+                        TeamPlayApp.getAppInstance().getTeam().setCoursename(t_course.getName() + "-" + t_course.getProf());
                     new RestApiTask(ModifyTeamActivity.this).execute(new ModifyTeam(TeamPlayApp.getAppInstance().getTeam().getId(), edittext_team_name.getText().toString(), deadline, t_course.getName() + "-" + t_course.getProf(), user.getId(), addMembers));
                 }
             }
@@ -320,7 +324,6 @@ public class ModifyTeamActivity extends AppCompatActivity implements DatePickerD
     @Override
     public void onRestApiDone(RestApiResult restApiResult) {
         if (restApiResult.getResult()) {
-            startActivity(new Intent(ModifyTeamActivity.this, ProfileActivity.class));
             finish();
         }
     }
