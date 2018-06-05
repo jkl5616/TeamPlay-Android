@@ -12,6 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -65,11 +68,15 @@ public class TeamListCardAdapter extends BaseAdapter{
         }
         holder.name.setText(getItem(i).getName());
 
-        //set countdown timer
-        time[0] = 1;
-        time[1] = 2;
-        time[2] = 3;
-        time[3] = 4;
+
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY, 0);
+
+        long diff = teamList.get(i).getDeadline().getTime() - today.getTime().getTime();
+        time[3] = diff / 1000 % 60; //seconds
+        time[2] = diff / (60 * 1000) % 60; //minutes
+        time[1] = diff / (60 * 60 * 1000) % 60; //hours
+        time[0] = diff / (24 * 60 * 60 * 1000); //day
         CountDownAdapter countDownAdapter = new CountDownAdapter(holder.circleTimeView, time);
         countDownAdapter.start();
 
@@ -78,7 +85,7 @@ public class TeamListCardAdapter extends BaseAdapter{
             userList.add(new User(Integer.toString(idx), 1));
 
         }
-        //setContributors(userList, view, holder.layout_contributor);
+        setContributors(userList, view, holder.layout_contributor);
         return view;
     }
     public void setContributors(List<User> userList, View parent, View layout_contributor){
@@ -117,7 +124,7 @@ public class TeamListCardAdapter extends BaseAdapter{
     public class ViewHolder {
         CircleCountdownView[] circleTimeView = new CircleCountdownView[4];
         @BindView(R.id.tv_teamitem_teamname) TextView name;
-        //@BindView(R.id.tv_teamitem_layout_contributor) View layout_contributor;
+        @BindView(R.id.tv_teamitem_layout_contributor) View layout_contributor;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);

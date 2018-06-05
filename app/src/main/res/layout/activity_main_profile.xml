@@ -143,8 +143,6 @@
         app:fabMenu="@menu/profile_fab_menu"
         app:fabGravity="bottom_end"
         app:miniFabBackgroundTint="@android:color/white"
-        app:miniFabDrawableTint="?attr/colorPrimaryDark"
-        app:miniFabTitleTextColor="?attr/colorPrimaryDark"
 ></io.github.yavski.fabspeeddial.FabSpeedDial>
 </FrameLayout>
 
