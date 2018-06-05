@@ -78,7 +78,7 @@ public class TeamListCardAdapter extends BaseAdapter{
             userList.add(new User(Integer.toString(idx), 1));
 
         }
-        setContributors(userList, view, holder.layout_contributor);
+        //setContributors(userList, view, holder.layout_contributor);
         return view;
     }
     public void setContributors(List<User> userList, View parent, View layout_contributor){
@@ -117,7 +117,7 @@ public class TeamListCardAdapter extends BaseAdapter{
     public class ViewHolder {
         CircleCountdownView[] circleTimeView = new CircleCountdownView[4];
         @BindView(R.id.tv_teamitem_teamname) TextView name;
-        @BindView(R.id.tv_teamitem_layout_contributor) View layout_contributor;
+        //@BindView(R.id.tv_teamitem_layout_contributor) View layout_contributor;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
