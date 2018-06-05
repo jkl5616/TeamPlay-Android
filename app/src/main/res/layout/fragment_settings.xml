@@ -22,6 +22,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_modify_team_info"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginLeft="15dp"
@@ -39,6 +40,44 @@
 
             </View>
             <TextView
+                android:id="@+id/tv_manage_rule"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:gravity="center|left"
+                android:text="규칙 관리"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="#dddddd">
+
+            </View>
+
+            <TextView
+                android:id="@+id/tv_give_penalty"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:gravity="center|left"
+                android:text="패널티 부여"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="#dddddd">
+
+            </View>
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginLeft="15dp"
@@ -46,6 +85,31 @@
                 android:gravity="center|left"
                 android:text="푸쉬 알림 설정"
                 android:textSize="18sp" />
+
+            <CheckBox
+                android:id="@+id/push_kanban_checkbox"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="칸반 알림" />
+
+            <CheckBox
+                android:id="@+id/push_kanban_appointment"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="일정 알림" />
+
+            <CheckBox
+                android:id="@+id/push_kanban_penalty"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="패널티 알림" />
 
         </LinearLayout>
 

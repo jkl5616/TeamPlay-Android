@@ -8,7 +8,7 @@
         android:id="@+id/tv_coursename"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="9sp"
+        android:textSize="11sp"
         android:text="Test"
         android:gravity="center"/>
 
