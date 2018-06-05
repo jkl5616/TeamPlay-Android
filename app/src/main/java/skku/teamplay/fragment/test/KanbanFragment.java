@@ -95,7 +95,7 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
                 case 80:
                     if (pos != -1) {
                         adapter.modifyItem(pos, retKanbanPost);
-                        Toast.makeText(getActivity(), String.valueOf(retKanbanPost.getWritter_user_id()), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), String.valueOf(retKanbanPost.getWriter_user_id()), Toast.LENGTH_SHORT).show();
                         new RestApiTask(this).execute(retKanbanPost.makeModifiyKanbanPost());
                     }
                     break;
@@ -139,7 +139,7 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
                         intent.putExtra("pos", position);
                         intent.putExtra("page", mPage);
                         intent.putExtra("kanbanPost", intentKanbanPost);
-                        Toast.makeText(getActivity(), String.valueOf(intentKanbanPost.getWritter_user_id()) + intentKanbanPost.getTitle() + String.valueOf(intentKanbanPost.getOwner_id()), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), String.valueOf(intentKanbanPost.getWriter_user_id()) + intentKanbanPost.getTitle() + String.valueOf(intentKanbanPost.getOwner_id()), Toast.LENGTH_SHORT).show();
                         getActivity().startActivityForResult(intent, 1);
                     }
                     public void onClick(View v) { }
