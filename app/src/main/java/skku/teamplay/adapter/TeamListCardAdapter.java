@@ -1,20 +1,26 @@
 package skku.teamplay.adapter;
 
+import android.content.Context;
 import android.os.CountDownTimer;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 import skku.teamplay.R;
 import skku.teamplay.app.TeamPlayApp;
 import skku.teamplay.model.Team;
+import skku.teamplay.model.User;
 import skku.teamplay.widget.CircleCountdownView;
 
 public class TeamListCardAdapter extends BaseAdapter{
@@ -59,18 +65,59 @@ public class TeamListCardAdapter extends BaseAdapter{
         }
         holder.name.setText(getItem(i).getName());
 
+        //set countdown timer
         time[0] = 1;
         time[1] = 2;
         time[2] = 3;
         time[3] = 4;
         CountDownAdapter countDownAdapter = new CountDownAdapter(holder.circleTimeView, time);
         countDownAdapter.start();
+
+        List<User> userList = new ArrayList<>();
+        for (int idx = 0; idx < 10; idx++){
+            userList.add(new User(Integer.toString(idx), 1));
+
+        }
+        setContributors(userList, view, holder.layout_contributor);
         return view;
+    }
+    public void setContributors(List<User> userList, View parent, View layout_contributor){
+        View view;
+        for (User user : userList){
+            TextView textView;
+            CircleImageView imageView;
+
+            LayoutInflater layoutInflater = (LayoutInflater)parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = layoutInflater.inflate(R.layout.template_contributor, null);
+            ((LinearLayout)layout_contributor).addView(view);
+
+            textView = view.findViewById(R.id.template_contributor_name);
+            imageView = view.findViewById(R.id.template_contributor_image);
+
+            textView.setText(user.getName());
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TextView textName = view.findViewById(R.id.template_contributor_name);
+                    Toast.makeText(view.getContext(), textName.getText() + " clicked", Toast.LENGTH_LONG).show();
+                }
+            });
+
+            //temporarily
+            switch(1){
+                case 1:
+                    imageView.setImageResource(R.mipmap.basic_profile_pic);
+                    break;
+            }
+
+
+        }
     }
 
     public class ViewHolder {
         CircleCountdownView[] circleTimeView = new CircleCountdownView[4];
         @BindView(R.id.tv_teamitem_teamname) TextView name;
+        @BindView(R.id.tv_teamitem_layout_contributor) View layout_contributor;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -81,5 +128,6 @@ public class TeamListCardAdapter extends BaseAdapter{
 
         }
     }
+
 
 }
