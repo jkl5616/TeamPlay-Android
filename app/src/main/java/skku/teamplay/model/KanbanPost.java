@@ -15,7 +15,7 @@ public class KanbanPost implements Serializable {
     private String description;
     private int finished;
     private Date startDate, endDate;
-    private int writter_user_id;
+    private int writer_user_id;
     private int owner_id;
     private int rewardType;
     private int reward;
@@ -29,7 +29,7 @@ public class KanbanPost implements Serializable {
                       int finished,
                       Date startDate,
                       Date endDate,
-                      int writter_user_id,
+                      int writer_user_id,
                       int owner_id,
                       int rewardType,
                       int reward) {
@@ -40,7 +40,7 @@ public class KanbanPost implements Serializable {
         this.finished = finished;               // initial -> false
         this.startDate = startDate;           // initial -> current time
         this.endDate = endDate;
-        this.writter_user_id = writter_user_id;
+        this.writer_user_id = writer_user_id;
         this.owner_id = owner_id;
         this.rewardType = rewardType;       // 0 전투력, 1 지갑, 2 서포트
         this.reward = reward;
@@ -54,7 +54,7 @@ public class KanbanPost implements Serializable {
     public int getFinished() { return finished; }
     public Date getStartDate() { return startDate; }
     public Date getEndDate() { return endDate; }
-    public int getWritter_user_id() { return writter_user_id; }
+    public int getWriter_user_id() { return writer_user_id; }
     public int getOwner_id() { return owner_id; }
     public int getRewardType() { return rewardType; }
     public int getReward() { return reward; }
@@ -111,7 +111,7 @@ public class KanbanPost implements Serializable {
     public void setFinished(int finished) { this.finished = finished; }
     public void setStartDate(Date startDate) { this.startDate = startDate; }
     public void setEndDate(Date endDate) { this.endDate = endDate; }
-    public void setWritter_user_id(int writter_user_id) { this.writter_user_id = writter_user_id; }
+    public void setWriter_user_id(int writer_user_id) { this.writer_user_id = writer_user_id; }
     public void setOwner(int ownerId) { this.owner_id = ownerId; }
     public void setRewardType(int rewardType) { this.rewardType = rewardType; }
     public void setReward(int reward) { this.reward = reward; }
@@ -154,7 +154,7 @@ public class KanbanPost implements Serializable {
                 this.finished,
                 this.startDate,
                 this.endDate,
-                this.writter_user_id,
+                this.writer_user_id,
                 this.owner_id,
                 this.rewardType,
                 this.reward
