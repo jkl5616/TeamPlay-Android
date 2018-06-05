@@ -8,12 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.lang.reflect.Array;
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -40,12 +39,12 @@ import skku.teamplay.model.User;
  */
 
 public class KanbanMainFragment extends  Fragment implements OnRestApiListener{
-    private KanbanQuestlistAdapter adapter;
     @BindView(R.id.kanbanPostList) ListView questList;
-
-    ArrayList<KanbanPost> kanbanPosts;
-    Team team;
-    User user;
+    private KanbanQuestlistAdapter adapter;
+    private ArrayList<KanbanPost> kanbanPosts;
+    private Team team;
+    private User user;
+    View header;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,22 +56,18 @@ public class KanbanMainFragment extends  Fragment implements OnRestApiListener{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_kanban, container, false);
         ButterKnife.bind(this, rootView);
-
-        View header = getLayoutInflater().inflate(R.layout.list_quest_header_template, null, false);
-        questList.addHeaderView(header);
         team = TeamPlayApp.getAppInstance().getTeam();
         user = TeamPlayApp.getAppInstance().getUser();
         new RestApiTask(this).execute(new GetKanbansByTeam(team.getId()));
-
         kanbanPosts = new ArrayList<>();
-
+        header = getLayoutInflater().inflate(R.layout.template_postlist_header, null, false);
+        questList.addHeaderView(header);
         questList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
             }
             public void onClick(View v) { }
         });
-
         return rootView;
     }
 
@@ -105,9 +100,11 @@ public class KanbanMainFragment extends  Fragment implements OnRestApiListener{
                     }
                     if (i == len - 1 && kanbanPosts != null) {
                         adapter = new KanbanQuestlistAdapter(kanbanPosts);
-                        if (adapter.getCount() > 0) {
+                        if (adapter.getCount() >= 0) {
                             questList.setAdapter(adapter);
                         }
+                        TextView tv = (TextView) header.findViewById(R.id.count);
+                        tv.setText(String.valueOf(adapter.getCount()));
                     }
                 }
                 break;

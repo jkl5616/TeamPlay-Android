@@ -22,7 +22,6 @@ import butterknife.ButterKnife;
 import skku.teamplay.R;
 import skku.teamplay.app.TeamPlayApp;
 import skku.teamplay.model.KanbanPost;
-import skku.teamplay.model.Team;
 import skku.teamplay.model.User;
 
 
@@ -58,7 +57,7 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
 
         if (rootView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rootView = inflater.inflate(R.layout.list_quest_template, parent, false);
+            rootView = inflater.inflate(R.layout.template_postlist_item, parent, false);
         }
         ButterKnife.bind(this, rootView);
 

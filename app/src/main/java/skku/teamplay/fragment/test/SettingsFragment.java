@@ -47,31 +47,31 @@ public class SettingsFragment extends Fragment {
 
             }
         });
-        CheckBox push_kanban = rootView.findViewById(R.id.push_kanban_checkbox);
-        push_kanban.setChecked(SharedPreferencesUtil.getBoolean("use_push_kanban", true));
-        CheckBox push_appointment = rootView.findViewById(R.id.push_kanban_appointment);
-        push_appointment.setChecked(SharedPreferencesUtil.getBoolean("use_push_kanban", true));
-        CheckBox push_penalty = rootView.findViewById(R.id.push_kanban_penalty);
-        push_penalty.setChecked(SharedPreferencesUtil.getBoolean("use_push_kanban", true));
-
-        push_kanban.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                SharedPreferencesUtil.putBoolean("use_push_kanban", b);
-            }
-        });
-        push_appointment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                SharedPreferencesUtil.putBoolean("use_push_appointment", b);
-            }
-        });
-        push_penalty.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                SharedPreferencesUtil.putBoolean("use_push_penalty", b);
-            }
-        });
+//        CheckBox push_kanban = rootView.findViewById(R.id.push_kanban_checkbox);
+//        push_kanban.setChecked(SharedPreferencesUtil.getBoolean("use_push_kanban", true));
+//        CheckBox push_appointment = rootView.findViewById(R.id.push_kanban_appointment);
+//        push_appointment.setChecked(SharedPreferencesUtil.getBoolean("use_push_kanban", true));
+//        CheckBox push_penalty = rootView.findViewById(R.id.push_kanban_penalty);
+//        push_penalty.setChecked(SharedPreferencesUtil.getBoolean("use_push_kanban", true));
+//
+//        push_kanban.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                SharedPreferencesUtil.putBoolean("use_push_kanban", b);
+//            }
+//        });
+//        push_appointment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                SharedPreferencesUtil.putBoolean("use_push_appointment", b);
+//            }
+//        });
+//        push_penalty.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                SharedPreferencesUtil.putBoolean("use_push_penalty", b);
+//            }
+//        });
         return rootView;
     }
 

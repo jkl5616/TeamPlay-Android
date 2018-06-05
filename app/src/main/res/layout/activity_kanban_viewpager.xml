@@ -34,8 +34,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:src="@drawable/fab_add"
 
-            fab:menu_icon="@drawable/fab_add"
             fab:fab_label="포스트 추가하기"
             fab:fab_size="mini"
             fab:fab_colorNormal="@color/colorPrimary"
@@ -49,8 +49,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:src="@drawable/fab_add"
 
-            fab:menu_icon="@drawable/fab_add"
             fab:fab_label="보드 추가하기"
             fab:fab_size="mini"
             fab:fab_colorNormal="@color/colorPrimary"
@@ -64,8 +64,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:src="@android:drawable/ic_delete"
 
-            fab:menu_icon="@drawable/fab_add"
             fab:fab_label="현재 보드 삭제하기"
             fab:fab_size="mini"
             fab:fab_colorNormal="@color/palateRed"

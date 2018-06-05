@@ -113,7 +113,7 @@ public class KanbanPost implements Serializable {
     public void setFinished(int finished) { this.finished = finished; }
     public void setStartDate(Date startDate) { this.startDate = startDate; }
     public void setEndDate(Date endDate) { this.endDate = endDate; }
-    public void setWritter_user_id(int writter_user_id) { this.writter_user_id = writter_user_id; }
+    public void setWriter_user_id(int writter_user_id) { this.writer_user_id = writter_user_id; }
     public void setOwner(int ownerId) { this.owner_id = ownerId; }
     public void setRewardType(int rewardType) { this.rewardType = rewardType; }
     public void setReward(int reward) { this.reward = reward; }
@@ -150,22 +150,10 @@ public class KanbanPost implements Serializable {
     }
 
     public AddKanbanPost makeAddKanbanPost() {
-        AddKanbanPost addKanbanPost = new AddKanbanPost(this.kanban_board_id,
-                this.title,
-                this.description,
-                this.finished,
-                this.startDate,
-                this.endDate,
-                this.writer_user_id,
-                this.owner_id,
-                this.rewardType,
-                this.reward
-                );
-        return addKanbanPost;
-        return new AddKanbanPost(this.kanban_board_id, this.title, this.description, this.finished, this.startDate, this.endDate, this.writter_user_id, this.owner_id, this.rewardType, this.reward);
+        return new AddKanbanPost(this.kanban_board_id, this.title, this.description, this.finished, this.startDate, this.endDate, this.writer_user_id, this.owner_id, this.rewardType, this.reward);
     }
     public ModifyKanbanPost makeModifiyKanbanPost() {
-        return new ModifyKanbanPost(this.id, this.kanban_board_id, this.title, this.description, this.finished, this.startDate, this.endDate, this.writter_user_id, this.owner_id, this.rewardType, this.reward);
+        return new ModifyKanbanPost(this.id, this.kanban_board_id, this.title, this.description, this.finished, this.startDate, this.endDate, this.writer_user_id, this.owner_id, this.rewardType, this.reward);
     }
     public DeleteKanbanPost makeDeleteKanbanPost() {
         return new DeleteKanbanPost(this.id);
