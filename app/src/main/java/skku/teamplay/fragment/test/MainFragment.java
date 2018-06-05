@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
@@ -35,6 +36,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import skku.teamplay.R;
+import skku.teamplay.app.TeamPlayApp;
 import skku.teamplay.model.User;
 import skku.teamplay.util.UnitConversion;
 
@@ -55,7 +57,7 @@ public class MainFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        List<User> userList = new ArrayList<>();
+        List<User> userList;
         if(rootView != null) return rootView;
         rootView = (ViewGroup) inflater.inflate(R.layout.activity_main_fragment, container, false);
 
@@ -66,17 +68,20 @@ public class MainFragment extends Fragment {
         layoutPlan = (RelativeLayout) rootView.findViewById(R.id.main_plan_layout);
         listUser = (ListView) rootView.findViewById(R.id.main_list_user);
 
-        UserAdapter adapter = new UserAdapter(userList);
-        for (int i = 0; i < 10; i++){
-            userList.add(new User("A", 1));
-        }
-
+        userList = TeamPlayApp.getAppInstance().getUserList();
+        final UserAdapter adapter = new UserAdapter(userList);
         listUser.setAdapter(adapter);
 
+        listUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                AnimCheckBox checkBox = view.findViewById(R.id.layout_list_checkbox);
+                checkBox.setChecked(!checkBox.isChecked());
+            }
+        });
 
-
-        //        for (int i = 0; i < 10; i++)
-//            addPlan("Added Plan #" + Integer.toString(i));
+        User user = TeamPlayApp.getAppInstance().getUser();
+        textInfo.setText(user.getName() + "/" + user.getEmail());
         setmRadarChart();
         return rootView;
     }
@@ -220,7 +225,7 @@ public class MainFragment extends Fragment {
 
         ArrayList<RadarEntry> entries1 = new ArrayList<RadarEntry>();
         ArrayList<RadarEntry> entries2 = new ArrayList<RadarEntry>();
-
+        ArrayList<RadarEntry> entries3 = new ArrayList<>();
         entries1.add(new RadarEntry(81));
         entries1.add(new RadarEntry(20));
         entries1.add(new RadarEntry(52));
@@ -229,6 +234,9 @@ public class MainFragment extends Fragment {
         entries2.add(new RadarEntry(61));
         entries2.add(new RadarEntry(92));
 
+        entries3.add(new RadarEntry(30));
+        entries3.add(new RadarEntry(61));
+        entries3.add(new RadarEntry(92));
         RadarDataSet set1 = new RadarDataSet(entries1, "나");
         set1.setColor(Color.parseColor("#FF8682"));
         set1.setFillColor(Color.parseColor("#FFE8D1"));
