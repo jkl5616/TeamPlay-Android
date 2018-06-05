@@ -78,6 +78,7 @@ public class ModifyTeamActivity extends AppCompatActivity implements DatePickerD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_team);
         ButterKnife.bind(this);
+        ((TextView)findViewById(R.id.custom_title)).setText("팀 정보 수정하기");
         user = TeamPlayApp.getAppInstance().getUser();
         teamMembers = TeamPlayApp.getAppInstance().getUserList();
         addMembers = new ArrayList<>();
@@ -88,7 +89,6 @@ public class ModifyTeamActivity extends AppCompatActivity implements DatePickerD
         year = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH);
         day = c.get(Calendar.DAY_OF_MONTH);
-
 
 
         edittext_team_deadline.setOnClickListener(new View.OnClickListener() {
@@ -118,33 +118,41 @@ public class ModifyTeamActivity extends AppCompatActivity implements DatePickerD
         btn_maketeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(teamMembers.size() == 1) {
+                if (teamMembers.size() == 1) {
                     Snackbar.make(findViewById(android.R.id.content), "팀원을 더 추가하세요", 0).show();
-                } else if(deadline == null) {
+                } else if (deadline == null) {
                     Snackbar.make(findViewById(android.R.id.content), "종강날짜를 설정하세요", 0).show();
-                } else if(edittext_team_name.getText().toString().length() == 0) {
+                } else if (edittext_team_name.getText().toString().length() == 0) {
                     Snackbar.make(findViewById(android.R.id.content), "팀 이름을 써주세요.", 0).show();
                 } else {
-                    new RestApiTask(ModifyTeamActivity.this).execute(new ModifyTeam(TeamPlayApp.getAppInstance().getTeam().getId(), edittext_team_name.getText().toString(), deadline, t_course.getName()+"-"+t_course.getProf(), user.getId(), addMembers));
+                    new RestApiTask(ModifyTeamActivity.this).execute(new ModifyTeam(TeamPlayApp.getAppInstance().getTeam().getId(), edittext_team_name.getText().toString(), deadline, t_course.getName() + "-" + t_course.getProf(), user.getId(), addMembers));
                 }
             }
         });
 
         edittext_team_name.setText(TeamPlayApp.getAppInstance().getTeam().getName());
-        edittext_team_course.setText(TeamPlayApp.getAppInstance().getTeam().getCoursename());
+        String seg[] = TeamPlayApp.getAppInstance().getTeam().getCoursename().split("-");
+        if (seg.length > 1) {
+            Course course = new Course();
+            course.setName(seg[0]);
+            course.setProf(seg[1]);
+            setTeamCourse(course);
+        } else {
+            edittext_team_course.setText(TeamPlayApp.getAppInstance().getTeam().getCoursename());
+        }
         Calendar calendar = Util.calendarFromDate(TeamPlayApp.getAppInstance().getTeam().getDeadline());
         edittext_team_deadline.setText(String.format("%d-%d-%d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH)));
     }
 
     private void addUser(User user) {
         boolean contains = false;
-        for(int i = 0; i < teamMembers.size(); i++) {
-            if(teamMembers.get(i).getId() == user.getId()) {
+        for (int i = 0; i < teamMembers.size(); i++) {
+            if (teamMembers.get(i).getId() == user.getId()) {
                 contains = true;
                 break;
             }
         }
-        if(contains) {
+        if (contains) {
             Snackbar.make(findViewById(android.R.id.content), "이미 추가되어 있습니다", 0).show();
             return;
         }
@@ -171,7 +179,7 @@ public class ModifyTeamActivity extends AppCompatActivity implements DatePickerD
                 new RestApiTask(new OnRestApiListener() {
                     @Override
                     public void onRestApiDone(RestApiResult restApiResult) {
-                        if(restApiResult.getResult()) {
+                        if (restApiResult.getResult()) {
                             UserListResult result = (UserListResult) restApiResult;
                             final ArrayList<User> searched = result.getUserList();
                             lv.setAdapter(new SimpleMemberAdapter(searched));
@@ -191,7 +199,7 @@ public class ModifyTeamActivity extends AppCompatActivity implements DatePickerD
     }
 
     private void showSearchByCourseDialog() {
-        if(t_course == null) {
+        if (t_course == null) {
             Snackbar.make(findViewById(android.R.id.content), "먼저 과목을 지정하세요.", 0).show();
             return;
         }
@@ -207,7 +215,7 @@ public class ModifyTeamActivity extends AppCompatActivity implements DatePickerD
         new RestApiTask(new OnRestApiListener() {
             @Override
             public void onRestApiDone(RestApiResult restApiResult) {
-                if(restApiResult.getResult()) {
+                if (restApiResult.getResult()) {
                     UserListResult result = (UserListResult) restApiResult;
                     final ArrayList<User> searched = result.getUserList();
                     lv.setAdapter(new SimpleMemberAdapter(searched));
@@ -225,7 +233,7 @@ public class ModifyTeamActivity extends AppCompatActivity implements DatePickerD
     }
 
     private void showCoursePickDialog() {
-        if(user.getTimetable().length() == 0) {
+        if (user.getTimetable().length() == 0) {
             Snackbar.make(findViewById(android.R.id.content), "과목을 선택하시려면 프로필 화면에서 시간표를 등록하세요", Snackbar.LENGTH_LONG).show();
         }
         String cols[] = {"#FE816D", "#68C4AF", "#45B4E7", "#D187FE", "#ffb331", "#4573E7", "#6AECF4", "#ADA7FC", "#95CB9C", "#01579B"};
@@ -254,22 +262,22 @@ public class ModifyTeamActivity extends AppCompatActivity implements DatePickerD
     public void renderTimeTableDialog() {
         Gson gson = new Gson();
         ArrayList<User> userList = TeamPlayApp.getAppInstance().getUserList();
-        String cols[] = {"#FE816D","#68C4AF","#45B4E7","#D187FE","#ffb331","#4573E7","#6AECF4","#ADA7FC","#95CB9C","#01579B"};
+        String cols[] = {"#FE816D", "#68C4AF", "#45B4E7", "#D187FE", "#ffb331", "#4573E7", "#6AECF4", "#ADA7FC", "#95CB9C", "#01579B"};
         ArrayList<Integer> colArray = new ArrayList<Integer>();
         String alpha = "77";
-        for(int i = 0; i < cols.length; i++) {
-            colArray.add(Color.parseColor("#"+alpha+cols[i].split("#")[1]));
+        for (int i = 0; i < cols.length; i++) {
+            colArray.add(Color.parseColor("#" + alpha + cols[i].split("#")[1]));
         }
 
 
-        Integer colors[] =  colArray.toArray(new Integer[colArray.size()]);
+        Integer colors[] = colArray.toArray(new Integer[colArray.size()]);
 
         int i = 0;
         int layoutHeight = layout_timetable.getMeasuredHeight();
         int layoutWidth = layout_timetable.getMeasuredWidth();
 
         CourseList courseList = gson.fromJson(user.getTimetable(), CourseList.class);
-        for(int day = 0; day < 5; day++) {
+        for (int day = 0; day < 5; day++) {
             ArrayList<Course> courses = courseList.get(day);
             for (Course course : courses) {
                 int color = colors[(i++) % colors.length];
@@ -285,11 +293,11 @@ public class ModifyTeamActivity extends AppCompatActivity implements DatePickerD
                 });
                 TextView tv_coursename = (TextView) course_layout.findViewById(R.id.tv_coursename);
                 tv_coursename.setText(course.getName());
-                int width = layoutWidth/5;
-                int height = layoutHeight*course.getTime()/780;
+                int width = layoutWidth / 5;
+                int height = layoutHeight * course.getTime() / 780;
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
-                int left = layoutWidth*day/5;
-                int top = layoutHeight*(course.getTop()-540)/780;
+                int left = layoutWidth * day / 5;
+                int top = layoutHeight * (course.getTop() - 540) / 780;
                 params.setMargins(left, top, 0, 0);
                 course_layout.setLayoutParams(params);
                 layout_timetable.addView(course_layout);
@@ -299,7 +307,7 @@ public class ModifyTeamActivity extends AppCompatActivity implements DatePickerD
 
     private void setTeamCourse(Course course) {
         t_course = course;
-        edittext_team_course.setText(course.getName()+"-"+course.getProf());
+        edittext_team_course.setText(course.getName() + "-" + course.getProf());
     }
 
     @Override
@@ -310,7 +318,7 @@ public class ModifyTeamActivity extends AppCompatActivity implements DatePickerD
 
     @Override
     public void onRestApiDone(RestApiResult restApiResult) {
-        if(restApiResult.getResult()) {
+        if (restApiResult.getResult()) {
             startActivity(new Intent(ModifyTeamActivity.this, ProfileActivity.class));
             finish();
         }
