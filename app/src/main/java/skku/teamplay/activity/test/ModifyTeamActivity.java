@@ -141,6 +141,7 @@ public class ModifyTeamActivity extends AppCompatActivity implements DatePickerD
             edittext_team_course.setText(TeamPlayApp.getAppInstance().getTeam().getCoursename());
         }
         Calendar calendar = Util.calendarFromDate(TeamPlayApp.getAppInstance().getTeam().getDeadline());
+        deadline = TeamPlayApp.getAppInstance().getTeam().getDeadline();
         edittext_team_deadline.setText(String.format("%d-%d-%d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH)));
     }
 

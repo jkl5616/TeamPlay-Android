@@ -9,7 +9,7 @@ import java.util.Date;
 public class Team {
     private int id;
     private String name;
-    private Date date;
+    private Date deadline;
     private String coursename;
 
     public String getName() {
@@ -28,19 +28,19 @@ public class Team {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public String getCoursename() {
         return coursename;
     }
 
     public void setCoursename(String coursename) {
         this.coursename = coursename;
+    }
+
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
     }
 }
