@@ -1,16 +1,24 @@
 package skku.teamplay.fragment.test;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.github.lguipeng.library.animcheckbox.AnimCheckBox;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
@@ -25,7 +33,9 @@ import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import skku.teamplay.R;
+import skku.teamplay.model.User;
 import skku.teamplay.util.UnitConversion;
 
 public class MainFragment extends Fragment {
@@ -34,29 +44,92 @@ public class MainFragment extends Fragment {
     TextView textInfo, textPlan;
     List<TextView> listPlan = new ArrayList<>();
     ViewGroup rootView;
+    ListView listUser;
+    static final String[] user = {"abc", "asd", "asdwq"};
+//    @BindView(R.id.main_list_user) ListView listUser;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        List<User> userList = new ArrayList<>();
         if(rootView != null) return rootView;
         rootView = (ViewGroup) inflater.inflate(R.layout.activity_main_fragment, container, false);
+
 
         mRadarChart = (RadarChart) rootView.findViewById(R.id.main_radar_chart);
         textInfo = (TextView) rootView.findViewById(R.id.main_text_my_info);
         textPlan = (TextView) rootView.findViewById(R.id.main_plan_textview);
         layoutPlan = (RelativeLayout) rootView.findViewById(R.id.main_plan_layout);
+        listUser = (ListView) rootView.findViewById(R.id.main_list_user);
 
-        for (int i = 0; i < 10; i++)
-            addPlan("Added Plan #" + Integer.toString(i));
+        UserAdapter adapter = new UserAdapter(userList);
+        for (int i = 0; i < 10; i++){
+            userList.add(new User("A", 1));
+        }
+
+        listUser.setAdapter(adapter);
+
+
+
+        //        for (int i = 0; i < 10; i++)
+//            addPlan("Added Plan #" + Integer.toString(i));
         setmRadarChart();
         return rootView;
     }
 
+
+
+
+    private class UserAdapter extends BaseAdapter{
+        List<User> userList;
+        public UserAdapter(List<User> userList) {
+            this.userList = userList;
+        }
+
+        @Override
+        public int getCount() {
+            return userList.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return userList.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return userList.get(i).getId();
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            final int pos = i;
+            final Context context = viewGroup.getContext();
+
+            if(view == null){
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(R.layout.layout_custom_userlist, null, false);
+            }
+            TextView textUsername = view.findViewById(R.id.layout_list_user_name);
+            AnimCheckBox checkUser = view.findViewById(R.id.layout_list_checkbox);
+            ImageView imageUser = (ImageView)view.findViewById(R.id.layout_list_profile_pic);
+
+            User user = userList.get(i);
+            textUsername.setText(user.getName());
+
+            return view;
+        }
+
+        public void addItem(String name){
+            User newUser = new User(name, 1);
+
+            userList.add(newUser);
+        }
+    }
 /*Dynamically add a plan as textview on the layout*/
     public void addPlan(String planTitle){
         final int paddingPx = 20;
