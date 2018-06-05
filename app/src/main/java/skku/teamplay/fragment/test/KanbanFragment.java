@@ -111,6 +111,7 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
                     break;
 
                 case 1000:      // 추가
+                    retKanbanPost.setKanban_board_id(getArguments().getInt("kanbanId"));
                     adapter.addItem(retKanbanPost);
                     new RestApiTask(this).execute(retKanbanPost.makeAddKanbanPost());
                     break;
