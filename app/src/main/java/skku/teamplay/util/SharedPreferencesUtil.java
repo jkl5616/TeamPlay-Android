@@ -22,6 +22,20 @@ public class SharedPreferencesUtil {
         edit.commit();
     }
 
+
+    public static Boolean getBoolean(String key, boolean value) {
+        validate();
+        return pref.getBoolean(key, value);
+    }
+
+
+    public static void putBoolean(String key, boolean value) {
+        validate();;
+        SharedPreferences.Editor edit = pref.edit();
+        edit.putBoolean(key, value);
+        edit.commit();
+    }
+
     public static String getString(String key) {
         validate();
         return pref.getString(key, null);

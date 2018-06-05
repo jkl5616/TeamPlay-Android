@@ -2,20 +2,26 @@ package skku.teamplay.fragment.test;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import skku.teamplay.R;
 import skku.teamplay.adapter.KanbanQuestlistAdapter;
 import skku.teamplay.activity.dialog.QuestPopupDialog;
@@ -26,6 +32,8 @@ import skku.teamplay.api.impl.AddKanbanPost;
 import skku.teamplay.api.impl.GetKanbanPostByBoard;
 import skku.teamplay.api.impl.GetKanbansByTeam;
 import skku.teamplay.api.impl.GetTeamByUser;
+import skku.teamplay.api.impl.ModifyKanbanBoard;
+import skku.teamplay.api.impl.ModifyKanbanPost;
 import skku.teamplay.api.impl.res.KanbanBoardListResult;
 import skku.teamplay.api.impl.res.KanbanPostListResult;
 import skku.teamplay.app.TeamPlayApp;
@@ -69,22 +77,8 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
         ButterKnife.bind(this, fragmentLayout);
         textKanbanTitle.setText(getArguments().getString("title"));
         mPage = getArguments().getInt("page");
-        new RestApiTask(this).execute(new GetKanbanPostByBoard(getArguments().getInt("kanbanId")));
-
-        QuestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Intent intent = new Intent(getActivity(), QuestPopupDialog.class);
-                KanbanPost intentKanbanPost = (KanbanPost)adapter.getItem(position);
-
-                intent.putExtra("pos", position);
-                intent.putExtra("page", mPage);
-                intent.putExtra("kanbanPost", intentKanbanPost);
-
-                getActivity().startActivityForResult(intent, 1);
-            }
-            public void onClick(View v) { }
-        });
+        mKanbanId = getArguments().getInt("kanbanId");
+        new RestApiTask(this).execute(new GetKanbanPostByBoard(mKanbanId));
         return fragmentLayout;
     }
 
@@ -102,16 +96,23 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
                 case 10:        // 제거
                     if (pos != -1) {
                         adapter.deleteItem(pos);
+                        new RestApiTask(this).execute(retKanbanPost.makeDeleteKanbanPost());
+                    }
+                    break;
+                case 80:
+                    if (pos != -1) {
+                        adapter.modifyItem(pos, retKanbanPost);
+                        new RestApiTask(this).execute(retKanbanPost.makeModifiyKanbanPost());
                     }
                     break;
                 case 100:       // 완료
                     if (pos != -1) {
                         adapter.modifyItem(pos, retKanbanPost);
+                        new RestApiTask(this).execute(retKanbanPost.makeModifiyKanbanPost());
                     }
                     break;
-
                 case 1000:      // 추가
-                    retKanbanPost.setKanban_board_id(getArguments().getInt("kanbanId"));
+                    retKanbanPost.setKanban_board_id(mKanbanId);
                     adapter.addItem(retKanbanPost);
                     new RestApiTask(this).execute(retKanbanPost.makeAddKanbanPost());
                     break;
@@ -119,6 +120,7 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
                 case 2000:      // 변경
                     if (pos != -1) {;
                         adapter.modifyItem(pos, retKanbanPost);
+                        new RestApiTask(this).execute(retKanbanPost.makeModifiyKanbanPost());
                     }
                     break;
             }
@@ -133,10 +135,58 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
                 kanbanPosts = result.getPostList();
                 adapter = new KanbanQuestlistAdapter(kanbanPosts);
                 QuestList.setAdapter(adapter);
+                QuestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                        Intent intent = new Intent(getActivity(), QuestPopupDialog.class);
+                        KanbanPost intentKanbanPost = (KanbanPost)adapter.getItem(position);
+                        intent.putExtra("pos", position);
+                        intent.putExtra("page", mPage);
+                        intent.putExtra("kanbanPost", intentKanbanPost);
+                        getActivity().startActivityForResult(intent, 1);
+                    }
+                    public void onClick(View v) { }
+                });
                 break;
-
             case "addkanbanpost":
-                Toast.makeText(getActivity(), "done", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "포스트가 추가되었습니다.", Toast.LENGTH_SHORT).show();
+                break;
+            case "modifykanbanpost":
+                Toast.makeText(getActivity(), "포스트가 변경되었습니다.", Toast.LENGTH_SHORT).show();
+                break;
+            case "deletekanbanpost":
+                Toast.makeText(getActivity(), "포스트가 제거되었습니다.", Toast.LENGTH_SHORT).show();
+                break;
+            case "modifykanbanboard":
+                Toast.makeText(getActivity(), "보드가 변경되었습니다.", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
+
+    @OnClick(R.id.textKanbanTitle)
+    void onTitleClick() {
+        MaterialDialog dialog =
+                new MaterialDialog.Builder(getActivity())
+                        .title("칸반보드 수정하기")
+                        .customView(R.layout.dialog_add_kanban_board, true)
+                        .positiveText("수정")
+                        .negativeText("취소")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                modifyBoard(dialog.getCustomView());
+                            }
+                        })
+                        .build();
+        dialog.show();
+    }
+
+    void modifyBoard(View cView) {
+        String title = ((EditText) cView.findViewById(R.id.editTitle)).getText().toString();
+        ModifyKanbanBoard modifyKanbanBoard = new ModifyKanbanBoard(mKanbanId, title, mPage);
+        textKanbanTitle.setText(title);
+        new RestApiTask(this).execute(modifyKanbanBoard);
+    }
+
+
 }

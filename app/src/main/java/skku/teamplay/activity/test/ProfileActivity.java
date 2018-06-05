@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.github.yavski.fabspeeddial.FabSpeedDial;
+import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 import skku.teamplay.R;
 import skku.teamplay.adapter.TeamListAdapter;
 import skku.teamplay.adapter.TeamListCardAdapter;
@@ -24,6 +27,7 @@ import skku.teamplay.api.RestApiResult;
 import skku.teamplay.api.RestApiTask;
 import skku.teamplay.api.impl.GetAllUsersByTeam;
 import skku.teamplay.api.impl.GetTeamByUser;
+import skku.teamplay.api.impl.MakeTeam;
 import skku.teamplay.api.impl.res.TeamListResult;
 import skku.teamplay.api.impl.res.UserListResult;
 import skku.teamplay.app.TeamPlayApp;
@@ -46,6 +50,8 @@ public class ProfileActivity extends AppCompatActivity implements OnRestApiListe
     @BindView(R.id.lv_team_list)
     ListView lv_teamList;
 
+    @BindView(R.id.fab_main_profile)
+    FabSpeedDial fab;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +66,27 @@ public class ProfileActivity extends AppCompatActivity implements OnRestApiListe
         });
 
         tv_profile.setText(TeamPlayApp.getAppInstance().getUser().getName());
-
+        fab.setMenuListener(new SimpleMenuListenerAdapter(){
+            @Override
+            public boolean onMenuItemSelected(MenuItem menuItem) {
+                int temp = 0;
+                switch (menuItem.getItemId()){
+                    case R.id.menu1:
+                        Intent intent = new Intent(ProfileActivity.this, MakeTeamActivity.class);
+                        startActivity(intent);
+                        temp = 1;
+                        break;
+                    case R.id.menu2:
+                        temp = 2;
+                        break;
+                    case R.id.menu3:
+                        temp = 3;
+                        break;
+                }
+                Toast.makeText(getApplicationContext(), "Fab selected #" + temp, Toast.LENGTH_LONG).show();
+                return false;
+            }
+        });
         new RestApiTask(this).execute(new GetTeamByUser(TeamPlayApp.getAppInstance().getUser().getId()));
     }
 

@@ -7,6 +7,7 @@ public class Course {
     private int start;
     private int height;
     private int time;
+    private int day;
 
     public Course() {
 
@@ -67,5 +68,22 @@ public class Course {
 
     public void setTime(int time) {
         this.time = time;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof Course) {
+            Course c = (Course) o;
+            return c.getName().equals(name) && c.getHeight() == height && c.getProf().equals(prof) && c.getTop() == top;
+        }
+        return false;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
     }
 }

@@ -29,6 +29,7 @@ import skku.teamplay.model.User;
  */
 
 public class QuestPopupDialog extends Activity {
+    @BindView(R.id.Title) TextView Title;
     @BindView(R.id.textTitle) TextView textTitle;
     @BindView(R.id.textDescription) TextView textDescription;
     @BindView(R.id.textStartAt) TextView textStartAt;
@@ -73,8 +74,12 @@ public class QuestPopupDialog extends Activity {
         page = intent.getIntExtra("page", -1);
 
         if(pos != -1) {
+            Title.setText("수정하기");
             btnAdd.setText("변경");
             btnRemove.setText("제거");
+        }
+        else {
+            Title.setText("추가하기");
         }
         if(kanbanPost.getOwner_id() == -1) {
             btnFinish.setText("내꺼");
@@ -86,6 +91,20 @@ public class QuestPopupDialog extends Activity {
         editDueAt.setText(kanbanPost.getDueAtSimple());
         spinnerRewardType.setSelection(kanbanPost.getRewardType());
         editReward.setText(String.valueOf(kanbanPost.getReward()));
+    }
+
+    @Override
+    public void onBackPressed() {
+        fillRetIntent();
+        setResult(0, retIntent);
+        finish();
+    }
+
+    @OnClick(R.id.btnCancel)
+    void onCancelclick() {
+        fillRetIntent();
+        setResult(0, retIntent);
+        finish();
     }
 
     @OnClick (R.id.editStartAt)
@@ -157,7 +176,6 @@ public class QuestPopupDialog extends Activity {
                 finish();
             }
         }
-
     }
 
     private DatePickerDialog.OnDateSetListener dateSetListener1 = new DatePickerDialog.OnDateSetListener() {

@@ -69,7 +69,7 @@ public class SettingsFragment extends Fragment {
         push_penalty.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                SharedPreferencesUtil.putBoolean("use_push_penalty", b);
+               SharedPreferencesUtil.putBoolean("use_push_penalty", b);
             }
         });
         return rootView;
