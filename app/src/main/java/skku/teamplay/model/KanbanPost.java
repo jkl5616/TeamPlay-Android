@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import skku.teamplay.api.impl.AddKanbanPost;
+import skku.teamplay.api.impl.DeleteKanbanPost;
+import skku.teamplay.api.impl.ModifyKanbanPost;
 
 
 public class KanbanPost implements Serializable {
@@ -148,17 +150,12 @@ public class KanbanPost implements Serializable {
     }
 
     public AddKanbanPost makeAddKanbanPost() {
-        AddKanbanPost addKanbanPost = new AddKanbanPost(this.kanban_board_id,
-                this.title,
-                this.description,
-                this.finished,
-                this.startDate,
-                this.endDate,
-                this.writter_user_id,
-                this.owner_id,
-                this.rewardType,
-                this.reward
-                );
-        return addKanbanPost;
+        return new AddKanbanPost(this.kanban_board_id, this.title, this.description, this.finished, this.startDate, this.endDate, this.writter_user_id, this.owner_id, this.rewardType, this.reward);
+    }
+    public ModifyKanbanPost makeModifiyKanbanPost() {
+        return new ModifyKanbanPost(this.id, this.kanban_board_id, this.title, this.description, this.finished, this.startDate, this.endDate, this.writter_user_id, this.owner_id, this.rewardType, this.reward);
+    }
+    public DeleteKanbanPost makeDeleteKanbanPost() {
+        return new DeleteKanbanPost(this.id);
     }
 }

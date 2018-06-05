@@ -71,20 +71,7 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
         mPage = getArguments().getInt("page");
         new RestApiTask(this).execute(new GetKanbanPostByBoard(getArguments().getInt("kanbanId")));
 
-        QuestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Intent intent = new Intent(getActivity(), QuestPopupDialog.class);
-                KanbanPost intentKanbanPost = (KanbanPost)adapter.getItem(position);
 
-                intent.putExtra("pos", position);
-                intent.putExtra("page", mPage);
-                intent.putExtra("kanbanPost", intentKanbanPost);
-
-                getActivity().startActivityForResult(intent, 1);
-            }
-            public void onClick(View v) { }
-        });
         return fragmentLayout;
     }
 
@@ -102,14 +89,23 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
                 case 10:        // 제거
                     if (pos != -1) {
                         adapter.deleteItem(pos);
+                        new RestApiTask(this).execute(retKanbanPost.makeDeleteKanbanPost());
+                    }
+                    break;
+                case 80:
+                    if (pos != -1) {
+                        adapter.modifyItem(pos, retKanbanPost);
+                        Toast.makeText(getActivity(), String.valueOf(retKanbanPost.getWritter_user_id()), Toast.LENGTH_SHORT).show();
+                        new RestApiTask(this).execute(retKanbanPost.makeModifiyKanbanPost());
                     }
                     break;
                 case 100:       // 완료
                     if (pos != -1) {
                         adapter.modifyItem(pos, retKanbanPost);
+                        Toast.makeText(getActivity(), String.valueOf(retKanbanPost.getKanban_board_id()), Toast.LENGTH_SHORT).show();
+                        new RestApiTask(this).execute(retKanbanPost.makeModifiyKanbanPost());
                     }
                     break;
-
                 case 1000:      // 추가
                     retKanbanPost.setKanban_board_id(getArguments().getInt("kanbanId"));
                     adapter.addItem(retKanbanPost);
@@ -119,6 +115,7 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
                 case 2000:      // 변경
                     if (pos != -1) {;
                         adapter.modifyItem(pos, retKanbanPost);
+                        new RestApiTask(this).execute(retKanbanPost.makeModifiyKanbanPost());
                     }
                     break;
             }
@@ -133,10 +130,31 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
                 kanbanPosts = result.getPostList();
                 adapter = new KanbanQuestlistAdapter(kanbanPosts);
                 QuestList.setAdapter(adapter);
+                QuestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                        Intent intent = new Intent(getActivity(), QuestPopupDialog.class);
+                        KanbanPost intentKanbanPost = (KanbanPost)adapter.getItem(position);
+
+                        intent.putExtra("pos", position);
+                        intent.putExtra("page", mPage);
+                        intent.putExtra("kanbanPost", intentKanbanPost);
+                        Toast.makeText(getActivity(), String.valueOf(intentKanbanPost.getWritter_user_id()) + intentKanbanPost.getTitle() + String.valueOf(intentKanbanPost.getOwner_id()), Toast.LENGTH_SHORT).show();
+                        getActivity().startActivityForResult(intent, 1);
+                    }
+                    public void onClick(View v) { }
+                });
+                break;
+            case "addkanbanpost":
+                Toast.makeText(getActivity(), "추가되었습니다.", Toast.LENGTH_SHORT).show();
                 break;
 
-            case "addkanbanpost":
-                Toast.makeText(getActivity(), "done", Toast.LENGTH_SHORT).show();
+            case "modifykanbanpost":
+                Toast.makeText(getActivity(), "변경되었습니다.", Toast.LENGTH_SHORT).show();
+                break;
+            case "deletekanbanpost":
+                Toast.makeText(getActivity(), "제거되었습니다.", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 }

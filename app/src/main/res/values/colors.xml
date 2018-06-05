@@ -18,5 +18,11 @@
     <color name="palateBlue">#729FCF</color>
     <color name="palateGray">#999999</color>
     <color name="palateOrange">#FFCC99</color>
+    <color name="palateMintDark">#00A976</color>
+    <color name="palateRedDark">#BF4040</color>
+    <color name="palateBlueDark">#325F8F</color>
+    <color name="palateGrayDark">#595959</color>
+    <color name="palateOrangeDark">#BF8C59</color>
+
 
 </resources>

@@ -3,10 +3,11 @@ package skku.teamplay.activity.test;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
+//import android.support.design.widget.FloatingActionButton;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -32,7 +33,6 @@ import skku.teamplay.model.KanbanBoard;
 import skku.teamplay.model.KanbanPost;
 import skku.teamplay.model.Team;
 import skku.teamplay.model.User;
-import skku.teamplay.util.SharedPreferencesUtil;
 
 /**
  * Created by ddjdd on 2018-05-07.
