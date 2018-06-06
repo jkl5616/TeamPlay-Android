@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -42,36 +44,52 @@
                         android:textColor="#1cff36"/>
                 </RelativeLayout>
 
-                <TextView
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="참여도"
-                    android:textSize="16dp"
-                    android:padding="8dp"/>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="#dddddd"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"/>
+                    android:layout_margin="10dp"
+                    app:cardCornerRadius="3dp"
+                    app:cardElevation="2dp">
+                    <com.jaredrummler.materialspinner.MaterialSpinner
+                        android:id="@+id/result_user_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginBottom="0dp">
+                    </com.jaredrummler.materialspinner.MaterialSpinner>
+
+                </android.support.v7.widget.CardView>
                 <include layout="@layout/template_contribution_result" />
-                <TextView
+
+                <android.support.v7.widget.CardView
+                    android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="타임라인"
-                    android:textSize="16dp"
-                    android:padding="8dp"/>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="#dddddd"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"/>
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/result_timeline_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                </android.support.v7.widget.RecyclerView>
+                    app:cardCornerRadius="3dp"
+                    app:cardElevation="2dp">
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="타임라인"
+                            android:textSize="16dp"
+                            android:padding="8dp"/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="#dddddd"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"/>
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/result_timeline_recycler"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                            </android.support.v7.widget.RecyclerView>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
             </LinearLayout>
         </FrameLayout>
     </android.support.v4.widget.NestedScrollView>

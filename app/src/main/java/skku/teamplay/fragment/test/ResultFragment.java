@@ -9,6 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
@@ -17,20 +20,26 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import skku.teamplay.R;
 import skku.teamplay.adapter.TimelineAdapter;
+import skku.teamplay.app.TeamPlayApp;
 import skku.teamplay.model.KanbanPost;
+import skku.teamplay.model.User;
 
 public class ResultFragment extends Fragment {
     final static private float GROUP_SPACE= 0.15f;
     final static private float BAR_SPACE = 0.1f;
     final static private float BAR_WIDTH = 0.45f;
 
+    MaterialSpinner spinnerSelectUser;
     ViewGroup rootView;
     BarChart mBarChart;
     RecyclerView mRecyclerView;
@@ -48,6 +57,21 @@ public class ResultFragment extends Fragment {
         bind_views();
         setBarChart();
         setTimeline();
+
+        List<User> userList = TeamPlayApp.getAppInstance().getUserList();
+        User curUser = TeamPlayApp.getAppInstance().getUser();
+        List<String> userNames = new ArrayList<>();
+        userNames.add(curUser.getName());
+        for (User user : userList){
+            userNames.add(user.getName());
+        }
+        spinnerSelectUser.setItems(userNames);
+        spinnerSelectUser.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                Toast.makeText(rootView.getContext(), "Clicked" + item, Toast.LENGTH_LONG).show();
+            }
+        });
 
         return rootView;
     }
@@ -106,5 +130,6 @@ public class ResultFragment extends Fragment {
     private void bind_views(){
         mBarChart = rootView.findViewById(R.id.template_contribution_barchart);
         mRecyclerView = rootView.findViewById(R.id.result_timeline_recycler);
+        spinnerSelectUser = rootView.findViewById(R.id.result_user_spinner);
     }
 }
