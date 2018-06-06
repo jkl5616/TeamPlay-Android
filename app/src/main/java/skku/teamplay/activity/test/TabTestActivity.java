@@ -62,6 +62,7 @@ public class TabTestActivity extends AppCompatActivity {
         screenSlidePagerAdapter.addFragment(resultFragment);
         screenSlidePagerAdapter.addFragment(settingsFragment);
 
+        viewPager.setOffscreenPageLimit(4);
         viewPager.setAdapter(screenSlidePagerAdapter);
     }
 

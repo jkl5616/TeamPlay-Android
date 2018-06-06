@@ -2,6 +2,7 @@ package skku.teamplay.util;
 
 import android.graphics.Color;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,6 +17,9 @@ import skku.teamplay.api.impl.UpdateToken;
  */
 
 public class Util {
+    public static SimpleDateFormat DATEFORMAT_yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
+    public static SimpleDateFormat DATEFORMAT_HHmm = new SimpleDateFormat("HH시 mm분");
+
     public static void updateToken() {
         try {
             UpdateToken updateToken = new UpdateToken();
@@ -55,7 +59,13 @@ public class Util {
 
     private static boolean inited = false;
     private static Integer colors[];
+    private static Integer graycolors[];
     private static int index = 0;
+    private static int index2 = 0;
+
+    public static void setColorIndex(int iz) {
+        index = iz;
+    }
 
     private static void initColors() {
         String cols[] = {"#FE816D","#68C4AF","#45B4E7","#D187FE","#ffb331","#4573E7","#6AECF4","#ADA7FC","#95CB9C","#01579B"};
@@ -74,4 +84,23 @@ public class Util {
         return colors[(index++) % colors.length];
 
     }
+
+    private static void initGrayColors() {
+        String cols[] = {"#4c2620","#1f3a34","#143645","#D187FE","#291b32","#4573E7","#0d172e","#222132","#1d281f","#00111f"};
+        ArrayList<Integer> colArray = new ArrayList<Integer>();
+        String alpha = "80";
+        for(int i = 0; i < cols.length; i++) {
+            colArray.add(Color.parseColor("#"+alpha+cols[i].split("#")[1]));
+        }
+        graycolors = colArray.toArray(new Integer[colArray.size()]);
+    }
+
+    public static int nextGrayColor() {
+        if(!inited) {
+            initGrayColors();
+        }
+        return graycolors[(index2++) % graycolors.length];
+
+    }
+
 }
