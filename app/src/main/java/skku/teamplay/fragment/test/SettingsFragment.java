@@ -13,6 +13,7 @@ import android.widget.CompoundButton;
 
 import skku.teamplay.R;
 import skku.teamplay.activity.test.ModifyTeamActivity;
+import skku.teamplay.activity.test.RuleManageActivity;
 import skku.teamplay.util.SharedPreferencesUtil;
 
 /**
@@ -44,7 +45,7 @@ public class SettingsFragment extends Fragment {
         rootView.findViewById(R.id.tv_manage_rule).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(getActivity(), RuleManageActivity.class));
             }
         });
         CheckBox push_kanban = rootView.findViewById(R.id.push_kanban_checkbox);

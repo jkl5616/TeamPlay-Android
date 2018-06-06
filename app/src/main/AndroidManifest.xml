@@ -106,6 +106,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <activity android:name=".activity.test.RuleManageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <receiver
             android:name=".receiver.BootCompletedReceiver"
             android:enabled="true"

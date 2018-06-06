@@ -4,6 +4,7 @@ public class Rule {
     private int team_id;
     private int score;
     private int type;
+    private String name;
     private String description;
 
     public int getTeam_id() {
@@ -38,4 +39,11 @@ public class Rule {
         this.description = description;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

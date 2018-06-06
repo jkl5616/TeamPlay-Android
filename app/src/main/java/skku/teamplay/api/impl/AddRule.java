@@ -10,12 +10,14 @@ public class AddRule extends RestApi {
     private int score;
     private int type;
     private String description;
+    private String name;
 
-    public AddRule(int team_id, int score, int type, String description) {
+    public AddRule(int team_id, int score, int type, String description, String name) {
         this.team_id = team_id;
         this.score = score;
         this.type = type;
         this.description = description;
+        this.name = name;
     }
 
     public int getTeam_id() {
@@ -53,5 +55,13 @@ public class AddRule extends RestApi {
     @Override
     public Class<? extends RestApiResult> getResultClass() {
         return GenericResult.class;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
