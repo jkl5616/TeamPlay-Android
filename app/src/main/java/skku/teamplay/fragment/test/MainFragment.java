@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.lguipeng.library.animcheckbox.AnimCheckBox;
 import com.github.mikephil.charting.charts.RadarChart;
@@ -30,9 +32,11 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import skku.teamplay.R;
@@ -41,13 +45,17 @@ import skku.teamplay.model.User;
 import skku.teamplay.util.UnitConversion;
 
 public class MainFragment extends Fragment {
+    //    List<TextView> listPlan = new ArrayList<>();
+    ViewGroup rootView;
     RelativeLayout layoutPlan;
     RadarChart mRadarChart;
     TextView textInfo, textPlan;
-    List<TextView> listPlan = new ArrayList<>();
-    ViewGroup rootView;
     ListView listUser;
-    static final String[] user = {"abc", "asd", "asdwq"};
+    ArrayList<IRadarDataSet> setsRadar = new ArrayList<IRadarDataSet>();
+    List<Integer> drawnUserId = new ArrayList<>();
+    final User selectedUser = TeamPlayApp.getAppInstance().getUser();
+    final List<User> userList = TeamPlayApp.getAppInstance().getUserList();
+
 //    @BindView(R.id.main_list_user) ListView listUser;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +65,7 @@ public class MainFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        List<User> userList;
+        int selectedIdx = 0;
         if(rootView != null) return rootView;
         rootView = (ViewGroup) inflater.inflate(R.layout.activity_main_fragment, container, false);
 
@@ -68,31 +76,99 @@ public class MainFragment extends Fragment {
         layoutPlan = (RelativeLayout) rootView.findViewById(R.id.main_plan_layout);
         listUser = (ListView) rootView.findViewById(R.id.main_list_user);
 
-        userList = TeamPlayApp.getAppInstance().getUserList();
-        final UserAdapter adapter = new UserAdapter(userList);
+        for (User user : userList){
+            if (user.getId() == selectedUser.getId()) {
+                userList.remove(user);
+                break;
+            }
+            selectedIdx++;
+        }
+        final UserAdapter adapter = new UserAdapter(userList, selectedUser.getId());
         listUser.setAdapter(adapter);
 
         listUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 AnimCheckBox checkBox = view.findViewById(R.id.layout_list_checkbox);
-                checkBox.setChecked(!checkBox.isChecked());
+                Boolean isChecked = checkBox.isChecked();
+                checkBox.setChecked(!isChecked);
+
+//                updateChartData(userList.get(i), !isChecked);
             }
         });
 
         User user = TeamPlayApp.getAppInstance().getUser();
         textInfo.setText(user.getName() + "/" + user.getEmail());
+
+
         setmRadarChart();
+        updateChartData(selectedUser, true);
+
+
         return rootView;
     }
 
+    private void updateChartData(User user, boolean isChecked){
+        if (isChecked){
+            drawnUserId.add(user.getId());
+            setChartData(user);
+        }
+        else{
+            for (Integer i : drawnUserId){
+                if (i == user.getId()) {
+                    drawnUserId.remove(i);
+                    for(IRadarDataSet set: setsRadar){
+                        if (set.getLabel() == user.getName()) {setsRadar.remove(set); break;}
+                    }
+                }
+            }
+            RadarData data = new RadarData(setsRadar);
+            mRadarChart.setData(data);
 
+        }
 
+        YAxis yAxis = mRadarChart.getYAxis();
+        yAxis.setAxisMinimum(0f);
+        yAxis.setAxisMaximum(80f);
+        mRadarChart.setScaleY(1f);
+
+        mRadarChart.invalidate();
+    }
+
+    private void setChartData(User user){
+        ArrayList<RadarEntry> entry = new ArrayList<>();
+        Random rnd = new Random();
+
+        entry.add(new RadarEntry(rnd.nextInt(70) + 1));
+        entry.add(new RadarEntry(rnd.nextInt(70) + 1));
+        entry.add(new RadarEntry(rnd.nextInt(70) + 1));
+
+        RadarDataSet set = new RadarDataSet(entry, user.getName());
+        if (user.getId() == selectedUser.getId()) set.setColor(ColorTemplate.COLORFUL_COLORS[0]);
+        else set.setColor(ColorTemplate.COLORFUL_COLORS[rnd.nextInt(3) + 1]);
+
+        set.setDrawFilled(true);
+        set.setFillAlpha(180);
+        set.setLineWidth(2f);
+        set.setDrawHighlightCircleEnabled(true);
+        set.setDrawHighlightIndicators(false);
+
+        setsRadar.add(set);
+        RadarData data = new RadarData(setsRadar);
+        data.setValueTextSize(8f);
+        data.setDrawValues(false);
+        data.setValueTextColor(Color.WHITE);
+
+        mRadarChart.setData(data);
+
+    }
 
     private class UserAdapter extends BaseAdapter{
         List<User> userList;
-        public UserAdapter(List<User> userList) {
+        int selectedId;
+        public UserAdapter(List<User> userList, int selectedId) {
             this.userList = userList;
+            this.selectedId = selectedId;
         }
 
         @Override
@@ -113,18 +189,26 @@ public class MainFragment extends Fragment {
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             final int pos = i;
-            final Context context = viewGroup.getContext();
 
+            final Context context = viewGroup.getContext();
             if(view == null){
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.layout_custom_userlist, null, false);
+                TextView textUsername = view.findViewById(R.id.layout_list_user_name);
+                textUsername.setText(userList.get(i).getName());
             }
-            TextView textUsername = view.findViewById(R.id.layout_list_user_name);
             AnimCheckBox checkUser = view.findViewById(R.id.layout_list_checkbox);
-            ImageView imageUser = (ImageView)view.findViewById(R.id.layout_list_profile_pic);
+            checkUser.setTag(pos);
+            checkUser.setOnCheckedChangeListener(new AnimCheckBox.OnCheckedChangeListener() {
+                @Override
+                public void onChange(AnimCheckBox animCheckBox, boolean b) {
+                    int idx = Integer.parseInt(animCheckBox.getTag().toString());
+                    updateChartData((User)getItem(idx), b);
+                }
+            });
+//            ImageView imageUser = (ImageView)view.findViewById(R.id.layout_list_profile_pic);
 
-            User user = userList.get(i);
-            textUsername.setText(user.getName());
+
 
             return view;
         }
@@ -135,39 +219,6 @@ public class MainFragment extends Fragment {
             userList.add(newUser);
         }
     }
-/*Dynamically add a plan as textview on the layout*/
-    public void addPlan(String planTitle){
-        final int paddingPx = 20;
-        final int marginPx = 30;
-
-        TextView newPlan = new TextView(getContext());
-
-
-        layoutPlan.addView(newPlan);
-        newPlan.setText(planTitle);
-        newPlan.setBackgroundColor(Color.parseColor("#CCCCCC"));
-
-
-        newPlan.setPadding(paddingPx, paddingPx, paddingPx, paddingPx);
-        newPlan.setTextSize(16);
-        newPlan.setElevation(2f);
-        newPlan.setId(ViewGroup.generateViewId());
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) newPlan.getLayoutParams();
-        layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
-        if (listPlan.size() == 0){
-            layoutParams.setMarginStart(marginPx);
-            layoutParams.setMarginEnd(marginPx);
-            layoutParams.addRule(RelativeLayout.BELOW, textPlan.getId());
-        }
-        else{
-            layoutParams.addRule(RelativeLayout.BELOW, listPlan.get(listPlan.size() - 1).getId());
-        }
-        layoutParams.setMargins(marginPx, marginPx/2, marginPx, marginPx/2);
-
-        newPlan.setLayoutParams(layoutParams);
-        listPlan.add(newPlan);
-    }
-
 
 
     private void setmRadarChart(){
@@ -179,7 +230,7 @@ public class MainFragment extends Fragment {
         mRadarChart.setWebColorInner(Color.GRAY);
         mRadarChart.setWebAlpha(100);
 
-        setChartData();
+//        setChartData();
 
         Typeface mTfLight = Typeface.create("sans-serif-light", Typeface.NORMAL);
         XAxis xAxis = mRadarChart.getXAxis();
@@ -216,55 +267,5 @@ public class MainFragment extends Fragment {
         l.setXEntrySpace(7f);
         l.setYEntrySpace(5f);
         l.setTextColor(Color.BLACK);
-    }
-
-    private void setChartData(){
-        float mult = 80;
-        float min = 20;
-        int cnt = 3;
-
-        ArrayList<RadarEntry> entries1 = new ArrayList<RadarEntry>();
-        ArrayList<RadarEntry> entries2 = new ArrayList<RadarEntry>();
-        ArrayList<RadarEntry> entries3 = new ArrayList<>();
-        entries1.add(new RadarEntry(81));
-        entries1.add(new RadarEntry(20));
-        entries1.add(new RadarEntry(52));
-
-        entries2.add(new RadarEntry(30));
-        entries2.add(new RadarEntry(61));
-        entries2.add(new RadarEntry(92));
-
-        entries3.add(new RadarEntry(30));
-        entries3.add(new RadarEntry(61));
-        entries3.add(new RadarEntry(92));
-        RadarDataSet set1 = new RadarDataSet(entries1, "나");
-        set1.setColor(Color.parseColor("#FF8682"));
-        set1.setFillColor(Color.parseColor("#FFE8D1"));
-        set1.setDrawFilled(true);
-        set1.setFillAlpha(180);
-        set1.setLineWidth(2f);
-        set1.setDrawHighlightCircleEnabled(true);
-        set1.setDrawHighlightIndicators(false);
-
-        RadarDataSet set2 = new RadarDataSet(entries2, "너");
-        set2.setColor(Color.parseColor("#00BFA5"));
-        set2.setFillColor(Color.parseColor("#1DE9B6"));
-        set2.setDrawFilled(true);
-        set2.setFillAlpha(50);
-        set2.setLineWidth(2f);
-        set2.setDrawHighlightCircleEnabled(true);
-        set2.setDrawHighlightIndicators(false);
-
-        ArrayList<IRadarDataSet> sets = new ArrayList<IRadarDataSet>();
-        sets.add(set1);
-        sets.add(set2);
-
-        RadarData data = new RadarData(sets);
-        data.setValueTextSize(8f);
-        data.setDrawValues(false);
-        data.setValueTextColor(Color.WHITE);
-
-        mRadarChart.setData(data);
-        mRadarChart.invalidate();
     }
 }
