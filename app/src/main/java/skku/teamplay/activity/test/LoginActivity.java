@@ -56,7 +56,6 @@ public class LoginActivity extends AppCompatActivity implements OnRestApiListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        Util.updateToken();
     }
 
     @OnClick(R.id.btnLogin)
@@ -111,6 +110,7 @@ public class LoginActivity extends AppCompatActivity implements OnRestApiListene
                     //로그인 성공
                     SharedPreferencesUtil.putString("user_email", loginResult.user.getEmail());
                     SharedPreferencesUtil.putString("user_pw", loginResult.user.getPw());
+                    Util.updateToken();
                     TeamPlayApp.getAppInstance().setUser(loginResult.user);
                     //팀 선택 액티비티로 넘어감
                     startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
