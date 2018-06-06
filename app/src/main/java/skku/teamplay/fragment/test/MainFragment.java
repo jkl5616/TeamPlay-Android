@@ -51,6 +51,7 @@ public class MainFragment extends Fragment {
     RadarChart mRadarChart;
     TextView textInfo, textPlan;
     ListView listUser;
+    UserAdapter adapter;
     ArrayList<IRadarDataSet> setsRadar = new ArrayList<IRadarDataSet>();
     List<Integer> drawnUserId = new ArrayList<>();
     final User selectedUser = TeamPlayApp.getAppInstance().getUser();
@@ -83,7 +84,7 @@ public class MainFragment extends Fragment {
             }
             selectedIdx++;
         }
-        final UserAdapter adapter = new UserAdapter(userList, selectedUser.getId());
+        adapter = new UserAdapter(userList, selectedUser.getId());
         listUser.setAdapter(adapter);
 
         listUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -109,29 +110,19 @@ public class MainFragment extends Fragment {
     }
 
     private void updateChartData(User user, boolean isChecked){
-        if (isChecked){
-            drawnUserId.add(user.getId());
-            setChartData(user);
-        }
+        if (user.getId() == selectedUser.getId()) setChartData(user);
         else{
-            for (Integer i : drawnUserId){
-                if (i == user.getId()) {
-                    drawnUserId.remove(i);
-                    for(IRadarDataSet set: setsRadar){
-                        if (set.getLabel() == user.getName()) {setsRadar.remove(set); break;}
-                    }
-                }
+            setsRadar.clear();
+            setChartData(selectedUser);
+            List<Boolean> checkList = adapter.getChecklist();
+            for (int idx = 0; idx < checkList.size(); idx++){
+                if (checkList.get(idx)) setChartData(userList.get(idx));
             }
-            RadarData data = new RadarData(setsRadar);
-            mRadarChart.setData(data);
-
         }
 
         YAxis yAxis = mRadarChart.getYAxis();
-        yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(80f);
-        mRadarChart.setScaleY(1f);
 
+        yAxis.resetAxisMaximum();
         mRadarChart.invalidate();
     }
 
@@ -165,6 +156,7 @@ public class MainFragment extends Fragment {
 
     private class UserAdapter extends BaseAdapter{
         List<User> userList;
+        List<AnimCheckBox>checkBoxes = new ArrayList<>();
         int selectedId;
         public UserAdapter(List<User> userList, int selectedId) {
             this.userList = userList;
@@ -196,21 +188,30 @@ public class MainFragment extends Fragment {
                 view = inflater.inflate(R.layout.layout_custom_userlist, null, false);
                 TextView textUsername = view.findViewById(R.id.layout_list_user_name);
                 textUsername.setText(userList.get(i).getName());
+                AnimCheckBox checkUser = view.findViewById(R.id.layout_list_checkbox);
+                checkUser.setTag(pos);
+                checkBoxes.add(checkUser);
+                checkUser.setOnCheckedChangeListener(new AnimCheckBox.OnCheckedChangeListener() {
+                    @Override
+                    public void onChange(AnimCheckBox animCheckBox, boolean b) {
+                        int idx = Integer.parseInt(animCheckBox.getTag().toString());
+                        updateChartData((User)getItem(idx), b);
+                    }
+                });
             }
-            AnimCheckBox checkUser = view.findViewById(R.id.layout_list_checkbox);
-            checkUser.setTag(pos);
-            checkUser.setOnCheckedChangeListener(new AnimCheckBox.OnCheckedChangeListener() {
-                @Override
-                public void onChange(AnimCheckBox animCheckBox, boolean b) {
-                    int idx = Integer.parseInt(animCheckBox.getTag().toString());
-                    updateChartData((User)getItem(idx), b);
-                }
-            });
 //            ImageView imageUser = (ImageView)view.findViewById(R.id.layout_list_profile_pic);
 
 
 
             return view;
+        }
+
+        public List<Boolean> getChecklist(){
+            List<Boolean> res = new ArrayList<>();
+            for (AnimCheckBox checkBox : checkBoxes)
+                res.add(checkBox.isChecked());
+
+            return res;
         }
 
         public void addItem(String name){
