@@ -28,6 +28,7 @@ import skku.teamplay.widget.CircleCountdownView;
 
 public class TeamListCardAdapter extends BaseAdapter{
     ArrayList<Team> teamList;
+    private List<Boolean> isClockStarted;
     public TeamListCardAdapter(ArrayList<Team> teamList) {
         this.teamList = teamList;
     }
@@ -63,29 +64,31 @@ public class TeamListCardAdapter extends BaseAdapter{
             view = LayoutInflater.from(TeamPlayApp.getAppInstance()).inflate(R.layout.list_team_template_card, null);
             holder = new ViewHolder(view);
             view.setTag(holder);
+
+            holder.name.setText(getItem(i).getName());
+
+
+            Calendar today = Calendar.getInstance();
+            today.set(Calendar.HOUR_OF_DAY, 0);
+
+            long diff = teamList.get(i).getDeadline().getTime() - today.getTime().getTime();
+            time[3] = diff / 1000 % 60; //seconds
+            time[2] = diff / (60 * 1000) % 60; //minutes
+            time[1] = diff / (60 * 60 * 1000) % 24; //hours
+            time[0] = diff / (24 * 60 * 60 * 1000) % 30; //day
+            CountDownAdapter countDownAdapter = new CountDownAdapter(holder.circleTimeView, time);
+            countDownAdapter.start();
+
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        holder.name.setText(getItem(i).getName());
 
-
-        Calendar today = Calendar.getInstance();
-        today.set(Calendar.HOUR_OF_DAY, 0);
-
-        long diff = teamList.get(i).getDeadline().getTime() - today.getTime().getTime();
-        time[3] = diff / 1000 % 60; //seconds
-        time[2] = diff / (60 * 1000) % 60; //minutes
-        time[1] = diff / (60 * 60 * 1000) % 60; //hours
-        time[0] = diff / (24 * 60 * 60 * 1000); //day
-        CountDownAdapter countDownAdapter = new CountDownAdapter(holder.circleTimeView, time);
-        countDownAdapter.start();
-
-        List<User> userList = new ArrayList<>();
-        for (int idx = 0; idx < 10; idx++){
-            userList.add(new User(Integer.toString(idx), 1));
-
-        }
-        setContributors(userList, view, holder.layout_contributor);
+//        List<User> userList = new ArrayList<>();
+//        for (int idx = 0; idx < 10; idx++){
+//            userList.add(new User(Integer.toString(idx), 1));
+//
+//        }
+        //setContributors(userList, view, holder.layout_contributor);
         return view;
     }
     public void setContributors(List<User> userList, View parent, View layout_contributor){
