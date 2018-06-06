@@ -37,6 +37,7 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:11.0.2'
     compile 'com.github.lguipeng:AnimCheckBox:1.0.1'
     compile 'io.github.yavski:fab-speed-dial:1.0.6'
+    compile 'com.jaredrummler:material-spinner:1.2.5'
     implementation 'com.github.clans:fab:1.6.4'
 
 
