@@ -1,6 +1,7 @@
 package skku.teamplay.adapter;
 
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import skku.teamplay.fragment.test.KanbanFragment;
  * Created by ddjdd on 2018-05-11.
  */
 
-public class KanbanFragmentAdapter extends FragmentStatePagerAdapter {
+public class KanbanFragmentAdapter extends FragmentPagerAdapter {                                           //////////////////////////
     private final List<KanbanFragment> fragmentList = new ArrayList<>();
 
     public KanbanFragmentAdapter(FragmentManager fragmentManager) {

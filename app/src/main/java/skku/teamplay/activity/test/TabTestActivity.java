@@ -82,6 +82,10 @@ public class TabTestActivity extends AppCompatActivity {
             }
             bottomNavigationView.getMenu().getItem(position).setChecked(true);
             prevMenu = bottomNavigationView.getMenu().getItem(position);
+
+//            if (position == 1) {
+//                AnalyticsFragment fragment = (AnalyticsFragment)  viewPager.getAdapter().instantiateItem(viewPager,0/* position of your fragment */);
+//            }
         }
 
         @Override
