@@ -81,12 +81,7 @@ public class TeamListCardAdapter extends BaseAdapter{
             holder.name.setText(getItem(i).getName());
             gridList.add(holder.gridView);
             titleList.add(holder.contrTitle);
-            holder.layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(TeamPlayApp.getAppInstance(), "Clicked", Toast.LENGTH_SHORT).show();
-                }
-            });
+            
 
             Calendar today = Calendar.getInstance();
             today.set(Calendar.HOUR_OF_DAY, 0);

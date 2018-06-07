@@ -101,15 +101,15 @@ public class ProfileActivity extends AppCompatActivity implements OnRestApiListe
                 TeamListResult result = (TeamListResult) restApiResult;
                 final ArrayList<Team> teamList = result.getTeamList();
                 teamAdapter = new TeamListCardAdapter(teamList);
-                lv_teamList.setAdapter(teamAdapter);
-                lv_teamList.hasFocus();
-                lv_teamList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Team team = teamList.get(i);
-                        TeamPlayApp.getAppInstance().setTeam(team);
-                        new RestApiTask(ProfileActivity.this).execute(new GetAllUsersByTeam(team.getId()));
-                        MEMBER_LOAD_FLAG = false;
+                        lv_teamList.setAdapter(teamAdapter);
+                        lv_teamList.hasFocus();
+                        lv_teamList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                Team team = teamList.get(i);
+                                TeamPlayApp.getAppInstance().setTeam(team);
+                                new RestApiTask(ProfileActivity.this).execute(new GetAllUsersByTeam(team.getId()));
+                                MEMBER_LOAD_FLAG = false;
                     }
                 });
                 MEMBER_LOAD_FLAG = true;
@@ -130,7 +130,6 @@ public class ProfileActivity extends AppCompatActivity implements OnRestApiListe
 
                     ArrayList<User> tempList = userListResult.getUserList();
                     teamAdapter.setContributorTitle("참여자 - 총 " + tempList.size() + "명", teamIdx);
-//                    teamAdapter.setGridAdapter(tempList, teamIdx++);
                     teamIdx++;
                 }
                 break;
