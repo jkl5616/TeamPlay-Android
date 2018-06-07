@@ -54,11 +54,9 @@ public class MainFragment extends Fragment {
     ListView listUser;
     UserAdapter adapter;
     ArrayList<IRadarDataSet> setsRadar = new ArrayList<IRadarDataSet>();
-    List<Integer> drawnUserId = new ArrayList<>();
-//    final User selectedUser = TeamPlayApp.getAppInstance().getUser();
-//    final List<User> userList = TeamPlayApp.getAppInstance().getUserList();
-    User selectedUser;
-    List<User> userList;
+    final User selectedUser = TeamPlayApp.getAppInstance().getUser();
+    final List<User> userList = TeamPlayApp.getAppInstance().getUserList();
+
 //    @BindView(R.id.main_list_user) ListView listUser;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,7 +66,7 @@ public class MainFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        int selectedIdx = 0;
+
         if(rootView != null) return rootView;
         rootView = (ViewGroup) inflater.inflate(R.layout.activity_main_fragment, container, false);
 
@@ -78,18 +76,15 @@ public class MainFragment extends Fragment {
         textPlan = (TextView) rootView.findViewById(R.id.main_plan_textview);
         layoutBase = (RelativeLayout) rootView.findViewById(R.id.main_frag_base_layout);
         listUser = (ListView) rootView.findViewById(R.id.main_list_user);
-        List<User> tempList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) tempList.add(new User(Integer.toString(i), i));
-        userList = tempList;
-        selectedUser = tempList.get(0);
 
         for (User user : userList){
             if (user.getId() == selectedUser.getId()) {
                 userList.remove(user);
                 break;
             }
-            selectedIdx++;
         }
+
+
         adapter = new UserAdapter(userList, selectedUser.getId());
         listUser.setAdapter(adapter);
 
@@ -99,23 +94,23 @@ public class MainFragment extends Fragment {
                 AnimCheckBox checkBox = view.findViewById(R.id.layout_list_checkbox);
                 Boolean isChecked = checkBox.isChecked();
                 checkBox.setChecked(!isChecked);
-//                updateChartData(userList.get(i), !isChecked);
+
             }
         });
 
-//        User user = TeamPlayApp.getAppInstance().getUser();
-        User user = selectedUser;
+        User user = TeamPlayApp.getAppInstance().getUser();
+
         textInfo.setText(user.getName() + "/" + user.getEmail());
 
 
         setmRadarChart();
-        updateChartData(selectedUser, true);
+        updateChartData(selectedUser);
 
 
         return rootView;
     }
 
-    private void updateChartData(User user, boolean isChecked){
+    private void updateChartData(User user){
         if (user.getId() == selectedUser.getId()) setChartData(user);
         else{
             setsRadar.clear();
@@ -220,7 +215,7 @@ public class MainFragment extends Fragment {
                         test1.start();
                         test2.start();
 
-                        updateChartData((User)getItem(idx), b);
+                        updateChartData((User)getItem(idx));
                     }
                 });
             }

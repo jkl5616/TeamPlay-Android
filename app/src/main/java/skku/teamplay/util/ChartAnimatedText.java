@@ -25,7 +25,7 @@ public class ChartAnimatedText {
         this.context = context;
         this.targetView = view; //radar chart
 
-        duration = 500;
+        duration = 800;
         deltaY = 50;
 
     }
