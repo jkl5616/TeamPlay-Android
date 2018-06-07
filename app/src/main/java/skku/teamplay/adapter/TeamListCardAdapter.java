@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,7 +30,10 @@ import skku.teamplay.widget.CircleCountdownView;
 
 public class TeamListCardAdapter extends BaseAdapter{
     ArrayList<Team> teamList;
-    private List<Boolean> isClockStarted;
+    ArrayList<User> userList;
+    ArrayList<GridView> gridList = new ArrayList<>();
+    ArrayList<TextView> titleList = new ArrayList<>();
+    GridAdapter adapter;
     public TeamListCardAdapter(ArrayList<Team> teamList) {
         this.teamList = teamList;
     }
@@ -41,6 +46,11 @@ public class TeamListCardAdapter extends BaseAdapter{
         this.teamList = teamList;
     }
 
+    public void setGridAdapter(ArrayList<User> userList, int teamIdx){
+        this.userList = userList;
+        adapter = new GridAdapter(userList);
+        gridList.get(teamIdx).setAdapter(adapter);
+    }
     @Override
     public int getCount() {
         return teamList.size();
@@ -56,6 +66,9 @@ public class TeamListCardAdapter extends BaseAdapter{
         return i;
     }
 
+    public void setContributorTitle(String title, int idx){
+        titleList.get(idx).setText(title);
+    }
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder holder = null;
@@ -66,7 +79,14 @@ public class TeamListCardAdapter extends BaseAdapter{
             view.setTag(holder);
 
             holder.name.setText(getItem(i).getName());
-
+            gridList.add(holder.gridView);
+            titleList.add(holder.contrTitle);
+            holder.layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(TeamPlayApp.getAppInstance(), "Clicked", Toast.LENGTH_SHORT).show();
+                }
+            });
 
             Calendar today = Calendar.getInstance();
             today.set(Calendar.HOUR_OF_DAY, 0);
@@ -83,52 +103,18 @@ public class TeamListCardAdapter extends BaseAdapter{
             holder = (ViewHolder) view.getTag();
         }
 
-//        List<User> userList = new ArrayList<>();
-//        for (int idx = 0; idx < 10; idx++){
-//            userList.add(new User(Integer.toString(idx), 1));
-//
-//        }
-        //setContributors(userList, view, holder.layout_contributor);
+
         return view;
     }
-    public void setContributors(List<User> userList, View parent, View layout_contributor){
-        View view;
-        for (User user : userList){
-            TextView textView;
-            CircleImageView imageView;
-
-            LayoutInflater layoutInflater = (LayoutInflater)parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = layoutInflater.inflate(R.layout.template_contributor, null);
-            ((LinearLayout)layout_contributor).addView(view);
-
-            textView = view.findViewById(R.id.template_contributor_name);
-            imageView = view.findViewById(R.id.template_contributor_image);
-
-            textView.setText(user.getName());
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    TextView textName = view.findViewById(R.id.template_contributor_name);
-                    Toast.makeText(view.getContext(), textName.getText() + " clicked", Toast.LENGTH_LONG).show();
-                }
-            });
-
-            //temporarily
-            switch(1){
-                case 1:
-                    imageView.setImageResource(R.mipmap.basic_profile_pic);
-                    break;
-            }
 
 
-        }
-    }
 
     public class ViewHolder {
         CircleCountdownView[] circleTimeView = new CircleCountdownView[4];
         @BindView(R.id.tv_teamitem_teamname) TextView name;
-        @BindView(R.id.tv_teamitem_layout_contributor) View layout_contributor;
-
+        @BindView(R.id.tv_team_gridview) GridView gridView;
+        @BindView(R.id.tv_teamitem_layout) View layout;
+        @BindView(R.id.tv_teamitem_text_contributors) TextView contrTitle;
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
             circleTimeView[0] = view.findViewById(R.id.template_circle_day);
@@ -138,6 +124,41 @@ public class TeamListCardAdapter extends BaseAdapter{
 
         }
     }
+    class GridAdapter extends BaseAdapter{
+        ArrayList<User> userList;
 
+        public GridAdapter(ArrayList<User> userList) {
+            this.userList = userList;
+        }
+
+        @Override
+        public int getCount() {
+            return userList.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return userList.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return userList.get(i).getId();
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            if (view == null) {
+                view = LayoutInflater.from(TeamPlayApp.getAppInstance()).inflate(R.layout.griditem_member, null );
+                TextView textName = view.findViewById(R.id.griditem_user_name);
+                textName.setText(userList.get(i).getName());
+
+            }
+            return view;
+        }
+
+
+
+    }
 
 }

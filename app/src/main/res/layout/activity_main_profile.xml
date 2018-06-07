@@ -115,9 +115,9 @@
                     android:text="일정"
                     android:textSize="18sp" />
 
-                <ListView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"></ListView>
+                <!--<ListView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"></ListView>-->
 
             </LinearLayout>
 
@@ -125,7 +125,7 @@
         <ListView
             android:id="@+id/lv_team_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:divider="@null"
             android:dividerHeight="0dp"
