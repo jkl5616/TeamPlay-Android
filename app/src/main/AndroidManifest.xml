@@ -110,6 +110,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <activity android:name=".activity.test.TokenTestActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <receiver
             android:name=".receiver.BootCompletedReceiver"
             android:enabled="true"
