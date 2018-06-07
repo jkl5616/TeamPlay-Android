@@ -42,21 +42,23 @@ import butterknife.BindView;
 import skku.teamplay.R;
 import skku.teamplay.app.TeamPlayApp;
 import skku.teamplay.model.User;
+import skku.teamplay.util.ChartAnimatedText;
 import skku.teamplay.util.UnitConversion;
 
 public class MainFragment extends Fragment {
     //    List<TextView> listPlan = new ArrayList<>();
     ViewGroup rootView;
-    RelativeLayout layoutPlan;
+    RelativeLayout layoutBase;
     RadarChart mRadarChart;
     TextView textInfo, textPlan;
     ListView listUser;
     UserAdapter adapter;
     ArrayList<IRadarDataSet> setsRadar = new ArrayList<IRadarDataSet>();
     List<Integer> drawnUserId = new ArrayList<>();
-    final User selectedUser = TeamPlayApp.getAppInstance().getUser();
-    final List<User> userList = TeamPlayApp.getAppInstance().getUserList();
-
+//    final User selectedUser = TeamPlayApp.getAppInstance().getUser();
+//    final List<User> userList = TeamPlayApp.getAppInstance().getUserList();
+    User selectedUser;
+    List<User> userList;
 //    @BindView(R.id.main_list_user) ListView listUser;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,8 +76,12 @@ public class MainFragment extends Fragment {
         mRadarChart = (RadarChart) rootView.findViewById(R.id.main_radar_chart);
         textInfo = (TextView) rootView.findViewById(R.id.main_text_my_info);
         textPlan = (TextView) rootView.findViewById(R.id.main_plan_textview);
-        layoutPlan = (RelativeLayout) rootView.findViewById(R.id.main_plan_layout);
+        layoutBase = (RelativeLayout) rootView.findViewById(R.id.main_frag_base_layout);
         listUser = (ListView) rootView.findViewById(R.id.main_list_user);
+        List<User> tempList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) tempList.add(new User(Integer.toString(i), i));
+        userList = tempList;
+        selectedUser = tempList.get(0);
 
         for (User user : userList){
             if (user.getId() == selectedUser.getId()) {
@@ -93,12 +99,12 @@ public class MainFragment extends Fragment {
                 AnimCheckBox checkBox = view.findViewById(R.id.layout_list_checkbox);
                 Boolean isChecked = checkBox.isChecked();
                 checkBox.setChecked(!isChecked);
-
 //                updateChartData(userList.get(i), !isChecked);
             }
         });
 
-        User user = TeamPlayApp.getAppInstance().getUser();
+//        User user = TeamPlayApp.getAppInstance().getUser();
+        User user = selectedUser;
         textInfo.setText(user.getName() + "/" + user.getEmail());
 
 
@@ -123,6 +129,7 @@ public class MainFragment extends Fragment {
         YAxis yAxis = mRadarChart.getYAxis();
 
         yAxis.resetAxisMaximum();
+        mRadarChart.animateY(1000);
         mRadarChart.invalidate();
     }
 
@@ -135,8 +142,16 @@ public class MainFragment extends Fragment {
         entry.add(new RadarEntry(rnd.nextInt(70) + 1));
 
         RadarDataSet set = new RadarDataSet(entry, user.getName());
-        if (user.getId() == selectedUser.getId()) set.setColor(ColorTemplate.COLORFUL_COLORS[0]);
-        else set.setColor(ColorTemplate.COLORFUL_COLORS[rnd.nextInt(3) + 1]);
+        if (user.getId() == selectedUser.getId()) {
+            set.setColor(ColorTemplate.COLORFUL_COLORS[0]);
+            set.setFillColor(ColorTemplate.COLORFUL_COLORS[0]);
+        }
+        else {
+            int rndIdx = rnd.nextInt(3) + 1;
+            set.setColor(ColorTemplate.COLORFUL_COLORS[rndIdx]);
+            set.setFillColor(ColorTemplate.COLORFUL_COLORS[rndIdx]);
+        }
+
 
         set.setDrawFilled(true);
         set.setFillAlpha(180);
@@ -195,6 +210,16 @@ public class MainFragment extends Fragment {
                     @Override
                     public void onChange(AnimCheckBox animCheckBox, boolean b) {
                         int idx = Integer.parseInt(animCheckBox.getTag().toString());
+
+
+                        ChartAnimatedText test = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, "지갑이 +5 증가했습니다", 0);
+                        ChartAnimatedText test1 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, "전투력 +21 증가했습니다", 1);
+                        ChartAnimatedText test2 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, "서포트 +120 증가했습니다", 2);
+
+                        test.start();
+                        test1.start();
+                        test2.start();
+
                         updateChartData((User)getItem(idx), b);
                     }
                 });
@@ -268,5 +293,19 @@ public class MainFragment extends Fragment {
         l.setXEntrySpace(7f);
         l.setYEntrySpace(5f);
         l.setTextColor(Color.BLACK);
+    }
+
+    public static int getRelativeLeft(View view, View root){
+        if (view.getParent() == root)
+            return view.getLeft();
+        else
+            return view.getLeft() + getRelativeLeft((View)view.getParent(), root);
+    }
+
+    public static int getRelativeTop(View view, View root){
+        if (view.getParent() == root)
+            return view.getTop();
+        else
+            return view.getTop() + getRelativeTop((View)view.getParent(), root);
     }
 }
