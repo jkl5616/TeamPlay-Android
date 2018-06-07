@@ -11,6 +11,7 @@ import skku.teamplay.activity.test.ProfileActivity;
 import skku.teamplay.activity.test.RuleManageActivity;
 import skku.teamplay.activity.test.TabTestActivity;
 import skku.teamplay.activity.test.TimetableViewActivity;
+import skku.teamplay.activity.test.TokenTestActivity;
 import skku.teamplay.activity.test.UserProfileActivity;
 import skku.teamplay.activity.test.ViewPagerTestActivity;
 
@@ -19,6 +20,6 @@ import skku.teamplay.activity.test.ViewPagerTestActivity;
  */
 
 public class Constants {
-    public static final Class[] ACTIVITES = {MainActivity.class, ChartTestActivity.class, KanbanViewpagerActivity.class, ViewPagerTestActivity.class, TabTestActivity.class, LoginActivity.class, UserProfileActivity.class, EverytimeParseTestActivity.class, PenaltyTestActivity.class, ProfileActivity.class, TimetableViewActivity.class, MakeTeamActivity.class, RuleManageActivity.class};
+    public static final Class[] ACTIVITES = {MainActivity.class, ChartTestActivity.class, KanbanViewpagerActivity.class, ViewPagerTestActivity.class, TabTestActivity.class, LoginActivity.class, UserProfileActivity.class, EverytimeParseTestActivity.class, PenaltyTestActivity.class, ProfileActivity.class, TimetableViewActivity.class, MakeTeamActivity.class, RuleManageActivity.class, TokenTestActivity.class};
     public static final boolean DEBUG = true;
 }
