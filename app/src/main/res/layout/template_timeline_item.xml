@@ -9,9 +9,9 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true">
 
-        <View
+        <ImageView
             android:id="@+id/template_timeline_line"
-            android:layout_width="2dp"
+            android:layout_width="3dp"
             android:layout_height="match_parent"
             android:layout_marginStart="20dp"
             android:layout_centerHorizontal="true"

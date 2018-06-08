@@ -2,6 +2,8 @@ package skku.teamplay.util;
 
 import android.graphics.Color;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,7 +28,7 @@ public class Util {
             String email = SharedPreferencesUtil.getString("user_email");
             String pw = SharedPreferencesUtil.getString("user_pw");
             String token = SharedPreferencesUtil.getString("firebase_token");
-
+            if(token == null) token = FirebaseInstanceId.getInstance().getToken();
             if (email != null && pw != null && token != null && token.length() > 0) {
                 updateToken.setEmail(email);
                 updateToken.setPw(pw);
@@ -86,13 +88,24 @@ public class Util {
     }
 
     private static void initGrayColors() {
-        String cols[] = {"#4c2620","#1f3a34","#143645","#D187FE","#291b32","#4573E7","#0d172e","#222132","#1d281f","#00111f"};
+        String cols[] = {"#FE816D","#68C4AF","#45B4E7","#D187FE","#ffb331","#4573E7","#6AECF4","#ADA7FC","#95CB9C","#01579B"};
         ArrayList<Integer> colArray = new ArrayList<Integer>();
         String alpha = "80";
         for(int i = 0; i < cols.length; i++) {
-            colArray.add(Color.parseColor("#"+alpha+cols[i].split("#")[1]));
+            colArray.add(manipulateColor(Color.parseColor("#"+alpha+cols[i].split("#")[1]), 0.3f));
         }
         graycolors = colArray.toArray(new Integer[colArray.size()]);
+    }
+
+    public static int manipulateColor(int color, float factor) {
+        int a = Color.alpha(color);
+        int r = Math.round(Color.red(color) * factor);
+        int g = Math.round(Color.green(color) * factor);
+        int b = Math.round(Color.blue(color) * factor);
+        return Color.argb(a,
+                Math.min(r,255),
+                Math.min(g,255),
+                Math.min(b,255));
     }
 
     public static int nextGrayColor() {
