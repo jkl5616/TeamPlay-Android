@@ -3,6 +3,7 @@ package skku.teamplay.util;
 import android.animation.Animator;
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Html;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -10,16 +11,22 @@ import android.widget.TextView;
 import java.util.Random;
 
 public class ChartAnimatedText {
+    public static final int RECORD_STRENGTH = 0;
+    public static final int RECORD_WALLET = 1;
+    public static final int RECORD_SUPPORT = 2;
     private View targetView;
     private RelativeLayout layoutBase;
-    private String text, topic;
-    private int option, duration, deltaY;
-    private static final float offsetsX[] = {0.2f, 0.45f, 0.75f};
+    private String topic;
+    private int delay;
+    private int option, duration, deltaY, score;
+    private static final float offsetsX[] = {0.2f, 0.50f, 0.70f};
     private static final float offsetsY[] = {0.55f, 0f, 0.55f};
+    private static final String type_name[] = new String[]{"전투력", "지갑", "서포트"};
+
     Context context;
-    public ChartAnimatedText(Context context, RelativeLayout layoutBase, View view, String text, int option) {
+    public ChartAnimatedText(Context context, RelativeLayout layoutBase, View view, int score, int option) {
         this.layoutBase = layoutBase;
-        this.text = text;
+        this.score = score;
         this.topic = topic;
         this.option = option; //0 지갑 1 전투력 2 서포트
         this.context = context;
@@ -30,6 +37,9 @@ public class ChartAnimatedText {
 
     }
 
+    public void setDelay(int delay){
+        this.delay = delay;
+    }
     public void setDuration(int duration){
         this.duration = duration;
     }
@@ -44,22 +54,34 @@ public class ChartAnimatedText {
 
     public void start(){
         TextView textView = createText();
+        textView.setVisibility(View.INVISIBLE);
         layoutBase.addView(textView);
 
         TextAnimatedListener listener = new TextAnimatedListener(textView, layoutBase);
-        textView.animate().alpha(0f).yBy(-deltaY).setDuration(this.duration).setListener(listener);
+        textView.animate().alpha(0f).yBy(-deltaY).setDuration(this.duration).setListener(listener).setStartDelay(delay);
     }
 
     private TextView createText(){
         TextView textView = new TextView(context);
-        textView.setText(text);
+        ///textView.setText(text);
         textView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
 
-        textView.setX(targetView.getLeft() + targetView.getWidth() * offsetsX[option] - (text.length() * 12));
+        String text, htmlTxt;
+        int htmlLen = "<'font color='#000000'></font>".length();
+        text = "<'font color='#000000'>" + type_name[option] + "</font>" + " ";
+        if (score >= 0){
+            htmlTxt = "<font color='#03d100'>+" + score + "</font>";
+        }
+        else{
+            htmlTxt = "<font color='#cf001c'>" + score + "</font>" + " ";
+        }
+        text = text + htmlTxt + " <'font color='#000000'>" + "감소했습니다.</font>" ;
+        textView.setText(Html.fromHtml(text));
+        textView.setX(targetView.getLeft() + targetView.getWidth() * offsetsX[option] - ((text.length() - htmlLen * 3) * 10));
         textView.setY(targetView.getTop() + targetView.getHeight() * offsetsY[option]);
         textView.setAlpha(1f);
-        textView.setTextColor(Color.BLACK);
+
         return textView;
     }
     class TextAnimatedListener implements Animator.AnimatorListener{
@@ -73,7 +95,7 @@ public class ChartAnimatedText {
 
         @Override
         public void onAnimationStart(Animator animator) {
-
+            this.view.setVisibility(View.VISIBLE);
         }
 
         @Override

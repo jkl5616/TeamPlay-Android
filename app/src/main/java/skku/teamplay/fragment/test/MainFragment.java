@@ -236,12 +236,14 @@ public class MainFragment extends Fragment implements OnRestApiListener {
                         int idx = Integer.parseInt(animCheckBox.getTag().toString());
 
 
-                        ChartAnimatedText test = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, "지갑이 +5 증가했습니다", 1);
-                        ChartAnimatedText test1 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, "전투력 +21 증가했습니다", 0);
-                        ChartAnimatedText test2 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, "서포트 +120 증가했습니다", 2);
+                        ChartAnimatedText test = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, 5, ChartAnimatedText.RECORD_WALLET);
+                        ChartAnimatedText test1 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, -21, ChartAnimatedText.RECORD_STRENGTH);
+                        ChartAnimatedText test2 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, 120, ChartAnimatedText.RECORD_SUPPORT);
 
                         test.start();
+                        test1.setDelay(900);
                         test1.start();
+                        test2.setDelay(1800);
                         test2.start();
 
                         updateChartData((User)getItem(idx));
