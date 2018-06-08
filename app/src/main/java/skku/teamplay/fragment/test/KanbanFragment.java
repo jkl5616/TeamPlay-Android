@@ -55,6 +55,7 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
     @BindView(R.id.textKanbanTitle) TextView textKanbanTitle;
 
     ArrayList<KanbanPost> kanbanPosts;
+    View fragmentLayout;
 
     public static KanbanFragment create(int page, int kanbanId, String title) {
         KanbanFragment fragment = new KanbanFragment();
@@ -73,7 +74,8 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View fragmentLayout = inflater.inflate(R.layout.fragment_kanban_test, container, false);
+        if(fragmentLayout != null) return fragmentLayout;
+        fragmentLayout = inflater.inflate(R.layout.fragment_kanban_test, container, false);
         ButterKnife.bind(this, fragmentLayout);
         textKanbanTitle.setText(getArguments().getString("title"));
         mPage = getArguments().getInt("page");

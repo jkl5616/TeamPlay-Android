@@ -147,6 +147,7 @@ KanbanViewpagerActivity extends FragmentActivity implements OnRestApiListener {
             @Override
             public void onPageScrollStateChanged(int state) { }
         });
+        pager.setOffscreenPageLimit(adapter.getCount());
     }
 
     @Override
