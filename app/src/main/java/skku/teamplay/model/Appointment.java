@@ -1,8 +1,10 @@
 package skku.teamplay.model;
 
+import android.support.annotation.NonNull;
+
 import java.util.Date;
 
-public class Appointment {
+public class Appointment implements Comparable<Appointment> {
 
     private Date startDate;
     private Date endDate;
@@ -46,5 +48,10 @@ public class Appointment {
 
     public void setTeam_id(int team_id) {
         this.team_id = team_id;
+    }
+
+    @Override
+    public int compareTo(@NonNull Appointment appointment) {
+        return appointment.startDate.compareTo(appointment.startDate);
     }
 }

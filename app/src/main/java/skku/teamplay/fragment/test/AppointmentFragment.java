@@ -2,7 +2,10 @@ package skku.teamplay.fragment.test;
 
 import java.lang.reflect.Field;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Locale;
 
 import android.app.DatePickerDialog;
@@ -18,9 +21,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.OverScroller;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -67,6 +72,8 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
     private ArrayList<Long> courseIds = new ArrayList<>();
     private ArrayList<Appointment> appointments = new ArrayList<>();
     private WeekView weekView;
+    private Calendar firstVisibleDay = Calendar.getInstance();
+    private HashMap<String, ArrayList<Appointment>> appointmentMap;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -168,14 +175,14 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
                 }
 
 
-                for(Appointment appointment: appointments) {
-                    if(Util.calendarFromDate(appointment.getStartDate()).get(Calendar.MONTH) != newMonth) {
+                for (Appointment appointment : appointments) {
+                    if (Util.calendarFromDate(appointment.getStartDate()).get(Calendar.MONTH) != newMonth) {
                         continue;
                     }
                     WeekViewEvent event = new WeekViewEvent(id++, appointment.getDescription(), Util.calendarFromDate(appointment.getStartDate()), Util.calendarFromDate(appointment.getEndDate()));
                     event.setColor(Util.nextColor());
                     events.add(event);
-                    Log.e("WeekView", "add appointment "+newYear+" "+newMonth);
+                    Log.e("WeekView", "add appointment " + newYear + " " + newMonth);
                 }
                 //add courses
 
@@ -204,6 +211,32 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
         });
         weekView.goToHour(9.0f);
 
+        final TextView date = rootView.findViewById(R.id.textview_date);
+        final ListView lv_appointment = rootView.findViewById(R.id.lv_appointment);
+        weekView.setScrollListener(new WeekView.ScrollListener() {
+            @Override
+            public void onFirstVisibleDayChanged(Calendar newFirstVisibleDay, Calendar oldFirstVisibleDay) {
+                firstVisibleDay = newFirstVisibleDay;
+                Calendar middle = (Calendar) firstVisibleDay.clone();
+                middle.add(Calendar.DATE, 2);
+                date.setText(Util.DATEFORMAT_MdEE.format(middle.getTime()));
+                if (appointmentMap == null) return;
+                ArrayList<Appointment> appointmentList = appointmentMap.get(Util.DATEFORMAT_yyyyMMdd.format(middle.getTime()));
+                if (appointmentList == null) {
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<String>());
+                    lv_appointment.setAdapter(adapter);
+                } else {
+                    ArrayList<String> strings = new ArrayList<>();
+                    for (Appointment appointment : appointmentList) {
+                        strings.add(Util.DATEFORMAT_HHmms.format(appointment.getStartDate().getTime()) + " - " + Util.DATEFORMAT_HHmms.format(appointment.getEndDate().getTime()) + " " + appointment.getDescription());
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, strings);
+                    lv_appointment.setAdapter(adapter);
+                }
+            }
+        });
+
+
         return rootView;
     }
 
@@ -219,7 +252,7 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
 
         startDate = (Calendar) time.clone();
         endDate = (Calendar) time.clone();
-        endDate.set(Calendar.HOUR_OF_DAY, startDate.get(Calendar.HOUR_OF_DAY)+1);
+        endDate.set(Calendar.HOUR_OF_DAY, startDate.get(Calendar.HOUR_OF_DAY) + 1);
         MaterialDialog dialog =
                 new MaterialDialog.Builder(getActivity())
                         .title("일정 추가")
@@ -229,6 +262,7 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                firstVisibleDay.add(Calendar.DATE, 2);
                                 new RestApiTask(AppointmentFragment.this).execute(new AddAppointment(TeamPlayApp.getAppInstance().getTeam().getId(), startDate.getTime(), endDate.getTime(), edittext_description.getText().toString()));
                             }
                         })
@@ -242,7 +276,7 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
         edittext_description = layout.findViewById(R.id.edittext_description);
         edittext_date.setText(Util.DATEFORMAT_yyyyMMdd.format(time.getTime()));
         edittext_start_time.setText(Util.DATEFORMAT_HHmm.format(time.getTime()));
-        time.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY)+1);
+        time.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY) + 1);
         edittext_end_time.setText(Util.DATEFORMAT_HHmm.format(time.getTime()));
 
         edittext_date.setOnClickListener(new View.OnClickListener() {
@@ -300,10 +334,25 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
 
     @Override
     public void onRestApiDone(RestApiResult restApiResult) {
-        if(restApiResult instanceof AppointmentListResult) {
+        if (restApiResult instanceof AppointmentListResult) {
             AppointmentListResult result = (AppointmentListResult) restApiResult;
             appointments = result.getAppointmentList();
-            weekView.goToDate(Calendar.getInstance());
+            Calendar adjust = (Calendar) firstVisibleDay.clone();
+            adjust.add(Calendar.DATE, -2);
+            appointmentMap = new HashMap<>();
+            for (Appointment appointment : appointments) {
+                String dateString = Util.DATEFORMAT_yyyyMMdd.format(appointment.getStartDate());
+                ArrayList<Appointment> appointmentListOfDate = appointmentMap.get(dateString);
+                if (appointmentListOfDate == null) {
+                    appointmentListOfDate = new ArrayList<Appointment>();
+                    appointmentMap.put(dateString, appointmentListOfDate);
+                }
+                appointmentListOfDate.add(appointment);
+            }
+            for (ArrayList<Appointment> list : appointmentMap.values()) {
+                Collections.sort(list);
+            }
+            weekView.goToDate(adjust);
         } else {
             new RestApiTask(this).execute(new GetAppointmentByTeam(TeamPlayApp.getAppInstance().getTeam().getId()));
         }

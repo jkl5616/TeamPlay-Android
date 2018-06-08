@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import skku.teamplay.api.OnRestApiListener;
 import skku.teamplay.api.RestApiResult;
@@ -21,6 +22,8 @@ import skku.teamplay.api.impl.UpdateToken;
 public class Util {
     public static SimpleDateFormat DATEFORMAT_yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
     public static SimpleDateFormat DATEFORMAT_HHmm = new SimpleDateFormat("HH시 mm분");
+    public static SimpleDateFormat DATEFORMAT_HHmms = new SimpleDateFormat("HH:mm");
+    public static SimpleDateFormat DATEFORMAT_MdEE = new SimpleDateFormat("M/d EE", Locale.getDefault());
 
     public static void updateToken() {
         try {
