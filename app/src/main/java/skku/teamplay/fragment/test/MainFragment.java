@@ -63,6 +63,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
     ArrayList<ScoreRecord> scoreRecords;
     final User selectedUser = TeamPlayApp.getAppInstance().getUser();
     final List<User> userList = TeamPlayApp.getAppInstance().getUserList();
+    List<List<ScoreRecord>> scoreRecordsGroup;
 
 //    @BindView(R.id.main_list_user) ListView listUser;
     @Override
@@ -76,7 +77,6 @@ public class MainFragment extends Fragment implements OnRestApiListener {
 
         if(rootView != null) return rootView;
         rootView = (ViewGroup) inflater.inflate(R.layout.activity_main_fragment, container, false);
-
 
         mRadarChart = (RadarChart) rootView.findViewById(R.id.main_radar_chart);
         textInfo = (TextView) rootView.findViewById(R.id.main_text_my_info);
@@ -111,9 +111,29 @@ public class MainFragment extends Fragment implements OnRestApiListener {
         setmRadarChart();
 
         scoreRecords = new ArrayList<>();
+        Random rnd = new Random();
+        for (int i = 0; i < 10; i++){
+            ScoreRecord temp = new ScoreRecord();
+            temp.setUser_id(selectedUser.getId());
+            temp.setScore(rnd.nextInt(30) + 1);
+            temp.setType(i % 3);
+            scoreRecords.add(temp);
+        }
         //create temp score records
+        scoreRecordsGroup = new ArrayList<List<ScoreRecord>>(userList.size() - 1); //remove selected user
+        for (int idx = 0; idx < userList.size(); idx++){
+            List<ScoreRecord> tempList = new ArrayList<>();
+            for (int j = 0; j < 10; j++){
+                ScoreRecord rec = new ScoreRecord();
+                rec.setType(j % 3);
+                rec.setUser_id(userList.get(idx).getId());
+                rec.setScore(rnd.nextInt(20) + 1);
+                tempList.add(rec);
+            }
+            scoreRecordsGroup.add(tempList);
+        }
 
-        updateChartData(selectedUser);
+        updateChartData(scoreRecords);
         //get scorerecord
 
 //        new RestApiTask(this).execute(new GetScoreRecordByTeam());
@@ -138,14 +158,14 @@ public class MainFragment extends Fragment implements OnRestApiListener {
 
     }
 
-    private void updateChartData(User user){
-        if (user.getId() == selectedUser.getId()) setChartData(user);
+    private void updateChartData(List<ScoreRecord> recordList){
+        if (recordList.get(0).getId() == selectedUser.getId()) setChartData(recordList);
         else{
             setsRadar.clear();
-            setChartData(selectedUser);
+            setChartData(scoreRecords); //set selected user's score
             List<Boolean> checkList = adapter.getChecklist();
             for (int idx = 0; idx < checkList.size(); idx++){
-                if (checkList.get(idx)) setChartData(userList.get(idx));
+                if (checkList.get(idx)) setChartData(scoreRecordsGroup.get(idx)); //set checked user's score
             }
         }
 
@@ -156,17 +176,36 @@ public class MainFragment extends Fragment implements OnRestApiListener {
         mRadarChart.invalidate();
     }
 
-    private void setChartData(User user){
+    private void setChartData(List<ScoreRecord> recordList){
+        String userName = "null";
+        int[] recordSums = new int[3];
         ArrayList<RadarEntry> entry = new ArrayList<>();
         Random rnd = new Random();
 
+        for (ScoreRecord record : recordList){
+            recordSums[record.getType()] += record.getScore();
+        }
 
-        entry.add(new RadarEntry(rnd.nextInt(70) + 1));
-        entry.add(new RadarEntry(rnd.nextInt(70) + 1));
-        entry.add(new RadarEntry(rnd.nextInt(70) + 1));
+        for (int num : recordSums){
+            entry.add(new RadarEntry(num));
+        }
+//        entry.add(new RadarEntry(rnd.nextInt(70) + 1));
+//        entry.add(new RadarEntry(rnd.nextInt(70) + 1));
+//        entry.add(new RadarEntry(rnd.nextInt(70) + 1));
 
-        RadarDataSet set = new RadarDataSet(entry, user.getName());
-        if (user.getId() == selectedUser.getId()) {
+
+        //set name
+        if (recordList.get(0).getUser_id() == selectedUser.getId()) userName = selectedUser.getName();
+        else {
+            for (User user : userList) {
+                if (user.getId() == recordList.get(0).getUser_id()) {
+                    userName = user.getName();
+                    break;
+                }
+            }
+        }
+        RadarDataSet set = new RadarDataSet(entry, userName);
+        if (recordList.get(0).getId() == selectedUser.getId()) {
             set.setColor(ColorTemplate.COLORFUL_COLORS[0]);
             set.setFillColor(ColorTemplate.COLORFUL_COLORS[0]);
         }
@@ -235,7 +274,6 @@ public class MainFragment extends Fragment implements OnRestApiListener {
                     public void onChange(AnimCheckBox animCheckBox, boolean b) {
                         int idx = Integer.parseInt(animCheckBox.getTag().toString());
 
-
                         ChartAnimatedText test = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, 5, ChartAnimatedText.RECORD_WALLET);
                         ChartAnimatedText test1 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, -21, ChartAnimatedText.RECORD_STRENGTH);
                         ChartAnimatedText test2 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, 120, ChartAnimatedText.RECORD_SUPPORT);
@@ -246,14 +284,12 @@ public class MainFragment extends Fragment implements OnRestApiListener {
                         test2.setDelay(1800);
                         test2.start();
 
-                        updateChartData((User)getItem(idx));
+
+                        updateChartData(scoreRecordsGroup.get(idx));
                     }
                 });
             }
 //            ImageView imageUser = (ImageView)view.findViewById(R.id.layout_list_profile_pic);
-
-
-
             return view;
         }
 

@@ -72,11 +72,12 @@ public class ChartAnimatedText {
         text = "<'font color='#000000'>" + type_name[option] + "</font>" + " ";
         if (score >= 0){
             htmlTxt = "<font color='#03d100'>+" + score + "</font>";
+            text = text + htmlTxt + " <'font color='#000000'>" + "증가했습니다.</font>" ;
         }
         else{
             htmlTxt = "<font color='#cf001c'>" + score + "</font>" + " ";
+            text = text + htmlTxt + " <'font color='#000000'>" + "감소했습니다.</font>" ;
         }
-        text = text + htmlTxt + " <'font color='#000000'>" + "감소했습니다.</font>" ;
         textView.setText(Html.fromHtml(text));
         textView.setX(targetView.getLeft() + targetView.getWidth() * offsetsX[option] - ((text.length() - htmlLen * 3) * 10));
         textView.setY(targetView.getTop() + targetView.getHeight() * offsetsY[option]);
