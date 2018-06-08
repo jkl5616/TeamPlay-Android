@@ -14,8 +14,8 @@ public class ChartAnimatedText {
     private RelativeLayout layoutBase;
     private String text, topic;
     private int option, duration, deltaY;
-    private static final float offsetsX[] = {0.45f, 0.2f, 0.75f};
-    private static final float offsetsY[] = {0f, 0.55f, 0.55f};
+    private static final float offsetsX[] = {0.2f, 0.45f, 0.75f};
+    private static final float offsetsY[] = {0.55f, 0f, 0.55f};
     Context context;
     public ChartAnimatedText(Context context, RelativeLayout layoutBase, View view, String text, int option) {
         this.layoutBase = layoutBase;
