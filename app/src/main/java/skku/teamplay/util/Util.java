@@ -92,7 +92,7 @@ public class Util {
         ArrayList<Integer> colArray = new ArrayList<Integer>();
         String alpha = "80";
         for(int i = 0; i < cols.length; i++) {
-            colArray.add(manipulateColor(Color.parseColor("#"+alpha+cols[i].split("#")[1]), 0.3f));
+            colArray.add(manipulateColor(Color.parseColor("#"+alpha+cols[i].split("#")[1]), 0.2f));
         }
         graycolors = colArray.toArray(new Integer[colArray.size()]);
     }
