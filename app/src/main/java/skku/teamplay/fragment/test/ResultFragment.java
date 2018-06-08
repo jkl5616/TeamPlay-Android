@@ -42,7 +42,8 @@ public class ResultFragment extends Fragment {
     MaterialSpinner spinnerSelectUser;
     ViewGroup rootView;
     BarChart mBarChart;
-    RecyclerView mRecyclerView;
+    @BindView(R.id.result_timeline_recycler)RecyclerView mRecyclerView;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +54,7 @@ public class ResultFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (rootView != null) return rootView;
         rootView = (ViewGroup)inflater.inflate(R.layout.fragment_result, container, false);
+        ButterKnife.bind(this, rootView);
 
         bind_views();
         setBarChart();
@@ -61,9 +63,9 @@ public class ResultFragment extends Fragment {
         List<User> userList = TeamPlayApp.getAppInstance().getUserList();
         User curUser = TeamPlayApp.getAppInstance().getUser();
         List<String> userNames = new ArrayList<>();
-        userNames.add(curUser.getName());
+        userNames.add(curUser.getName() + "/" + curUser.getEmail());
         for (User user : userList){
-            userNames.add(user.getName());
+            userNames.add(user.getName() + "/" + user.getEmail());
         }
         spinnerSelectUser.setItems(userNames);
         spinnerSelectUser.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
@@ -129,7 +131,6 @@ public class ResultFragment extends Fragment {
     }
     private void bind_views(){
         mBarChart = rootView.findViewById(R.id.template_contribution_barchart);
-        mRecyclerView = rootView.findViewById(R.id.result_timeline_recycler);
         spinnerSelectUser = rootView.findViewById(R.id.result_user_spinner);
     }
 }
