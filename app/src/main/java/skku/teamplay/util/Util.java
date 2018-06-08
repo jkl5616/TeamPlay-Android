@@ -2,6 +2,8 @@ package skku.teamplay.util;
 
 import android.graphics.Color;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,7 +28,7 @@ public class Util {
             String email = SharedPreferencesUtil.getString("user_email");
             String pw = SharedPreferencesUtil.getString("user_pw");
             String token = SharedPreferencesUtil.getString("firebase_token");
-
+            if(token == null) token = FirebaseInstanceId.getInstance().getToken();
             if (email != null && pw != null && token != null && token.length() > 0) {
                 updateToken.setEmail(email);
                 updateToken.setPw(pw);
