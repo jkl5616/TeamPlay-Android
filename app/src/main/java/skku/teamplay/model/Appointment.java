@@ -52,6 +52,6 @@ public class Appointment implements Comparable<Appointment> {
 
     @Override
     public int compareTo(@NonNull Appointment appointment) {
-        return appointment.startDate.compareTo(appointment.startDate);
+        return startDate.compareTo(appointment.startDate);
     }
 }
