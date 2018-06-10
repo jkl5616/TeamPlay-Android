@@ -14,11 +14,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    app:cardCornerRadius="3dp"
+                    app:cardElevation="2dp">
                 <RelativeLayout
                     android:id="@+id/result_layout_character"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:background="#555555"
                     android:elevation="5dp">
 
                     <TextView
@@ -30,7 +35,7 @@
                         android:layout_marginBottom="5dp"
                         android:lines="2"
                         android:text="Result of\nThis user"
-                        android:textColor="#ffffff"
+                        android:textColor="#000000"
                         android:textSize="20dp" />
                     <TextView
                         android:id="@+id/result_layout_grade"
@@ -43,7 +48,7 @@
                         android:textSize="45dp"
                         android:textColor="#1cff36"/>
                 </RelativeLayout>
-
+                </android.support.v7.widget.CardView>
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

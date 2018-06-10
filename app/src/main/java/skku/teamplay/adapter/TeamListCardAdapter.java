@@ -80,12 +80,10 @@ public class TeamListCardAdapter extends BaseAdapter{
 
             holder.name.setText(getItem(i).getName());
             gridList.add(holder.gridView);
-            titleList.add(holder.contrTitle);
-            
 
             Calendar today = Calendar.getInstance();
             today.set(Calendar.HOUR_OF_DAY, 0);
-
+            holder.contrTitle.setText("총 참여자: "+getItem(i).getCount()+"명");
             long diff = teamList.get(i).getDeadline().getTime() - today.getTime().getTime();
             time[3] = diff / 1000 % 60; //seconds
             time[2] = diff / (60 * 1000) % 60; //minutes

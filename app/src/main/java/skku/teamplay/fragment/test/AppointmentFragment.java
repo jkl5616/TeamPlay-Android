@@ -179,7 +179,7 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
                     if (Util.calendarFromDate(appointment.getStartDate()).get(Calendar.MONTH) != newMonth) {
                         continue;
                     }
-                    WeekViewEvent event = new WeekViewEvent(id++, appointment.getDescription(), Util.calendarFromDate(appointment.getStartDate()), Util.calendarFromDate(appointment.getEndDate()));
+                    WeekViewEvent event = new WeekViewEvent(id++, appointment.getDescription()+"\n"+appointment.getAttend_count()+"명 참여", Util.calendarFromDate(appointment.getStartDate()), Util.calendarFromDate(appointment.getEndDate()));
                     event.setColor(Util.nextColor());
                     events.add(event);
                     Log.e("WeekView", "add appointment " + newYear + " " + newMonth);
