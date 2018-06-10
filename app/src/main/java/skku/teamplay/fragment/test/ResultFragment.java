@@ -100,8 +100,10 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
                 String []tokens = item.toString().split("/");
-                if (tokens[1] != null) setUser(tokens[1]);
-
+                if (tokens[1] != null) {
+                    setUser(tokens[1]);
+                    Toast.makeText(getContext(), "Updated : " + tokens[1], Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -116,7 +118,7 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
         int userID = 0;
         //set Timeline data
         for (User user : userList){
-            if (user.getEmail() == IDName){
+            if (user.getEmail().contentEquals(IDName)){
                 userID = user.getId();
                 break;
             }
@@ -169,7 +171,6 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
     private ArrayList<AppointKanbanCombined> filterCombinedLists(int userID){
         ArrayList<AppointKanbanCombined> filtered = new ArrayList<>();
         for (AppointKanbanCombined combined : combinedLists) {
-            //add if its an appointment or user's schedule
             if (combined.getType() == 1 || combined.getUser_id() == userID) filtered.add(combined);
         }
         return filtered;
