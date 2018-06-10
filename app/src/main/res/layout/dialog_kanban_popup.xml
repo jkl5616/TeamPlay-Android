@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:layout_width="300dp"
-        android:layout_height="270dp"
+        android:layout_height="320dp"
         android:background="#FFFFFF"
         android:gravity="center_vertical|center_horizontal"
         android:orientation="vertical">
@@ -19,7 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="5"
             android:orientation="horizontal">
 
             <TextView
@@ -30,10 +30,10 @@
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
                 android:fontFamily="@font/bmdohyeon"
-                android:textColor="#FFF"
-                android:textSize="16sp"
                 android:text="TextView"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textColor="#FFF"
+                android:textSize="16sp" />
 
             <ImageButton
                 android:id="@+id/btnCancel"
@@ -107,6 +107,27 @@
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
+
+                <TextView
+                    android:id="@+id/textRule"
+                    style="@style/QuestAddPopupTextView"
+                    android:layout_weight="3"
+                    android:text="@string/rule_text" />
+
+                <Spinner
+                    android:id="@+id/spinnerRule"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/spinner_no_selector" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/textType"
                     style="@style/QuestAddPopupTextView"
@@ -161,7 +182,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="5"
             android:orientation="horizontal">
 
             <Button

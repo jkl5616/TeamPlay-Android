@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +36,8 @@ public class TabTestActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     MenuItem prevMenu;
+    ScreenSlidePagerAdapter screenSlidePagerAdapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +52,7 @@ public class TabTestActivity extends AppCompatActivity {
         setViewPager(viewPager);
     }
     private void setViewPager(ViewPager viewPager){
-        ScreenSlidePagerAdapter screenSlidePagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        screenSlidePagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mainFragment = new MainFragment();
         kanbanMainFragment = new KanbanMainFragment();
         appointmentFragment = new AppointmentFragment();
@@ -83,9 +86,9 @@ public class TabTestActivity extends AppCompatActivity {
             bottomNavigationView.getMenu().getItem(position).setChecked(true);
             prevMenu = bottomNavigationView.getMenu().getItem(position);
 
-//            if (position == 1) {
-//                AnalyticsFragment fragment = (AnalyticsFragment)  viewPager.getAdapter().instantiateItem(viewPager,0/* position of your fragment */);
-//            }
+            if (position == 1) {
+                screenSlidePagerAdapter.getItem(1).onResume();
+            }
         }
 
         @Override

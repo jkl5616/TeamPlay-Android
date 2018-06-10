@@ -18,4 +18,5 @@
     <string name="finish_text">완료</string>
     <string name="add_text">추가</string>
     <string name="cancle_text">취소</string>
+    <string name="rule_text">룰</string>
 </resources>

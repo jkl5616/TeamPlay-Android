@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -20,15 +23,24 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import skku.teamplay.R;
 import skku.teamplay.adapter.RewardSpinnerAdapter;
+import skku.teamplay.adapter.RuleSpinnerAdapter;
+import skku.teamplay.api.OnRestApiListener;
+import skku.teamplay.api.RestApiResult;
+import skku.teamplay.api.RestApiTask;
+import skku.teamplay.api.impl.GetKanbanPostByBoard;
+import skku.teamplay.api.impl.GetRulesByTeam;
+import skku.teamplay.api.impl.res.RuleListResult;
 import skku.teamplay.app.TeamPlayApp;
 import skku.teamplay.model.KanbanPost;
+import skku.teamplay.model.Rule;
+import skku.teamplay.model.Team;
 import skku.teamplay.model.User;
 
 /**
  * Created by ddjdd on 2018-05-07.
  */
 
-public class QuestPopupDialog extends Activity {
+public class QuestPopupDialog extends Activity implements OnRestApiListener {
     @BindView(R.id.Title) TextView Title;
     @BindView(R.id.textTitle) TextView textTitle;
     @BindView(R.id.textDescription) TextView textDescription;
@@ -44,6 +56,7 @@ public class QuestPopupDialog extends Activity {
     @BindView(R.id.editDueAt) TextView editDueAt;
     @BindView(R.id.editReward) EditText editReward;
 
+    @BindView(R.id.spinnerRule) Spinner spinnerRule;
     @BindView(R.id.spinnerRewardType) Spinner spinnerRewardType;
 
     @BindView(R.id.btnRemove) Button btnRemove;
@@ -51,8 +64,9 @@ public class QuestPopupDialog extends Activity {
     @BindView(R.id.btnAdd) Button btnAdd;
 
     RewardSpinnerAdapter spinnerAdapter;
-
-
+    RuleSpinnerAdapter ruleSpinnerAdapter;
+    User user;
+    Team team;
     int pos = -1, page = -1;
 
     KanbanPost kanbanPost;
@@ -68,6 +82,14 @@ public class QuestPopupDialog extends Activity {
         ButterKnife.bind(this);
         setSpinner();
 
+        user = TeamPlayApp.getAppInstance().getUser();
+        team = TeamPlayApp.getAppInstance().getTeam();
+
+//        team = new Team(); team.setId(1);
+//        user = new User("진호", 2);
+//        Date ne = new Date();
+//        kanbanPost = new KanbanPost(1, 1, "tt", "tt", 0, ne, ne, 1,1, 1,10);
+
         Intent intent = new Intent(this.getIntent());
         kanbanPost = (KanbanPost)intent.getSerializableExtra("kanbanPost");
         pos = intent.getIntExtra("pos", -1);
@@ -80,9 +102,14 @@ public class QuestPopupDialog extends Activity {
         }
         else {
             Title.setText("추가하기");
+            btnFinish.setEnabled(false);
         }
+
         if(kanbanPost.getOwner_id() == -1) {
             btnFinish.setText("내꺼");
+        }
+        else if(kanbanPost.getOwner_id() != user.getId()) {
+            btnFinish.setEnabled(false);
         }
 
         editTitle.setText(kanbanPost.getTitle());
@@ -91,6 +118,8 @@ public class QuestPopupDialog extends Activity {
         editDueAt.setText(kanbanPost.getDueAtSimple());
         spinnerRewardType.setSelection(kanbanPost.getRewardType());
         editReward.setText(String.valueOf(kanbanPost.getReward()));
+
+        new RestApiTask(this).execute(new GetRulesByTeam(team.getId()));
     }
 
     @Override
@@ -137,7 +166,6 @@ public class QuestPopupDialog extends Activity {
     @OnClick (R.id.btnFinish)
     void onBtnFinishedClick() {
         if(kanbanPost.getOwner_id() == -1) {
-            User user = TeamPlayApp.getAppInstance().getUser();
             kanbanPost.setOwner(user.getId());
             fillRetIntent();
             setResult(80, retIntent);
@@ -217,5 +245,34 @@ public class QuestPopupDialog extends Activity {
         retIntent.putExtra("pos", pos);
         retIntent.putExtra("page", page);
         retIntent.putExtra("kanbanPost", kanbanPost);
+    }
+
+    @Override
+    public void onRestApiDone(RestApiResult restApiResult) {
+        switch (restApiResult.getApiName()) {
+            case "getrulesbyteam":
+                RuleListResult data = (RuleListResult) restApiResult;
+                ArrayList<Rule> ruleList = data.getRuleList();
+                Rule defaultRule = new Rule();
+                defaultRule.setName("직접 입력");
+                defaultRule.setType(0);
+                defaultRule.setScore(0);
+                ruleList.add(0, defaultRule);
+                ruleSpinnerAdapter = new RuleSpinnerAdapter(this, ruleList);
+                spinnerRule.setAdapter(ruleSpinnerAdapter);
+                spinnerRule.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        Rule currentRule = ruleSpinnerAdapter.getItem(i);
+                        spinnerRewardType.setSelection(currentRule.getType());
+                        editReward.setText(String.valueOf(currentRule.getScore()));
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                        spinnerRewardType.setSelection(0);
+                    }
+                });
+        }
     }
 }

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -56,19 +57,36 @@ public class KanbanMainFragment extends  Fragment implements OnRestApiListener{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_kanban, container, false);
         ButterKnife.bind(this, rootView);
+
         team = TeamPlayApp.getAppInstance().getTeam();
         user = TeamPlayApp.getAppInstance().getUser();
+
         new RestApiTask(this).execute(new GetKanbansByTeam(team.getId()));
-        kanbanPosts = new ArrayList<>();
+
         header = getLayoutInflater().inflate(R.layout.template_postlist_header, null, false);
         questList.addHeaderView(header);
-        questList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            }
-            public void onClick(View v) { }
-        });
+//        questList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+//            }
+//            public void onClick(View v) { }
+//        });
+
+        adapter = new KanbanQuestlistAdapter();
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter = new KanbanQuestlistAdapter();
+        new RestApiTask(this).execute(new GetKanbansByTeam(team.getId()));
     }
 
     @OnClick(R.id.btnKanban)
@@ -83,30 +101,24 @@ public class KanbanMainFragment extends  Fragment implements OnRestApiListener{
             case "getkanbansbyteam":
                 KanbanBoardListResult kanbanBoardListResult = (KanbanBoardListResult) restApiResult;
                 ArrayList<KanbanBoard> kanbanBoards = kanbanBoardListResult.getKanbanList();
-                for(int i = 0; i < kanbanBoards.size(); i++) {
-                    new RestApiTask(this).execute(new GetKanbanPostByBoard(kanbanBoards.get(i).getId()));
+                for(KanbanBoard i: kanbanBoards) {
+                    new RestApiTask(this).execute(new GetKanbanPostByBoard(i.getId()));
                 }
-
                 break;
             case "getkanbanpostbyboard":
                 KanbanPostListResult result = (KanbanPostListResult) restApiResult;
                 ArrayList <KanbanPost> temp = result.getPostList();
-                int len = temp.size();
-                for(int i = 0; i < len; i++) {
-                    if (temp != null) {
-                        if (temp.get(i).getOwner_id() == user.getId()) {
-                            kanbanPosts.add(temp.get(i));
+                int user_id = user.getId();
+                if(temp != null) {
+                    for(KanbanPost i: temp) {
+                        if(i.getOwner_id() == user_id) {
+                            adapter.addItem(i);
                         }
-                    }
-                    if (i == len - 1 && kanbanPosts != null) {
-                        adapter = new KanbanQuestlistAdapter(kanbanPosts);
-                        if (adapter.getCount() >= 0) {
-                            questList.setAdapter(adapter);
-                        }
-                        TextView tv = (TextView) header.findViewById(R.id.count);
-                        tv.setText(String.valueOf(adapter.getCount()));
                     }
                 }
+                questList.setAdapter(adapter);
+                TextView tv = (TextView) header.findViewById(R.id.count);
+                tv.setText(String.valueOf(adapter.getCount()));
                 break;
         }
     }

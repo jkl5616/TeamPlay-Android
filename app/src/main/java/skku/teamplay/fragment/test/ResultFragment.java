@@ -1,11 +1,13 @@
 package skku.teamplay.fragment.test;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +24,11 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -30,14 +36,36 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import skku.teamplay.R;
 import skku.teamplay.adapter.TimelineAdapter;
+import skku.teamplay.api.OnRestApiListener;
+import skku.teamplay.api.RestApi;
+import skku.teamplay.api.RestApiResult;
+import skku.teamplay.api.RestApiTask;
+import skku.teamplay.api.impl.GetAppointmentByTeam;
+import skku.teamplay.api.impl.GetKanbanPostByBoard;
+import skku.teamplay.api.impl.GetKanbansByTeam;
+import skku.teamplay.api.impl.res.AppointmentListResult;
+import skku.teamplay.api.impl.res.KanbanBoardListResult;
+import skku.teamplay.api.impl.res.KanbanPostListResult;
 import skku.teamplay.app.TeamPlayApp;
+import skku.teamplay.model.Appointment;
+import skku.teamplay.model.KanbanBoard;
 import skku.teamplay.model.KanbanPost;
 import skku.teamplay.model.User;
+import skku.teamplay.util.AppointKanbanCombined;
 
-public class ResultFragment extends Fragment {
+public class ResultFragment extends Fragment implements OnRestApiListener{
     final static private float GROUP_SPACE= 0.15f;
     final static private float BAR_SPACE = 0.1f;
     final static private float BAR_WIDTH = 0.45f;
+    private boolean KANBAN_FLAG, APPOINT_FLAG;
+    private ArrayList<KanbanBoard> kanbanBoards;
+    private ArrayList<Appointment> appointments;
+    private ArrayList<AppointKanbanCombined> combinedLists;
+    private ArrayList<User> userList;
+    private User curUser;
+    private int total_kanbanBoards, idx_kanban;
+    TimelineAdapter timelineAdapter;
+
 
     MaterialSpinner spinnerSelectUser;
     ViewGroup rootView;
@@ -55,13 +83,13 @@ public class ResultFragment extends Fragment {
         if (rootView != null) return rootView;
         rootView = (ViewGroup)inflater.inflate(R.layout.fragment_result, container, false);
         ButterKnife.bind(this, rootView);
+        KANBAN_FLAG = APPOINT_FLAG = false;
 
         bind_views();
         setBarChart();
-        setTimeline();
 
-        List<User> userList = TeamPlayApp.getAppInstance().getUserList();
-        User curUser = TeamPlayApp.getAppInstance().getUser();
+        userList = TeamPlayApp.getAppInstance().getUserList();
+        curUser = TeamPlayApp.getAppInstance().getUser();
         List<String> userNames = new ArrayList<>();
         userNames.add(curUser.getName() + "/" + curUser.getEmail());
         for (User user : userList){
@@ -71,16 +99,33 @@ public class ResultFragment extends Fragment {
         spinnerSelectUser.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-                Toast.makeText(rootView.getContext(), "Clicked" + item, Toast.LENGTH_LONG).show();
+                String []tokens = item.toString().split("/");
+                if (tokens[1] != null) {
+                    setUser(tokens[1]);
+                    Toast.makeText(getContext(), "Updated : " + tokens[1], Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
+        new RestApiTask(this).execute(new GetKanbansByTeam(TeamPlayApp.getAppInstance().getTeam().getId()));
+        new RestApiTask(this).execute(new GetAppointmentByTeam(TeamPlayApp.getAppInstance().getTeam().getId()));
         return rootView;
     }
 
+    ArrayList<KanbanPost> kanbanPosts = new ArrayList<>();
+
+    private void setUser(String IDName){
+        int userID = 0;
+        //set Timeline data
+        for (User user : userList){
+            if (user.getEmail().contentEquals(IDName)){
+                userID = user.getId();
+                break;
+            }
+        }
+        setTimeline(userID);
+    }
     private void setBarChart(){
-
-
         List<BarEntry> entriesCont = new ArrayList<>();
         List<BarEntry> entriesAvg = new ArrayList<>();
 
@@ -112,25 +157,91 @@ public class ResultFragment extends Fragment {
 
     }
 
-    private void setTimeline(){
+    private void initTimeline(int userID){
         LinearLayoutManager layoutManager = new LinearLayoutManager(rootView.getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        List<KanbanPost> kanbanPosts = new ArrayList<>();
-        for (int i = 0; i < 20; i++){
-            kanbanPosts.add(new KanbanPost());
-            kanbanPosts.get(i).setTitle("KanbanPost Title #" + i);
-            kanbanPosts.get(i).setDescription("KanbanPost Description #" + i);
-//            kanbanPosts.get(i).setEndDate("0529");
-        }
-        TimelineAdapter timelineAdapter = new TimelineAdapter(kanbanPosts);
+        timelineAdapter = new TimelineAdapter(filterCombinedLists(userID));
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(timelineAdapter);
     }
+
+    private ArrayList<AppointKanbanCombined> filterCombinedLists(int userID){
+        ArrayList<AppointKanbanCombined> filtered = new ArrayList<>();
+        for (AppointKanbanCombined combined : combinedLists) {
+            if (combined.getType() == 1 || combined.getUser_id() == userID) filtered.add(combined);
+        }
+        return filtered;
+    }
+    private void setTimeline(int userID){
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(rootView.getContext());
+//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//        mRecyclerView.setLayoutManager(layoutManager);
+//
+//        //filter timeline data for the selecter user
+//        ArrayList<AppointKanbanCombined> filtered = new ArrayList<>();
+//        for (AppointKanbanCombined combined : combinedLists){
+//            if (combined.getUser_id() != userID && combined.getUser_id() != -1){ //-1 = no user id exists for appointment
+//                filtered.add(combined);
+//            }
+//        }
+//        timelineAdapter = new TimelineAdapter(filtered);
+//        mRecyclerView.setLayoutManager(layoutManager);
+//        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+//        mRecyclerView.setAdapter(timelineAdapter);
+        timelineAdapter.setCombinedList(filterCombinedLists(userID));
+        timelineAdapter.notifyDataSetChanged();
+    }
+
     private void bind_views(){
         mBarChart = rootView.findViewById(R.id.template_contribution_barchart);
         spinnerSelectUser = rootView.findViewById(R.id.result_user_spinner);
     }
+
+    @Override
+    public void onRestApiDone(RestApiResult restApiResult) {
+        switch (restApiResult.getApiName()){
+            case "getkanbansbyteam":
+                KanbanBoardListResult kanbanBoardListResult = (KanbanBoardListResult) restApiResult;
+                kanbanBoards = kanbanBoardListResult.getKanbanList();
+                total_kanbanBoards = kanbanBoards.size();
+                for (KanbanBoard kanbanBoard : kanbanBoards){
+                    new RestApiTask(this).execute(new GetKanbanPostByBoard(kanbanBoard.getId()));
+                }
+
+                break;
+            case "getkanbanpostbyboard":
+                idx_kanban++;
+                KanbanPostListResult kanbanPostListResult = (KanbanPostListResult) restApiResult;
+                ArrayList<KanbanPost> temp = kanbanPostListResult.getPostList();
+                for (KanbanPost post : temp){
+                    kanbanPosts.add(post);
+                }
+                if (idx_kanban == total_kanbanBoards) KANBAN_FLAG = true;
+                break;
+
+            case "getappointmentbyteam":
+                AppointmentListResult appointmentListResult = (AppointmentListResult) restApiResult;
+                appointments = appointmentListResult.getAppointmentList();
+                APPOINT_FLAG = true;
+                break;
+
+        }
+
+        if (KANBAN_FLAG && APPOINT_FLAG) {
+            combinedLists = AppointKanbanCombined.combine(kanbanPosts, appointments);
+            //sort
+            Collections.sort(combinedLists, new Comparator<AppointKanbanCombined>() {
+                @Override
+                public int compare(AppointKanbanCombined appointKanbanCombined, AppointKanbanCombined t1) {
+                    return appointKanbanCombined.getEndDate().compareTo(t1.getEndDate());
+                }
+            });
+
+            initTimeline(curUser.getId());
+        }
+    }
+
 }
