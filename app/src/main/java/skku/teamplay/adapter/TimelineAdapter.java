@@ -3,6 +3,7 @@ package skku.teamplay.adapter;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
         setGab_COLORS();
     }
 
+    public void setCombinedList(ArrayList<AppointKanbanCombined> combinedList) {
+        this.combinedList = combinedList;
+    }
+
     private GradientDrawable setGradientTimeLine(int position){
 
         int start_color = Color.argb(255, (GAB_COLOR_R * position) + START_TIMELINE_COLOR_R, (GAB_COLOR_G * position) + START_TIMELINE_COLOR_G,
@@ -60,7 +65,22 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     @Override
     public void onBindViewHolder(TimelineHolder holder, int position) {
         holder.description.setText(combinedList.get(position).getDescription());
-        holder.title.setText(combinedList.get(position).getTitle());
+        if (combinedList.get(position).getType() == 0){
+            String title = "", htmlTxt;
+            if (combinedList.get(position).getReward() > 0) {
+                htmlTxt = "<font color='#03d100'> +" + combinedList.get(position).getReward() + "</font>";
+                title = combinedList.get(position).getTitle()  + htmlTxt;
+            }
+            else if (combinedList.get(position).getReward() < 0){
+                htmlTxt = "<font color='#cf001c'> " + combinedList.get(position).getReward() + "</font>" + " ";
+                title = combinedList.get(position).getTitle() + htmlTxt;
+            }
+            else{
+                title = combinedList.get(position).getTitle();
+            }
+            holder.title.setText(Html.fromHtml(title));
+        }
+        else  holder.title.setText(combinedList.get(position).getTitle());
         holder.timeLine.setBackground(setGradientTimeLine(position));
         holder.date.setText(Util.DATEFORMAT_yyyyMMdd.format(combinedList.get(position).getEndDate()));
     }

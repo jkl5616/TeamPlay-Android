@@ -16,8 +16,8 @@ public class AppointKanbanCombined implements Comparable<AppointKanbanCombined>{
     private Date endDate;
     private String description;
     private String title;
-    private int team_id;
-    private int attend_count;
+    private int team_id, user_id, reward;
+    private int attend_count, type; //type = 0 kanban, type = 1 appointment
 
     public static ArrayList<AppointKanbanCombined> combine(ArrayList<KanbanPost> kanbanPosts, ArrayList<Appointment> appointments) {
         ArrayList<AppointKanbanCombined> combinedList = new ArrayList<>();
@@ -29,6 +29,10 @@ public class AppointKanbanCombined implements Comparable<AppointKanbanCombined>{
             temp.setTitle(kanban.getTitle());
             temp.setTeam_id(-1); //unknown
             temp.setAttend_count(-1); //unknown
+            temp.setType(0);
+            temp.setReward(kanban.getReward());
+            if (kanban.getOwner_id() == -1) temp.setUser_id(0);
+            else temp.setUser_id(kanban.getOwner_id());
             combinedList.add(temp);
         }
         for (Appointment appointment : appointments){
@@ -39,12 +43,37 @@ public class AppointKanbanCombined implements Comparable<AppointKanbanCombined>{
             temp.setTitle("[일정]");
             temp.setTeam_id(appointment.getTeam_id());
             temp.setAttend_count(appointment.getAttend_count());
+            temp.setType(1);
+            temp.setUser_id(-1);
             combinedList.add(temp);
         }
 
         return combinedList;
     }
 
+    public int getReward() {
+        return reward;
+    }
+
+    public void setReward(int reward) {
+        this.reward = reward;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     @Override
     public int compareTo(@NonNull AppointKanbanCombined appointKanbanCombined) {

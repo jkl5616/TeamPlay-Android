@@ -61,7 +61,12 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
     private ArrayList<KanbanBoard> kanbanBoards;
     private ArrayList<Appointment> appointments;
     private ArrayList<AppointKanbanCombined> combinedLists;
+    private ArrayList<User> userList;
+    private User curUser;
     private int total_kanbanBoards, idx_kanban;
+    TimelineAdapter timelineAdapter;
+
+
     MaterialSpinner spinnerSelectUser;
     ViewGroup rootView;
     BarChart mBarChart;
@@ -83,8 +88,8 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
         bind_views();
         setBarChart();
 
-        List<User> userList = TeamPlayApp.getAppInstance().getUserList();
-        User curUser = TeamPlayApp.getAppInstance().getUser();
+        userList = TeamPlayApp.getAppInstance().getUserList();
+        curUser = TeamPlayApp.getAppInstance().getUser();
         List<String> userNames = new ArrayList<>();
         userNames.add(curUser.getName() + "/" + curUser.getEmail());
         for (User user : userList){
@@ -94,7 +99,9 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
         spinnerSelectUser.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-                Toast.makeText(rootView.getContext(), "Clicked" + item, Toast.LENGTH_LONG).show();
+                String []tokens = item.toString().split("/");
+                if (tokens[1] != null) setUser(tokens[1]);
+
             }
         });
 
@@ -104,6 +111,94 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
     }
 
     ArrayList<KanbanPost> kanbanPosts = new ArrayList<>();
+
+    private void setUser(String IDName){
+        int userID = 0;
+        //set Timeline data
+        for (User user : userList){
+            if (user.getEmail() == IDName){
+                userID = user.getId();
+                break;
+            }
+        }
+        setTimeline(userID);
+    }
+    private void setBarChart(){
+        List<BarEntry> entriesCont = new ArrayList<>();
+        List<BarEntry> entriesAvg = new ArrayList<>();
+
+        Random rand = new Random();
+        for (int week = 0; week < 10; week++){
+            entriesCont.add(new BarEntry(week, rand.nextInt(100) + 1));
+            entriesAvg.add(new BarEntry(week, rand.nextInt(40)));
+        }
+
+        BarDataSet setCont = new BarDataSet(entriesCont, "User Score");
+        setCont.setColor(ColorTemplate.COLORFUL_COLORS[0]);
+        BarDataSet setAvg = new BarDataSet(entriesAvg, "Average Score");
+        setAvg.setColors(ColorTemplate.COLORFUL_COLORS[1]);
+
+        BarData data = new BarData(setCont, setAvg);
+        data.setBarWidth(BAR_WIDTH);
+        mBarChart.setData(data);
+        mBarChart.groupBars(0, GROUP_SPACE, BAR_SPACE);
+
+        Description desc = new Description();
+        desc.setText("Contribution bar chart");
+        mBarChart.setDescription(desc);
+
+
+        XAxis xAxis = mBarChart.getXAxis();
+        xAxis.setAxisMaximum(xAxis.getAxisMaximum() + GROUP_SPACE + BAR_WIDTH);
+        xAxis.setCenterAxisLabels(true);
+        mBarChart.invalidate();
+
+    }
+
+    private void initTimeline(int userID){
+        LinearLayoutManager layoutManager = new LinearLayoutManager(rootView.getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        timelineAdapter = new TimelineAdapter(filterCombinedLists(userID));
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setAdapter(timelineAdapter);
+    }
+
+    private ArrayList<AppointKanbanCombined> filterCombinedLists(int userID){
+        ArrayList<AppointKanbanCombined> filtered = new ArrayList<>();
+        for (AppointKanbanCombined combined : combinedLists) {
+            //add if its an appointment or user's schedule
+            if (combined.getType() == 1 || combined.getUser_id() == userID) filtered.add(combined);
+        }
+        return filtered;
+    }
+    private void setTimeline(int userID){
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(rootView.getContext());
+//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//        mRecyclerView.setLayoutManager(layoutManager);
+//
+//        //filter timeline data for the selecter user
+//        ArrayList<AppointKanbanCombined> filtered = new ArrayList<>();
+//        for (AppointKanbanCombined combined : combinedLists){
+//            if (combined.getUser_id() != userID && combined.getUser_id() != -1){ //-1 = no user id exists for appointment
+//                filtered.add(combined);
+//            }
+//        }
+//        timelineAdapter = new TimelineAdapter(filtered);
+//        mRecyclerView.setLayoutManager(layoutManager);
+//        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+//        mRecyclerView.setAdapter(timelineAdapter);
+        timelineAdapter.setCombinedList(filterCombinedLists(userID));
+        timelineAdapter.notifyDataSetChanged();
+    }
+
+    private void bind_views(){
+        mBarChart = rootView.findViewById(R.id.template_contribution_barchart);
+        spinnerSelectUser = rootView.findViewById(R.id.result_user_spinner);
+    }
+
     @Override
     public void onRestApiDone(RestApiResult restApiResult) {
         switch (restApiResult.getApiName()){
@@ -143,59 +238,9 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
                     return appointKanbanCombined.getEndDate().compareTo(t1.getEndDate());
                 }
             });
-            setTimeline();
+
+            initTimeline(curUser.getId());
         }
     }
-
-    private void setBarChart(){
-        List<BarEntry> entriesCont = new ArrayList<>();
-        List<BarEntry> entriesAvg = new ArrayList<>();
-
-        Random rand = new Random();
-        for (int week = 0; week < 10; week++){
-            entriesCont.add(new BarEntry(week, rand.nextInt(100) + 1));
-            entriesAvg.add(new BarEntry(week, rand.nextInt(40)));
-        }
-
-        BarDataSet setCont = new BarDataSet(entriesCont, "User Score");
-        setCont.setColor(ColorTemplate.COLORFUL_COLORS[0]);
-        BarDataSet setAvg = new BarDataSet(entriesAvg, "Average Score");
-        setAvg.setColors(ColorTemplate.COLORFUL_COLORS[1]);
-
-        BarData data = new BarData(setCont, setAvg);
-        data.setBarWidth(BAR_WIDTH);
-        mBarChart.setData(data);
-        mBarChart.groupBars(0, GROUP_SPACE, BAR_SPACE);
-
-        Description desc = new Description();
-        desc.setText("Contribution bar chart");
-        mBarChart.setDescription(desc);
-
-
-        XAxis xAxis = mBarChart.getXAxis();
-        xAxis.setAxisMaximum(xAxis.getAxisMaximum() + GROUP_SPACE + BAR_WIDTH);
-        xAxis.setCenterAxisLabels(true);
-        mBarChart.invalidate();
-
-    }
-    private void setTimeline(){
-        LinearLayoutManager layoutManager = new LinearLayoutManager(rootView.getContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(layoutManager);
-
-
-
-        TimelineAdapter timelineAdapter = new TimelineAdapter(combinedLists);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setAdapter(timelineAdapter);
-    }
-
-    private void bind_views(){
-        mBarChart = rootView.findViewById(R.id.template_contribution_barchart);
-        spinnerSelectUser = rootView.findViewById(R.id.result_user_spinner);
-    }
-
-
 
 }
