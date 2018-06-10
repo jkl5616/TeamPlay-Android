@@ -259,7 +259,7 @@ public class QuestPopupDialog extends Activity implements OnRestApiListener {
                 defaultRule.setScore(0);
                 ruleList.add(0, defaultRule);
                 ruleSpinnerAdapter = new RuleSpinnerAdapter(this, ruleList);
-                spinnerRule.setAdapter(spinnerAdapter);
+                spinnerRule.setAdapter(ruleSpinnerAdapter);
                 spinnerRule.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

@@ -189,6 +189,4 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
         textKanbanTitle.setText(title);
         new RestApiTask(this).execute(modifyKanbanBoard);
     }
-
-
 }
