@@ -91,10 +91,10 @@ public class ProfileActivity extends AppCompatActivity implements OnRestApiListe
         });
         new RestApiTask(this).execute(new GetTeamByUser(TeamPlayApp.getAppInstance().getUser().getId()));
     }
-
+    int teamIdx = 0;
     @Override
     public void onRestApiDone(RestApiResult restApiResult) {
-        int teamIdx = 0;
+
         switch (restApiResult.getApiName()) {
             case "getteambyuser":
                 //해당 유저의 팀 가져옴
@@ -127,7 +127,6 @@ public class ProfileActivity extends AppCompatActivity implements OnRestApiListe
                     startActivity(new Intent(ProfileActivity.this, TabTestActivity.class));
                 }
                 else{ //load team members to a grid view
-
                     ArrayList<User> tempList = userListResult.getUserList();
                     teamAdapter.setContributorTitle("참여자 - 총 " + tempList.size() + "명", teamIdx);
                     teamIdx++;
