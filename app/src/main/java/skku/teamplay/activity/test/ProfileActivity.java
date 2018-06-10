@@ -51,12 +51,8 @@ public class ProfileActivity extends AppCompatActivity implements OnRestApiListe
     @BindView(R.id.lv_team_list)
     ListView lv_teamList;
 
-    @BindView(R.id.tv_modify_timetable)
-    TextView tv_modify_timetable;
-
     @BindView(R.id.fab_main_profile)
     FabSpeedDial fab;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,19 +66,12 @@ public class ProfileActivity extends AppCompatActivity implements OnRestApiListe
             }
         });
 
-        tv_modify_timetable.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ProfileActivity.this, TimetableModifyActivity.class));
-            }
-        });
-
         tv_profile.setText(TeamPlayApp.getAppInstance().getUser().getName());
-        fab.setMenuListener(new SimpleMenuListenerAdapter() {
+        fab.setMenuListener(new SimpleMenuListenerAdapter(){
             @Override
             public boolean onMenuItemSelected(MenuItem menuItem) {
                 int temp = 0;
-                switch (menuItem.getItemId()) {
+                switch (menuItem.getItemId()){
                     case R.id.menu1:
                         Intent intent = new Intent(ProfileActivity.this, MakeTeamActivity.class);
                         startActivity(intent);
@@ -101,10 +90,10 @@ public class ProfileActivity extends AppCompatActivity implements OnRestApiListe
         });
         new RestApiTask(this).execute(new GetTeamByUser(TeamPlayApp.getAppInstance().getUser().getId()));
     }
-
+//    int teamIdx = 0;
     @Override
     public void onRestApiDone(RestApiResult restApiResult) {
-        int teamIdx = 0;
+
         switch (restApiResult.getApiName()) {
             case "getteambyuser":
                 //해당 유저의 팀 가져옴
@@ -121,13 +110,17 @@ public class ProfileActivity extends AppCompatActivity implements OnRestApiListe
                         new RestApiTask(ProfileActivity.this).execute(new GetAllUsersByTeam(team.getId()));
                     }
                 });
+
+
                 break;
             case "getallusersbyteam":
                 UserListResult userListResult = (UserListResult) restApiResult;
+
                 final ArrayList<User> userList = userListResult.getUserList();
                 TeamPlayApp.getAppInstance().setUserList(userList);
                 //탭 액티비티로 이동
                 startActivity(new Intent(ProfileActivity.this, TabTestActivity.class));
+
                 break;
         }
     }
