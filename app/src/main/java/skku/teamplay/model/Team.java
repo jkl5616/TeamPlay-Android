@@ -11,6 +11,7 @@ public class Team {
     private String name;
     private Date deadline;
     private String coursename;
+    private int count;
 
     public String getName() {
         return name;
@@ -42,5 +43,13 @@ public class Team {
 
     public void setDeadline(Date deadline) {
         this.deadline = deadline;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

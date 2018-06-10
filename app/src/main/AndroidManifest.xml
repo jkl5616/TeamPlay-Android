@@ -98,6 +98,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
 
+        <activity android:name=".activity.test.TimetableModifyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
+
+
         <activity android:name=".activity.test.MakeTeamActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>

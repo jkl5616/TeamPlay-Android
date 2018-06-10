@@ -10,6 +10,7 @@ public class Appointment implements Comparable<Appointment> {
     private Date endDate;
     private String description;
     private int team_id;
+    private int attend_count;
 
     public Appointment(Date startDate, Date endDate, String description, int team_id) {
         this.startDate = startDate;
@@ -53,5 +54,13 @@ public class Appointment implements Comparable<Appointment> {
     @Override
     public int compareTo(@NonNull Appointment appointment) {
         return startDate.compareTo(appointment.startDate);
+    }
+
+    public int getAttend_count() {
+        return attend_count;
+    }
+
+    public void setAttend_count(int attend_count) {
+        this.attend_count = attend_count;
     }
 }
