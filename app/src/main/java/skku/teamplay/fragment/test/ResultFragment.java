@@ -204,7 +204,6 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
 
     private void setmPieChart(){
         List<PieEntry> entries = new ArrayList<>();
-        entries.add(getPieEntry(curUser));
         for (User user : userList)
             entries.add(getPieEntry(user));
 
