@@ -1,9 +1,13 @@
 package skku.teamplay.fragment.test;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,14 +43,17 @@ import skku.teamplay.model.User;
  * Created by ddjdd on 2018-05-31.
  */
 
-public class KanbanMainFragment extends  Fragment implements OnRestApiListener{
-    @BindView(R.id.kanbanPostList) ListView questList;
+public class KanbanMainFragment extends Fragment implements OnRestApiListener {
+    @BindView(R.id.kanbanPostList)
+    ListView questList;
     private KanbanQuestlistAdapter adapter;
     private ArrayList<KanbanPost> kanbanPosts;
     private Team team;
     private User user;
     private View rootView;
     View header;
+
+    BroadcastReceiver receiver;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +63,7 @@ public class KanbanMainFragment extends  Fragment implements OnRestApiListener{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        if(rootView != null) return rootView;
+        if (rootView != null) return rootView;
         rootView = inflater.inflate(R.layout.fragment_kanban, container, false);
         ButterKnife.bind(this, rootView);
 
@@ -75,7 +82,32 @@ public class KanbanMainFragment extends  Fragment implements OnRestApiListener{
 //        });
 
         adapter = new KanbanQuestlistAdapter();
+        initReceiver();
         return rootView;
+    }
+
+    private void initReceiver() {
+        if (receiver == null) {
+            IntentFilter filter = new IntentFilter();
+            filter.addAction("skku.teamplay.UPDATE_KANBAN");
+            receiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    Log.e("BroadcastReceiver", "update test");
+                    adapter = new KanbanQuestlistAdapter();
+                    new RestApiTask(KanbanMainFragment.this).execute(new GetKanbansByTeam(team.getId()));
+                }
+            };
+            getActivity().registerReceiver(receiver, filter);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (receiver != null) {
+            getActivity().unregisterReceiver(receiver);
+        }
     }
 
     @Override
@@ -92,7 +124,7 @@ public class KanbanMainFragment extends  Fragment implements OnRestApiListener{
     }
 
     @OnClick(R.id.btnKanban)
-    void onBtnKanbanClick(){
+    void onBtnKanbanClick() {
         Intent intent = new Intent(getActivity(), KanbanViewpagerActivity.class);
         startActivity(intent);
     }
@@ -103,17 +135,17 @@ public class KanbanMainFragment extends  Fragment implements OnRestApiListener{
             case "getkanbansbyteam":
                 KanbanBoardListResult kanbanBoardListResult = (KanbanBoardListResult) restApiResult;
                 ArrayList<KanbanBoard> kanbanBoards = kanbanBoardListResult.getKanbanList();
-                for(KanbanBoard i: kanbanBoards) {
+                for (KanbanBoard i : kanbanBoards) {
                     new RestApiTask(this).execute(new GetKanbanPostByBoard(i.getId()));
                 }
                 break;
             case "getkanbanpostbyboard":
                 KanbanPostListResult result = (KanbanPostListResult) restApiResult;
-                ArrayList <KanbanPost> temp = result.getPostList();
+                ArrayList<KanbanPost> temp = result.getPostList();
                 int user_id = user.getId();
-                if(temp != null) {
-                    for(KanbanPost i: temp) {
-                        if(i.getOwner_id() == user_id) {
+                if (temp != null) {
+                    for (KanbanPost i : temp) {
+                        if (i.getOwner_id() == user_id) {
                             adapter.addItem(i);
                         }
                     }

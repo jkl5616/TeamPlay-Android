@@ -151,15 +151,19 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
                 });
                 break;
             case "addkanbanpost":
+                getActivity().sendBroadcast(new Intent("skku.teamplay.UPDATE_KANBAN"));
                 Toast.makeText(getActivity(), "포스트가 추가되었습니다.", Toast.LENGTH_SHORT).show();
                 break;
             case "modifykanbanpost":
+                getActivity().sendBroadcast(new Intent("skku.teamplay.UPDATE_KANBAN"));
                 Toast.makeText(getActivity(), "포스트가 변경되었습니다.", Toast.LENGTH_SHORT).show();
                 break;
             case "deletekanbanpost":
+                getActivity().sendBroadcast(new Intent("skku.teamplay.UPDATE_KANBAN"));
                 Toast.makeText(getActivity(), "포스트가 제거되었습니다.", Toast.LENGTH_SHORT).show();
                 break;
             case "modifykanbanboard":
+                getActivity().sendBroadcast(new Intent("skku.teamplay.UPDATE_KANBAN"));
                 Toast.makeText(getActivity(), "보드가 변경되었습니다.", Toast.LENGTH_SHORT).show();
                 break;
         }

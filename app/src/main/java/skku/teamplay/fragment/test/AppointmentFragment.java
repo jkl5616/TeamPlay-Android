@@ -10,6 +10,10 @@ import java.util.Locale;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.support.annotation.NonNull;
@@ -82,6 +86,7 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
     private Calendar firstVisibleDay = Calendar.getInstance();
     private HashMap<String, ArrayList<Appointment>> appointmentMap;
     private int count = 0;
+    private BroadcastReceiver receiver;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -137,16 +142,20 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
 
                 ArrayList<Course> totalCourse = new ArrayList<>();
                 //코스
-                Log.e("AppointmentFragment",  "size : "+TeamPlayApp.getAppInstance().getUserList().size()+"");
+                Log.e("AppointmentFragment", "size : " + TeamPlayApp.getAppInstance().getUserList().size() + "");
                 for (User user : TeamPlayApp.getAppInstance().getUserList()) {
                     Log.e("AppointmentFragment", user.getName());
                     CourseList courseList = gson.fromJson(user.getTimetable(), CourseList.class);
+                    if (courseList == null) courseList = new CourseList();
+                    for (int i = 0, size = courseList.size(); i < 7 - size; i++) {
+                        courseList.add(new ArrayList<Course>());
+                    }
                     for (int day = 0; day < 7; day++) {
                         ArrayList<Course> courses = courseList.get(day);
                         for (Course course : courses) {
                             course.setDay(day);
                             totalCourse.add(course);
-                            Log.e("AppointmentFragment", "add "+course.getDay()+" "+course.getName());
+                            Log.e("AppointmentFragment", "add " + course.getDay() + " " + course.getName());
                         }
                     }
                 }
@@ -160,7 +169,7 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
                     if (temp.contains(comp)) continue;
                     temp.add(comp);
                     int start = getFirstDay(newYear, newMonth, course.getDay());
-                    Log.e("AppointmentFragment", "start : "+start);
+                    Log.e("AppointmentFragment", "start : " + start);
                     for (int week = 1; week <= 5; week++) {
                         Calendar startTime = Calendar.getInstance();
 
@@ -273,8 +282,31 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
             }
         });
 
-
+        initReceiver();
         return rootView;
+    }
+
+    private void initReceiver() {
+        if (receiver == null) {
+            receiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    Toast.makeText(getActivity(), "일정이 업데이트 되었습니다.", 0).show();
+                    new RestApiTask(AppointmentFragment.this).execute(new GetAppointmentByTeam(TeamPlayApp.getAppInstance().getTeam().getId()));
+                }
+            };
+            IntentFilter filter = new IntentFilter();
+            filter.addAction("skku.teamplay.UPDATE_APPOINTMENT");
+            getActivity().registerReceiver(receiver, filter);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (receiver != null) {
+            getActivity().unregisterReceiver(receiver);
+        }
     }
 
     EditText edittext_date;

@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+
 import com.github.clans.fab.FloatingActionButton;
+
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -41,10 +43,11 @@ import skku.teamplay.model.User;
  * Created by ddjdd on 2018-05-07.
  */
 
-public class
-KanbanViewpagerActivity extends FragmentActivity implements OnRestApiListener {
-    @BindView(R.id.pager) ViewPager pager;
-    @BindView(R.id.FabAddPost) FloatingActionButton FabAddPost;
+public class KanbanViewpagerActivity extends FragmentActivity implements OnRestApiListener {
+    @BindView(R.id.pager)
+    ViewPager pager;
+    @BindView(R.id.FabAddPost)
+    FloatingActionButton FabAddPost;
     KanbanFragmentAdapter adapter;
     int currentPos;
 
@@ -62,11 +65,11 @@ KanbanViewpagerActivity extends FragmentActivity implements OnRestApiListener {
     }
 
     @OnClick(R.id.FabAddPost)
-    void onFabAddPostClick () {
+    void onFabAddPostClick() {
         Intent intent = new Intent(getApplicationContext(), QuestPopupDialog.class);
         Date startDate = new Date();
         User user = TeamPlayApp.getAppInstance().getUser();
-        KanbanPost intentKanbanPost = new KanbanPost(-1,-1, "title", "example", 0, startDate, startDate, user.getId(), -1, 0, 0);
+        KanbanPost intentKanbanPost = new KanbanPost(-1, -1, "title", "example", 0, startDate, startDate, user.getId(), -1, 0, 0);
         intent.putExtra("pos", -1);
         intent.putExtra("page", currentPos);
         intent.putExtra("kanbanPost", intentKanbanPost);
@@ -74,7 +77,7 @@ KanbanViewpagerActivity extends FragmentActivity implements OnRestApiListener {
     }
 
     @OnClick(R.id.FabAddBoard)
-    void onFabAddBoardClick () {
+    void onFabAddBoardClick() {
         MaterialDialog dialog =
                 new MaterialDialog.Builder(this)
                         .title("칸반보드 추가하기")
@@ -94,21 +97,21 @@ KanbanViewpagerActivity extends FragmentActivity implements OnRestApiListener {
     @OnClick(R.id.FabDeleteBoard)
     void onFabDeleteBoardClick() {
         AlertDialog.Builder dialog =
-                new AlertDialog.Builder (this)
-                    .setMessage("칸반보드를 삭제하시겠습니까?")
-                    .setCancelable(true)
-                    .setPositiveButton("삭제",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                deleteBoard();
-                            }
-                        })
-                    .setNegativeButton("취소",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
+                new AlertDialog.Builder(this)
+                        .setMessage("칸반보드를 삭제하시겠습니까?")
+                        .setCancelable(true)
+                        .setPositiveButton("삭제",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        deleteBoard();
+                                    }
+                                })
+                        .setNegativeButton("취소",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
         dialog.create();
         dialog.show();
     }
@@ -133,19 +136,23 @@ KanbanViewpagerActivity extends FragmentActivity implements OnRestApiListener {
 
     private void setAdapter() {
         adapter = new KanbanFragmentAdapter(getSupportFragmentManager());
-        for(int i = 0; i < maxLen; i++) {
+        for (int i = 0; i < maxLen; i++) {
             adapter.addFragment(i, kanbanBoards.get(i).getId(), kanbanBoards.get(i).getName());
         }
         pager.setAdapter(adapter);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
             @Override
             public void onPageSelected(int position) {
                 currentPos = position;
             }
+
             @Override
-            public void onPageScrollStateChanged(int state) { }
+            public void onPageScrollStateChanged(int state) {
+            }
         });
         pager.setOffscreenPageLimit(adapter.getCount());
     }

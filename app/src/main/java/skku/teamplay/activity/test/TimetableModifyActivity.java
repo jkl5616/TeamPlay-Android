@@ -105,7 +105,13 @@ public class TimetableModifyActivity extends AppCompatActivity implements OnRest
 
                 ArrayList<Course> totalCourse = new ArrayList<>();
                 //코스
+
                 courseList = gson.fromJson(user.getTimetable(), CourseList.class);
+                if (courseList == null) courseList = new CourseList();
+                for(int i = 0, size = courseList.size(); i < 7 - size; i++) {
+                    courseList.add(new ArrayList<Course>());
+                }
+
                 for (int day = 0; day < 7; day++) {
                     ArrayList<Course> courses = courseList.get(day);
                     for (Course course : courses) {

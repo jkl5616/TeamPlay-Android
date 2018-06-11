@@ -74,7 +74,7 @@ public class Util {
     }
 
     private static void initColors() {
-        String cols[] = {"#FE816D","#68C4AF","#45B4E7","#D187FE","#ffb331","#4573E7","#6AECF4","#ADA7FC","#95CB9C","#01579B"};
+        String cols[] = {"#FE816D","#68C4AF","#45B4E7","#D187FE","#ffb331","#4573E7","#f4726a","#ADA7FC","#95CB9C","#01579B"};
         ArrayList<Integer> colArray = new ArrayList<Integer>();
         String alpha = "ff";
         for(int i = 0; i < cols.length; i++) {
@@ -92,7 +92,7 @@ public class Util {
     }
 
     private static void initGrayColors() {
-        String cols[] = {"#FE816D","#68C4AF","#45B4E7","#D187FE","#ffb331","#4573E7","#6AECF4","#ADA7FC","#95CB9C","#01579B"};
+        String cols[] = {"#FE816D","#68C4AF","#45B4E7","#D187FE","#ffb331","#4573E7","#f4726a","#ADA7FC","#95CB9C","#01579B"};
         ArrayList<Integer> colArray = new ArrayList<Integer>();
         String alpha = "80";
         for(int i = 0; i < cols.length; i++) {

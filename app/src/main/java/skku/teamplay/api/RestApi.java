@@ -12,7 +12,7 @@ public abstract class RestApi {
 
 
     public static String getBaseUrl() {
-        return "http://202.182.104.206:3000/";
+        return "http://192.168.0.94:3000/";
     }
 
     public String getApiUrl() {

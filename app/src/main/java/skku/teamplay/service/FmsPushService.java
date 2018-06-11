@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
@@ -28,6 +29,14 @@ public class FmsPushService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        String update = remoteMessage.getData().get("update");
+        if(update != null && update.length() > 0) {
+            //notify application to update the values
+            Intent intent = new Intent("skku.teamplay.UPDATE_"+update);
+            sendBroadcast(intent);
+            Log.e("FmsPushService", "update : "+"skku.teamplay.UPDATE_"+update);
+            return;
+        }
         String title = remoteMessage.getData().get("title");
         if(title != null && title.length() > 0) {
             String content = remoteMessage.getData().get("content");

@@ -80,12 +80,6 @@ public class ProfileActivity extends AppCompatActivity implements OnRestApiListe
                         startActivity(intent);
                         temp = 1;
                         break;
-                    case R.id.menu2:
-                        temp = 2;
-                        break;
-                    case R.id.menu3:
-                        temp = 3;
-                        break;
                 }
                 Toast.makeText(getApplicationContext(), "Fab selected #" + temp, Toast.LENGTH_LONG).show();
                 return false;
