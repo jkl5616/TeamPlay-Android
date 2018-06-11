@@ -190,6 +190,7 @@ public class TimetableModifyActivity extends AppCompatActivity implements OnRest
 
         Calendar c = Calendar.getInstance();
         c.set(Calendar.DAY_OF_WEEK, 2);
+        c.set(Calendar.WEEK_OF_MONTH, 1);
         weekView.goToDate(c);
         weekView.goToHour(9.0f);
     }
@@ -199,6 +200,7 @@ public class TimetableModifyActivity extends AppCompatActivity implements OnRest
         if (day == 8) day = 1;
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, day);
+        calendar.set(Calendar.WEEK_OF_MONTH, 1);
         calendar.set(Calendar.MONTH, month - 1);
         calendar.set(Calendar.YEAR, year);
         return calendar.get(Calendar.DATE);
