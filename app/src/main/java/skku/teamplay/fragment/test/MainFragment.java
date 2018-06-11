@@ -35,6 +35,7 @@ import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -62,7 +63,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
     ArrayList<IRadarDataSet> setsRadar = new ArrayList<IRadarDataSet>();
     ArrayList<ScoreRecord> scoreRecords, selectedUserRecords;
     final User selectedUser = TeamPlayApp.getAppInstance().getUser();
-    final List<User> userList = TeamPlayApp.getAppInstance().getUserList();
+    final ArrayList<User> userList = TeamPlayApp.getAppInstance().getUserList();
     List<List<ScoreRecord>> scoreRecordsGroup;
 
     //    @BindView(R.id.main_list_user) ListView listUser;
@@ -92,8 +93,12 @@ public class MainFragment extends Fragment implements OnRestApiListener {
                 break;
             }
         }*/
+        ArrayList<User> userWithRemoved = new ArrayList<>();
+        for (User user : userList){
+            if (user.getId() != selectedUser.getId()) userWithRemoved.add(user);
+        }
+        adapter = new UserAdapter(userWithRemoved, selectedUser.getId()); //set the listview
 
-        adapter = new UserAdapter(userList, selectedUser.getId()); //set the listview
         listUser.setAdapter(adapter);
 
         listUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -145,6 +150,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
     private void init_scoreRecords() {
         scoreRecordsGroup = new ArrayList<List<ScoreRecord>>(userList.size() - 1);
         for (int idx = 0; idx < userList.size(); idx++) {
+            if (userList.get(idx).getId() == selectedUser.getId()) continue;
             List<ScoreRecord> tempScores = new ArrayList<>();
             for (ScoreRecord records : scoreRecords) {
                 if (records.getUser_id() == userList.get(idx).getId())
@@ -205,10 +211,6 @@ public class MainFragment extends Fragment implements OnRestApiListener {
         for (int num : recordSums) {
             entry.add(new RadarEntry(num));
         }
-//        entry.add(new RadarEntry(rnd.nextInt(70) + 1));
-//        entry.add(new RadarEntry(rnd.nextInt(70) + 1));
-//        entry.add(new RadarEntry(rnd.nextInt(70) + 1));
-
 
         //set name
         if (recordList.get(0).getUser_id() == selectedUser.getId())
@@ -249,12 +251,19 @@ public class MainFragment extends Fragment implements OnRestApiListener {
     }
 
     private class UserAdapter extends BaseAdapter {
-        List<User> userList;
+        ArrayList<User> userList;
         List<AnimCheckBox> checkBoxes = new ArrayList<>();
         int selectedId;
 
-        public UserAdapter(List<User> userList, int selectedId) {
-            this.userList = userList;
+        public UserAdapter(ArrayList<User> userList, int selectedId) {
+//            this.userList = new ArrayList<>();
+////            Collections.copy(this.userList, userList);
+////
+//            for (User user : userList){
+//                if (user.getId() != selectedId)
+//                    this.userList.add(user);
+//            }
+        this.userList = userList;
             this.selectedId = selectedId;
         }
 
