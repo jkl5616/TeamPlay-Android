@@ -139,7 +139,7 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
                 //코스
                 for (User user : TeamPlayApp.getAppInstance().getUserList()) {
                     CourseList courseList = gson.fromJson(user.getTimetable(), CourseList.class);
-                    for (int day = 0; day < 5; day++) {
+                    for (int day = 0; day < 7; day++) {
                         ArrayList<Course> courses = courseList.get(day);
                         for (Course course : courses) {
                             course.setDay(day);
@@ -323,7 +323,6 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                firstVisibleDay.add(Calendar.DATE, 2);
                                 new RestApiTask(AppointmentFragment.this).execute(new AddAppointment(TeamPlayApp.getAppInstance().getTeam().getId(), startDate.getTime(), endDate.getTime(), edittext_description.getText().toString()));
                             }
                         })
