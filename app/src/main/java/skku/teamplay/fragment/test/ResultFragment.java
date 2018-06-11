@@ -105,7 +105,7 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
         userList = TeamPlayApp.getAppInstance().getUserList();
         curUser = TeamPlayApp.getAppInstance().getUser();
         List<String> userNames = new ArrayList<>();
-        userNames.add(curUser.getName() + "/" + curUser.getEmail());
+        //userNames.add(curUser.getName() + "/" + curUser.getEmail());
         for (User user : userList){
             userNames.add(user.getName() + "/" + user.getEmail());
         }
