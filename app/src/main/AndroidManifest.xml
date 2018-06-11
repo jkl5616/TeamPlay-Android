@@ -15,7 +15,9 @@
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:node="replace" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -94,61 +96,67 @@
         <activity
             android:name=".activity.test.DummyActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoDisplay"/>
+            android:theme="@android:style/Theme.NoDisplay" />
 
-        <activity android:name=".activity.test.TimetableViewActivity"
+        <activity
+            android:name=".activity.test.TimetableViewActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
 
-        <activity android:name=".activity.test.TimetableModifyActivity"
+        <activity
+            android:name=".activity.test.TimetableModifyActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
 
 
-        <activity android:name=".activity.test.MakeTeamActivity"
+        <activity
+            android:name=".activity.test.MakeTeamActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".activity.test.ModifyTeamActivity"
+        <activity
+            android:name=".activity.test.ModifyTeamActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".activity.test.RuleManageActivity"
+        <activity
+            android:name=".activity.test.RuleManageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".activity.test.TokenTestActivity"
+        <activity
+            android:name=".activity.test.TokenTestActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
-        <activity android:name=".activity.test.PenaltyManageActivity"
+        <activity
+            android:name=".activity.test.PenaltyManageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"></activity>
 
         <receiver
             android:name=".receiver.BootCompletedReceiver"
-            android:enabled="true"
             android:directBootAware="true"
+            android:enabled="true"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
                 <!-- For pre-N devices -->
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.REBOOT"/>
+                <action android:name="android.intent.action.REBOOT" />
             </intent-filter>
         </receiver>
+
         <service
             android:name=".service.PenaltyService"
             android:enabled="true"
             android:exported="false" />
-        <service
-            android:name=".service.FmsPushService">
+        <service android:name=".service.FmsPushService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service
-            android:name=".service.FmsInstanceService" >
+        <service android:name=".service.FmsInstanceService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>

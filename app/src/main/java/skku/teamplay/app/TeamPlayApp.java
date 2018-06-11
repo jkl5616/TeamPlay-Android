@@ -1,10 +1,13 @@
 package skku.teamplay.app;
 
 import android.app.Application;
+import android.os.Build;
+import android.os.StrictMode;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -31,6 +34,14 @@ public class TeamPlayApp extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        if(Build.VERSION.SDK_INT>=24){
+            try{
+                Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+                m.invoke(null);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     public User getUser() {
