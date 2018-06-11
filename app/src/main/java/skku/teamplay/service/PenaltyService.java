@@ -12,8 +12,10 @@ import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -39,6 +41,7 @@ public class PenaltyService extends Service {
     View penaltyLayout;
     TextView textView_leftTime;
     int leftTime;
+    PowerManager pm;
 
     @Nullable
     @Override
@@ -50,8 +53,13 @@ public class PenaltyService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.e("TeamPlay", "Service created!!");
+        pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         penaltyLayout = LayoutInflater.from(this).inflate(R.layout.penalty_lock, null);
         textView_leftTime = penaltyLayout.findViewById(R.id.textView_leftTime);
+        TextView tv_description = penaltyLayout.findViewById(R.id.tv_description);
+        String desc = SharedPreferencesUtil.getString("penalty_description");
+        if (desc == null) desc = "팀플에 참여하지 않음";
+        tv_description.setText(desc + " (으)로 인하여 패널티가 적용되었습니다.");
         int LAYOUT_FLAG = 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
@@ -65,7 +73,6 @@ public class PenaltyService extends Service {
                 LAYOUT_FLAG,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD,
                 PixelFormat.TRANSLUCENT);
-
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         mWindowManager.addView(penaltyLayout, params);
         Button btn = penaltyLayout.findViewById(R.id.button3);
@@ -86,15 +93,17 @@ public class PenaltyService extends Service {
     }
 
     int count = 0;
+
     private void checkStatus() {
-        if(count % 5 == 0) {
-            SharedPreferencesUtil.putInt("leftTime", --leftTime);
+        if (count % 5 == 0) {
+            if (pm.isInteractive())
+                SharedPreferencesUtil.putInt("leftTime", --leftTime);
             textView_leftTime.setText(String.format("%d초 남았습니다.", leftTime));
         }
-        if(leftTime  <= 0) {
+        if (leftTime <= 0) {
             stopPenalty();
         }
-        if(stopped) return;
+        if (stopped) return;
         //prohibit user from execute any applications by executing dummy activity
         Intent intent = new Intent(getApplicationContext(), DummyActivity.class);
         startActivity(intent);

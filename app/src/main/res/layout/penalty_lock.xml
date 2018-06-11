@@ -1,27 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#fff"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="32dp"
+    app:cardCornerRadius="1dp"
+    app:cardElevation="1dp"
+    app:cardUseCompatPadding="true">
 
-    <ImageView
-        android:layout_margin="15dp"
-        android:id="@+id/imageView"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="23dp"
+            android:src="@mipmap/ic_pac_icon" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bmjua"
+            android:gravity="center"
+            android:text="패널티 적용중"
+            android:textSize="36sp" />
+
+
+        <TextView
+        android:id="@+id/tv_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_pac_icon" />
+        android:fontFamily="@font/bmjua"
+        android:gravity="center"
+        android:text=" 사유로 인하여 패널티가 적용되었습니다."
+        android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/textView_leftTime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Penalty" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Exit" />
+        <TextView
+            android:id="@+id/tv_aa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bmjua"
+            android:gravity="center"
+            android:text="더 적극적으로 참여해 주세요!"
+            android:textSize="23sp" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/textView_leftTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:fontFamily="@font/bmjua"
+            android:gravity="center"
+            android:text="Penalty"
+            android:textSize="28sp" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="Exit" />
+
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>
+
+

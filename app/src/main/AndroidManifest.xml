@@ -121,6 +121,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
+        <activity android:name=".activity.test.PenaltyManageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
+
         <receiver
             android:name=".receiver.BootCompletedReceiver"
             android:enabled="true"

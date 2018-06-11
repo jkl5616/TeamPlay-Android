@@ -36,18 +36,6 @@ public class PenaltyTestActivity extends Activity {
                 startActivityForResult(intent, 1234);
             }
         }
-        //Check whether app has permission to USAGE_STATS_SERVICE
-        if (Build.VERSION.SDK_INT >= 21) {
-            UsageStatsManager mUsageStatsManager = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
-            long time = System.currentTimeMillis();
-            List stats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 1000 * 10, time);
-
-            if (stats == null || stats.isEmpty()) {
-                Intent intent = new Intent();
-                intent.setAction(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                startActivity(intent);
-            }
-        }
         ButterKnife.bind(this);
         startSvc.setOnClickListener(new View.OnClickListener() {
             @Override

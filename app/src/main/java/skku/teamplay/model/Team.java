@@ -12,6 +12,7 @@ public class Team {
     private Date deadline;
     private String coursename;
     private int count;
+    private int leader_id;
 
     public String getName() {
         return name;
@@ -51,5 +52,13 @@ public class Team {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public int getLeader_id() {
+        return leader_id;
+    }
+
+    public void setLeader_id(int leader_id) {
+        this.leader_id = leader_id;
     }
 }

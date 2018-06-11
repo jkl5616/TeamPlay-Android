@@ -10,10 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import skku.teamplay.R;
 import skku.teamplay.activity.test.ModifyTeamActivity;
+import skku.teamplay.activity.test.PenaltyManageActivity;
 import skku.teamplay.activity.test.RuleManageActivity;
+import skku.teamplay.app.TeamPlayApp;
 import skku.teamplay.util.SharedPreferencesUtil;
 
 /**
@@ -48,31 +51,34 @@ public class SettingsFragment extends Fragment {
                 startActivity(new Intent(getActivity(), RuleManageActivity.class));
             }
         });
+        rootView.findViewById(R.id.tv_give_penalty).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(TeamPlayApp.getAppInstance().getTeam().getLeader_id() == TeamPlayApp.getAppInstance().getUser().getId()) {
+                    startActivity(new Intent(getActivity(), PenaltyManageActivity.class));
+                } else {
+                    Toast.makeText(getActivity(), "팀장만 패널티를 부여 할 수 있습니다.", 0).show();
+                }
+            }
+        });
         CheckBox push_kanban = rootView.findViewById(R.id.push_kanban_checkbox);
-        push_kanban.setChecked(SharedPreferencesUtil.getBoolean("use_push_kanban", true));
+        push_kanban.setChecked(SharedPreferencesUtil.getBoolean("use_push_kanban_"+ TeamPlayApp.getAppInstance().getTeam().getId(), true));
         CheckBox push_appointment = rootView.findViewById(R.id.push_kanban_appointment);
-        push_appointment.setChecked(SharedPreferencesUtil.getBoolean("use_push_kanban", true));
-        CheckBox push_penalty = rootView.findViewById(R.id.push_kanban_penalty);
-        push_penalty.setChecked(SharedPreferencesUtil.getBoolean("use_push_kanban", true));
+        push_appointment.setChecked(SharedPreferencesUtil.getBoolean("use_push_appointment_"+ TeamPlayApp.getAppInstance().getTeam().getId(), true));
 
         push_kanban.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                SharedPreferencesUtil.putBoolean("use_push_kanban", b);
+                SharedPreferencesUtil.putBoolean("use_push_kanban_"+ TeamPlayApp.getAppInstance().getTeam().getId(), b);
             }
         });
         push_appointment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                SharedPreferencesUtil.putBoolean("use_push_appointment", b);
+                SharedPreferencesUtil.putBoolean("use_push_appointment_"+ TeamPlayApp.getAppInstance().getTeam().getId(), b);
             }
         });
-        push_penalty.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-               SharedPreferencesUtil.putBoolean("use_push_penalty", b);
-            }
-        });
+
         return rootView;
     }
 

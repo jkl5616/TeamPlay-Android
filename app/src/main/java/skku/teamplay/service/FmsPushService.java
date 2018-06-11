@@ -39,13 +39,21 @@ public class FmsPushService extends FirebaseMessagingService {
         }
         String title = remoteMessage.getData().get("title");
         if(title != null && title.length() > 0) {
+            String team = remoteMessage.getData().get("team");
+            if(team == null) team = "";
+            boolean push_kanban = SharedPreferencesUtil.getBoolean("use_push_kanban_"+team, true);
+            boolean push_appointment = SharedPreferencesUtil.getBoolean("use_push_appointment_"+team, true);
+            if(!push_appointment) {
+                if(title.startsWith("일정")) return;
+            } else if(!push_kanban) {
+                if(title.startsWith("퀘스트")) return;
+            }
+
             String content = remoteMessage.getData().get("content");
             showNoti(title, content);
         } else {
             String penalty_description = remoteMessage.getData().get("penalty_description");
-            String penalty_seconds = remoteMessage.getData().get("penalty_seconds");
             SharedPreferencesUtil.putString("penalty_description", penalty_description);
-            SharedPreferencesUtil.putString("penalty_seconds", penalty_seconds);
             SharedPreferencesUtil.putInt("leftTime", 120);
             startService(new Intent(getBaseContext(), PenaltyService.class));
         }
