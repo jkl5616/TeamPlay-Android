@@ -48,7 +48,7 @@ import skku.teamplay.util.CourseList;
 import skku.teamplay.util.Util;
 import skku.teamplay.util.WeekViewEventWithTag;
 
-public class TimetableModifyActivity extends AppCompatActivity implements OnRestApiListener{
+public class TimetableModifyActivity extends AppCompatActivity implements OnRestApiListener {
 
     @BindView(R.id.weekView)
     WeekView weekView;
@@ -105,13 +105,7 @@ public class TimetableModifyActivity extends AppCompatActivity implements OnRest
 
                 ArrayList<Course> totalCourse = new ArrayList<>();
                 //코스
-
                 courseList = gson.fromJson(user.getTimetable(), CourseList.class);
-                if (courseList == null) courseList = new CourseList();
-                for(int i = 0, size = courseList.size(); i < 7 - size; i++) {
-                    courseList.add(new ArrayList<Course>());
-                }
-
                 for (int day = 0; day < 7; day++) {
                     ArrayList<Course> courses = courseList.get(day);
                     for (Course course : courses) {
@@ -129,30 +123,28 @@ public class TimetableModifyActivity extends AppCompatActivity implements OnRest
                     if (temp.contains(comp)) continue;
                     temp.add(comp);
                     int start = getFirstDay(newYear, newMonth, course.getDay());
-                    for (int m = start; m <= totalday; m += 7) {
-                        Calendar startTime = Calendar.getInstance();
+                    Calendar startTime = Calendar.getInstance();
 
-                        int startHour = course.getStart() / 60 + 9;
-                        int startMinute = course.getStart() % 60;
-                        int endHour = (course.getStart() + course.getTime()) / 60 + 9;
-                        int endMinute = (startMinute + course.getTime()) % 60;
+                    int startHour = course.getStart() / 60 + 9;
+                    int startMinute = course.getStart() % 60;
+                    int endHour = (course.getStart() + course.getTime()) / 60 + 9;
+                    int endMinute = (startMinute + course.getTime()) % 60;
 
-                        startTime.set(Calendar.DAY_OF_MONTH, m);
-                        startTime.set(Calendar.MONTH, newMonth - 1);
-                        startTime.set(Calendar.YEAR, newYear);
+                    startTime.set(Calendar.DAY_OF_MONTH, start);
+                    startTime.set(Calendar.MONTH, newMonth - 1);
+                    startTime.set(Calendar.YEAR, newYear);
 
-                        startTime.set(Calendar.HOUR_OF_DAY, startHour);
-                        startTime.set(Calendar.MINUTE, startMinute);
+                    startTime.set(Calendar.HOUR_OF_DAY, startHour);
+                    startTime.set(Calendar.MINUTE, startMinute);
 
-                        Calendar endTime = (Calendar) startTime.clone();
-                        endTime.set(Calendar.HOUR_OF_DAY, endHour);
-                        endTime.set(Calendar.MINUTE, endMinute);
-                        WeekViewEventWithTag event = new WeekViewEventWithTag(id++, course.getName() + "\n" + course.getProf(), startTime, endTime);
-                        event.setTag(course);
-                        event.setColor(Util.nextColor());
-                        events.add(event);
-                        Log.e("TeamPlay", "add event " + course.getName() + "\n" + course.getProf());
-                    }
+                    Calendar endTime = (Calendar) startTime.clone();
+                    endTime.set(Calendar.HOUR_OF_DAY, endHour);
+                    endTime.set(Calendar.MINUTE, endMinute);
+                    WeekViewEventWithTag event = new WeekViewEventWithTag(id++, course.getName() + "\n" + course.getProf(), startTime, endTime);
+                    event.setTag(course);
+                    event.setColor(Util.nextColor());
+                    events.add(event);
+                    Log.e("GoToDate", "add event " +Util.DATEFORMAT_yyyyMMdd.format(startTime.getTime().getTime()));
                 }
                 return events;
             }
@@ -167,8 +159,8 @@ public class TimetableModifyActivity extends AppCompatActivity implements OnRest
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         ArrayList<Course> courses = courseList.get(c.getDay());
-                        for(Course co: courses) {
-                            if(co.equals(c)) {
+                        for (Course co : courses) {
+                            if (co.equals(c)) {
                                 courses.remove(co);
                                 break;
                             }
@@ -189,9 +181,10 @@ public class TimetableModifyActivity extends AppCompatActivity implements OnRest
         });
 
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.DAY_OF_WEEK, 2);
-        c.set(Calendar.WEEK_OF_MONTH, 1);
+        c.set(Calendar.DAY_OF_WEEK, 3);
+        c.set(Calendar.WEEK_OF_MONTH, 3);
         weekView.goToDate(c);
+        Log.e("GoToDate", Util.DATEFORMAT_yyyyMMdd.format(c.getTime().getTime()));
         weekView.goToHour(9.0f);
     }
 
@@ -200,7 +193,7 @@ public class TimetableModifyActivity extends AppCompatActivity implements OnRest
         if (day == 8) day = 1;
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, day);
-        calendar.set(Calendar.WEEK_OF_MONTH, 1);
+        calendar.set(Calendar.WEEK_OF_MONTH, 2);
         calendar.set(Calendar.MONTH, month - 1);
         calendar.set(Calendar.YEAR, year);
         return calendar.get(Calendar.DATE);
@@ -240,11 +233,11 @@ public class TimetableModifyActivity extends AppCompatActivity implements OnRest
                                 c.setTop(0);
                                 c.setHeight(0);
 
-                                c.setStart((int)diffMinutes2);
-                                c.setTime((int)diffMinutes);
+                                c.setStart((int) diffMinutes2);
+                                c.setTime((int) diffMinutes);
                                 c.setName(edittext_course_name.getText().toString());
                                 c.setProf(edittext_course_prof.getText().toString());
-                                Log.e("ConvertDay", convertDay(day_of_week)+"");
+                                Log.e("ConvertDay", convertDay(day_of_week) + "");
                                 courseList.get(convertDay(day_of_week)).add(c);
                                 String json = gson.toJson(courseList);
                                 Snackbar.make(findViewById(android.R.id.content), "추가가 완료되었습니다.", 0).show();
@@ -303,14 +296,15 @@ public class TimetableModifyActivity extends AppCompatActivity implements OnRest
 
     @Override
     public void onRestApiDone(RestApiResult restApiResult) {
-        if(restApiResult.getApiName().equals("updatetimetable")) {
+        if (restApiResult.getApiName().equals("updatetimetable")) {
             Login login = new Login(TeamPlayApp.getAppInstance().getUser().getEmail(), TeamPlayApp.getAppInstance().getUser().getPw());
             new RestApiTask(this).execute(login);
-        } else if(restApiResult instanceof LoginResult) {
+        } else if (restApiResult instanceof LoginResult) {
             LoginResult result = (LoginResult) restApiResult;
             TeamPlayApp.getAppInstance().getUser().setTimetable(result.user.getTimetable());
             Calendar c = Calendar.getInstance();
-            c.set(Calendar.DAY_OF_WEEK, 2);
+            c.set(Calendar.DAY_OF_WEEK, 3);
+            c.set(Calendar.WEEK_OF_MONTH, 3);
             weekView.goToDate(c);
         }
     }
