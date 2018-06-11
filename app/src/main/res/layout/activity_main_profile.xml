@@ -84,7 +84,7 @@
                         android:layout_marginRight="15dp"
                         android:layout_marginTop="12dp"
                         android:gravity="center|left"
-                        android:text="시간표 설정"
+                        android:text="시간표 불러오기"
                         android:textSize="18sp" />
 
                     <TextView
@@ -94,7 +94,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
                         android:gravity="center|left"
-                        android:text="5월 21에 업데이트"
+                        android:text="에브리타임에서 시간표를 불러옵니다."
                         android:textSize="12sp" />
 
 
@@ -107,12 +107,13 @@
 
 
                 <TextView
+                    android:id="@+id/tv_modify_timetable"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:gravity="center|left"
-                    android:text="일정"
+                    android:text="시간표 보기/수정"
                     android:textSize="18sp" />
 
                 <!--<ListView-->

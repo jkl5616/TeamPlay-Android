@@ -45,6 +45,7 @@ public class KanbanMainFragment extends  Fragment implements OnRestApiListener{
     private ArrayList<KanbanPost> kanbanPosts;
     private Team team;
     private User user;
+    private View rootView;
     View header;
 
     @Override
@@ -55,7 +56,8 @@ public class KanbanMainFragment extends  Fragment implements OnRestApiListener{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_kanban, container, false);
+        if(rootView != null) return rootView;
+        rootView = inflater.inflate(R.layout.fragment_kanban, container, false);
         ButterKnife.bind(this, rootView);
 
         team = TeamPlayApp.getAppInstance().getTeam();
@@ -85,8 +87,8 @@ public class KanbanMainFragment extends  Fragment implements OnRestApiListener{
     @Override
     public void onResume() {
         super.onResume();
-        adapter = new KanbanQuestlistAdapter();
-        new RestApiTask(this).execute(new GetKanbansByTeam(team.getId()));
+        //adapter = new KanbanQuestlistAdapter();
+        //new RestApiTask(this).execute(new GetKanbansByTeam(team.getId()));
     }
 
     @OnClick(R.id.btnKanban)

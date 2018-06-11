@@ -51,6 +51,9 @@ public class ProfileActivity extends AppCompatActivity implements OnRestApiListe
     @BindView(R.id.lv_team_list)
     ListView lv_teamList;
 
+    @BindView(R.id.tv_modify_timetable)
+    TextView tv_modify_timetable;
+
     @BindView(R.id.fab_main_profile)
     FabSpeedDial fab;
     @Override
@@ -86,6 +89,12 @@ public class ProfileActivity extends AppCompatActivity implements OnRestApiListe
                 }
                 Toast.makeText(getApplicationContext(), "Fab selected #" + temp, Toast.LENGTH_LONG).show();
                 return false;
+            }
+        });
+        tv_modify_timetable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ProfileActivity.this, TimetableModifyActivity.class));
             }
         });
         new RestApiTask(this).execute(new GetTeamByUser(TeamPlayApp.getAppInstance().getUser().getId()));
