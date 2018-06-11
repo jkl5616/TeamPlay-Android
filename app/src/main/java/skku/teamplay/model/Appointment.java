@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class Appointment implements Comparable<Appointment> {
 
+    private int id;
     private Date startDate;
     private Date endDate;
     private String description;
@@ -62,5 +63,13 @@ public class Appointment implements Comparable<Appointment> {
 
     public void setAttend_count(int attend_count) {
         this.attend_count = attend_count;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -1,10 +1,12 @@
 package skku.teamplay.app;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import skku.teamplay.model.Team;
 import skku.teamplay.model.User;
@@ -40,12 +42,22 @@ public class TeamPlayApp extends Application {
     }
 
 
+    private HashMap<Integer, User> userMap;
+
     public ArrayList<User> getUserList() {
         return userList;
     }
 
     public void setUserList(ArrayList<User> userList) {
         this.userList = userList;
+        userMap = new HashMap<>();
+        for(User u: userList) {
+            userMap.put(u.getId(), u);
+        }
+    }
+
+    public User getUserById(int id) {
+        return userMap.get(id);
     }
 
     public Team getTeam() {

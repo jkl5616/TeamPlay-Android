@@ -76,4 +76,12 @@ public class User {
     public void setId(int id) {
         this.id = id;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof User) {
+            return ((User) obj).getId() == getId();
+        }
+        return false;
+    }
 }
