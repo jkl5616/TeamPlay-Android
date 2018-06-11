@@ -64,7 +64,16 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
     @Override
     public void onBindViewHolder(TimelineHolder holder, int position) {
-        holder.description.setText(combinedList.get(position).getDescription());
+
+        if (combinedList.get(position).getType() == AppointKanbanCombined.KANBAN_POST){
+            String htmlTxt;
+            if (combinedList.get(position).getIsFinished() == 1)
+                htmlTxt =  "<font color='#03d100'>[완료]</font> " + combinedList.get(position).getDescription();
+            else
+                htmlTxt = "<font color='#cf001c'>[실패]</font> " + combinedList.get(position).getDescription();
+            holder.description.setText(Html.fromHtml(htmlTxt));
+        }
+
         if (combinedList.get(position).getType() == 0){
             String title = "", htmlTxt;
             if (combinedList.get(position).getReward() > 0) {

@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,7 @@ import butterknife.ButterKnife;
 import skku.teamplay.Manifest;
 import skku.teamplay.R;
 import skku.teamplay.activity.test.TabTestActivity;
+import skku.teamplay.adapter.ScoreEvaluator;
 import skku.teamplay.adapter.TimelineAdapter;
 import skku.teamplay.api.OnRestApiListener;
 import skku.teamplay.api.RestApi;
@@ -86,13 +88,15 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
     private ArrayList<User> userList;
     private User curUser;
     private int total_kanbanBoards, idx_kanban;
+    ScoreEvaluator evaluator;
     TimelineAdapter timelineAdapter;
 
 
+    ImageView imageVIew;
     ImageButton btnScreenShot;
     MaterialSpinner spinnerSelectUser;
     ViewGroup rootView;
-    TextView chartDes;
+    TextView chartDes, imageDes;
 //    BarChart mBarChart;
     PieChart mPieChart;
     @BindView(R.id.result_timeline_recycler)RecyclerView mRecyclerView;
@@ -152,6 +156,7 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
         new RestApiTask(this).execute(new GetAppointmentByTeam(TeamPlayApp.getAppInstance().getTeam().getId()));
 
         initmPieChart();
+
         return rootView;
     }
 
@@ -160,37 +165,6 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
         updateChartDescription(userID);
 
     }
-//    private void setBarChart(){
-//        List<BarEntry> entriesCont = new ArrayList<>();
-//        List<BarEntry> entriesAvg = new ArrayList<>();
-//
-//        Random rand = new Random();
-//        for (int week = 0; week < 10; week++){
-//            entriesCont.add(new BarEntry(week, rand.nextInt(100) + 1));
-//            entriesAvg.add(new BarEntry(week, rand.nextInt(40)));
-//        }
-//
-//        BarDataSet setCont = new BarDataSet(entriesCont, "User Score");
-//        setCont.setColor(ColorTemplate.COLORFUL_COLORS[0]);
-//        BarDataSet setAvg = new BarDataSet(entriesAvg, "Average Score");
-//        setAvg.setColors(ColorTemplate.COLORFUL_COLORS[1]);
-//
-//        BarData data = new BarData(setCont, setAvg);
-//        data.setBarWidth(BAR_WIDTH);
-//        mBarChart.setData(data);
-//        mBarChart.groupBars(0, GROUP_SPACE, BAR_SPACE);
-//
-//        Description desc = new Description();
-//        desc.setText("Contribution bar chart");
-//        mBarChart.setDescription(desc);
-//
-//
-//        XAxis xAxis = mBarChart.getXAxis();
-//        xAxis.setAxisMaximum(xAxis.getAxisMaximum() + GROUP_SPACE + BAR_WIDTH);
-//        xAxis.setCenterAxisLabels(true);
-//        mBarChart.invalidate();
-//
-//    }
     private void updateChartDescription(int userID){
         int total_quests, total_fin;
         total_quests = total_fin = 0;
@@ -223,7 +197,7 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
     private PieEntry getPieEntry(User user){
         float scores = 0;
         for (AppointKanbanCombined combined : combinedLists){
-            if (combined.getUser_id() == user.getId()){
+            if (combined.getUser_id() == user.getId() && combined.getIsFinished() == 1){
                 scores += combined.getReward();
             }
         }
@@ -281,11 +255,13 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
         spinnerSelectUser = rootView.findViewById(R.id.result_user_spinner);
         chartDes = rootView.findViewById(R.id.template_contribution_text_description);
         btnScreenShot = rootView.findViewById(R.id.result_take_screenshot);
+        imageVIew = rootView.findViewById(R.id.result_image);
+        imageDes = rootView.findViewById(R.id.result_layout_title);
         btnScreenShot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TabTestActivity tab = (TabTestActivity)getActivity();
-                tab.requestPermission();
+//                TabTestActivity tab = (TabTestActivity)getActivity();
+//                tab.requestPermission();
             }
         });
     }
@@ -346,6 +322,7 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
                 }
             }
             mPieChart.highlightValue(new Highlight(pos, 0, 0));
+            evaluator = new ScoreEvaluator(curUser ,combinedLists, imageVIew, imageDes);
         }
     }
     private int getUserNameFromID(String IDName){

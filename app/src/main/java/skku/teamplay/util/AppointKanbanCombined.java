@@ -18,6 +18,8 @@ public class AppointKanbanCombined implements Comparable<AppointKanbanCombined>{
     private String title;
     private int team_id, user_id, reward, isFinished;
     private int attend_count, type; //type = 0 kanban, type = 1 appointment
+    public static final int KANBAN_POST = 0;
+    public static final int APPOINTMENT = 1;
 
     public static ArrayList<AppointKanbanCombined> combine(ArrayList<KanbanPost> kanbanPosts, ArrayList<Appointment> appointments) {
         ArrayList<AppointKanbanCombined> combinedList = new ArrayList<>();
