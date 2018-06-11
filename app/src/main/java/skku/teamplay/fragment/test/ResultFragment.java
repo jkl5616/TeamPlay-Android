@@ -188,7 +188,7 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
         Description des = new Description();
         des.setText("팀원 총 점수 기여도");
         mPieChart.setDescription(des);
-        mPieChart.setHighlightPerTapEnabled(true);
+//        mPieChart.setHighlightPerTapEnabled(true);
         mPieChart.setTouchEnabled(true);
         mPieChart.setDrawHoleEnabled(true);
         mPieChart.setTransparentCircleRadius(Color.WHITE);

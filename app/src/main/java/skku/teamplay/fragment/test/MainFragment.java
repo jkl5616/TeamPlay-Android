@@ -154,14 +154,16 @@ public class MainFragment extends Fragment implements OnRestApiListener {
 
     private void updateChartData() {
         List<Boolean> checkList = adapter.getChecklist();
-        boolean isDataExist = false;
+
         //clear data only if there exist at least one dat
-        if (selectedUserRecords.size() == 0){
-            for (int idx = 0; idx <checkList.size(); idx++){
-                if (checkList.get(idx).equals(true) && scoreRecordsGroup.get(idx).size() > 0) isDataExist = true;
-            }
-        }
-        if (isDataExist) setsRadar.clear();
+//        if (selectedUserRecords.size() == 0){
+//            for (int idx = 0; idx <checkList.size(); idx++){
+//                if (checkList.get(idx).equals(true) && scoreRecordsGroup.get(idx).size() > 0) isDataExist = true;
+//            }
+//        }
+        if (scoreRecords.size() > 0 || adapter.getCheckedItems() > 0)
+            setsRadar.clear();
+        else return;
         setChartData(selectedUserRecords);
 
 
@@ -196,7 +198,10 @@ public class MainFragment extends Fragment implements OnRestApiListener {
         }
 
         //set name
-        if (recordList.size() == 0) return;
+        if (recordList.size() == 0) {
+            Toast.makeText(getContext(), "측정된 점수가 없습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (recordList.get(0).getUser_id() == selectedUser.getId())
             userName = selectedUser.getName();
         else {
@@ -259,6 +264,13 @@ public class MainFragment extends Fragment implements OnRestApiListener {
             return userList.get(i).getId();
         }
 
+        public int getCheckedItems(){
+            int cnt = 0;
+            for (AnimCheckBox checkBox : checkBoxes){
+                if (checkBox.isChecked()) cnt++;
+            }
+            return cnt;
+        }
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             final int pos = i;
@@ -279,15 +291,15 @@ public class MainFragment extends Fragment implements OnRestApiListener {
                     public void onChange(AnimCheckBox animCheckBox, boolean b) {
                         int idx = Integer.parseInt(animCheckBox.getTag().toString());
 
-                        ChartAnimatedText test = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, 5, ChartAnimatedText.RECORD_WALLET);
-                        ChartAnimatedText test1 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, -21, ChartAnimatedText.RECORD_STRENGTH);
-                        ChartAnimatedText test2 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, 120, ChartAnimatedText.RECORD_SUPPORT);
-
-                        test.start();
-                        test1.setDelay(900);
-                        test1.start();
-                        test2.setDelay(1800);
-                        test2.start();
+//                        ChartAnimatedText test = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, 5, ChartAnimatedText.RECORD_WALLET);
+//                        ChartAnimatedText test1 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, -21, ChartAnimatedText.RECORD_STRENGTH);
+//                        ChartAnimatedText test2 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, 120, ChartAnimatedText.RECORD_SUPPORT);
+//
+//                        test.start();
+//                        test1.setDelay(900);
+//                        test1.start();
+//                        test2.setDelay(1800);
+//                        test2.start();
 
                         //user id 로 세팅하고
                         updateChartData();
