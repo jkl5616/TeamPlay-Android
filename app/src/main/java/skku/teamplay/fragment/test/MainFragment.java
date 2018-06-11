@@ -65,7 +65,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
     final List<User> userList = TeamPlayApp.getAppInstance().getUserList();
     List<List<ScoreRecord>> scoreRecordsGroup;
 
-//    @BindView(R.id.main_list_user) ListView listUser;
+    //    @BindView(R.id.main_list_user) ListView listUser;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +75,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        if(rootView != null) return rootView;
+        if (rootView != null) return rootView;
         rootView = (ViewGroup) inflater.inflate(R.layout.activity_main_fragment, container, false);
 
         mRadarChart = (RadarChart) rootView.findViewById(R.id.main_radar_chart);
@@ -84,12 +84,14 @@ public class MainFragment extends Fragment implements OnRestApiListener {
         layoutBase = (RelativeLayout) rootView.findViewById(R.id.main_frag_base_layout);
         listUser = (ListView) rootView.findViewById(R.id.main_list_user);
 
+
+        /* Affects userList on TeamPlayApp instance...
         for (User user : userList){ //remove selected user from the list
             if (user.getId() == selectedUser.getId()) {
                 userList.remove(user);
                 break;
             }
-        }
+        }*/
 
         adapter = new UserAdapter(userList, selectedUser.getId()); //set the listview
         listUser.setAdapter(adapter);
@@ -139,24 +141,26 @@ public class MainFragment extends Fragment implements OnRestApiListener {
 
         return rootView;
     }
-    private void init_scoreRecords(){
+
+    private void init_scoreRecords() {
         scoreRecordsGroup = new ArrayList<List<ScoreRecord>>(userList.size() - 1);
-        for (int idx = 0; idx < userList.size(); idx++){
+        for (int idx = 0; idx < userList.size(); idx++) {
             List<ScoreRecord> tempScores = new ArrayList<>();
-            for (ScoreRecord records : scoreRecords){
+            for (ScoreRecord records : scoreRecords) {
                 if (records.getUser_id() == userList.get(idx).getId())
                     tempScores.add(records);
             }
             scoreRecordsGroup.add(tempScores);
         }
         selectedUserRecords = new ArrayList<>();
-        for (ScoreRecord record : scoreRecords){
-            if(record.getUser_id() == selectedUser.getId()) selectedUserRecords.add(record);
+        for (ScoreRecord record : scoreRecords) {
+            if (record.getUser_id() == selectedUser.getId()) selectedUserRecords.add(record);
         }
     }
+
     @Override
     public void onRestApiDone(RestApiResult restApiResult) {
-        switch (restApiResult.getApiName()){
+        switch (restApiResult.getApiName()) {
             case "getscorerecordbyteam":
                 ScoreRecordListResult scoreList = (ScoreRecordListResult) restApiResult;
                 scoreRecords = scoreList.getScoreRecordList();
@@ -168,14 +172,15 @@ public class MainFragment extends Fragment implements OnRestApiListener {
 
     }
 
-    private void updateChartData(){
+    private void updateChartData() {
         setsRadar.clear();
         setChartData(selectedUserRecords);
 
 
         List<Boolean> checkList = adapter.getChecklist();
-        for (int idx = 0; idx < checkList.size(); idx++){
-            if (checkList.get(idx)) setChartData(scoreRecordsGroup.get(idx)); //set checked user's score
+        for (int idx = 0; idx < checkList.size(); idx++) {
+            if (checkList.get(idx))
+                setChartData(scoreRecordsGroup.get(idx)); //set checked user's score
         }
 
         YAxis yAxis = mRadarChart.getYAxis();
@@ -185,7 +190,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
         mRadarChart.invalidate();
     }
 
-    private void setChartData(List<ScoreRecord> recordList){
+    private void setChartData(List<ScoreRecord> recordList) {
         String userName = "";
         if (recordList.size() == 0) return;
 
@@ -193,11 +198,11 @@ public class MainFragment extends Fragment implements OnRestApiListener {
         ArrayList<RadarEntry> entry = new ArrayList<>();
         Random rnd = new Random();
 
-        for (ScoreRecord record : recordList){
+        for (ScoreRecord record : recordList) {
             recordSums[record.getType()] += record.getScore();
         }
 
-        for (int num : recordSums){
+        for (int num : recordSums) {
             entry.add(new RadarEntry(num));
         }
 //        entry.add(new RadarEntry(rnd.nextInt(70) + 1));
@@ -206,7 +211,8 @@ public class MainFragment extends Fragment implements OnRestApiListener {
 
 
         //set name
-        if (recordList.get(0).getUser_id() == selectedUser.getId()) userName = selectedUser.getName();
+        if (recordList.get(0).getUser_id() == selectedUser.getId())
+            userName = selectedUser.getName();
         else {
             for (User user : userList) {
                 if (user.getId() == recordList.get(0).getUser_id()) {
@@ -219,8 +225,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
         if (recordList.get(0).getUser_id() == selectedUser.getId()) {
             set.setColor(ColorTemplate.COLORFUL_COLORS[0]);
             set.setFillColor(ColorTemplate.COLORFUL_COLORS[0]);
-        }
-        else {
+        } else {
             int length = ColorTemplate.COLORFUL_COLORS.length;
             set.setColor(ColorTemplate.COLORFUL_COLORS[recordList.get(0).getUser_id() % length]);
             set.setFillColor(ColorTemplate.COLORFUL_COLORS[recordList.get(0).getUser_id() % length]);
@@ -243,10 +248,11 @@ public class MainFragment extends Fragment implements OnRestApiListener {
 
     }
 
-    private class UserAdapter extends BaseAdapter{
+    private class UserAdapter extends BaseAdapter {
         List<User> userList;
-        List<AnimCheckBox>checkBoxes = new ArrayList<>();
+        List<AnimCheckBox> checkBoxes = new ArrayList<>();
         int selectedId;
+
         public UserAdapter(List<User> userList, int selectedId) {
             this.userList = userList;
             this.selectedId = selectedId;
@@ -272,7 +278,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
             final int pos = i;
 
             final Context context = viewGroup.getContext();
-            if(view == null){
+            if (view == null) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.layout_custom_userlist, null, false);
                 TextView textUsername = view.findViewById(R.id.layout_list_user_name);
@@ -305,7 +311,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
             return view;
         }
 
-        public List<Boolean> getChecklist(){
+        public List<Boolean> getChecklist() {
             List<Boolean> res = new ArrayList<>();
             for (AnimCheckBox checkBox : checkBoxes)
                 res.add(checkBox.isChecked());
@@ -313,7 +319,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
             return res;
         }
 
-        public void addItem(String name){
+        public void addItem(String name) {
             User newUser = new User(name, 1);
 
             userList.add(newUser);
@@ -321,7 +327,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
     }
 
 
-    private void setmRadarChart(){
+    private void setmRadarChart() {
         mRadarChart.getDescription().setEnabled(false);
 
         mRadarChart.setTouchEnabled(false);
