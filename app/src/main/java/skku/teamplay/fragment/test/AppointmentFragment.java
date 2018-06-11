@@ -137,13 +137,16 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
 
                 ArrayList<Course> totalCourse = new ArrayList<>();
                 //코스
+                Log.e("AppointmentFragment",  "size : "+TeamPlayApp.getAppInstance().getUserList().size()+"");
                 for (User user : TeamPlayApp.getAppInstance().getUserList()) {
+                    Log.e("AppointmentFragment", user.getName());
                     CourseList courseList = gson.fromJson(user.getTimetable(), CourseList.class);
                     for (int day = 0; day < 7; day++) {
                         ArrayList<Course> courses = courseList.get(day);
                         for (Course course : courses) {
                             course.setDay(day);
                             totalCourse.add(course);
+                            Log.e("AppointmentFragment", "add "+course.getDay()+" "+course.getName());
                         }
                     }
                 }
@@ -157,7 +160,8 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
                     if (temp.contains(comp)) continue;
                     temp.add(comp);
                     int start = getFirstDay(newYear, newMonth, course.getDay());
-                    for (int m = start; m <= totalday; m += 7) {
+                    Log.e("AppointmentFragment", "start : "+start);
+                    for (int week = 1; week <= 5; week++) {
                         Calendar startTime = Calendar.getInstance();
 
                         int startHour = course.getStart() / 60 + 9;
@@ -165,7 +169,8 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
                         int endHour = (course.getStart() + course.getTime()) / 60 + 9;
                         int endMinute = (startMinute + course.getTime()) % 60;
 
-                        startTime.set(Calendar.DAY_OF_MONTH, m);
+                        startTime.set(Calendar.WEEK_OF_MONTH, week);
+                        startTime.set(Calendar.DAY_OF_WEEK, convertParsedDay(course.getDay()));
                         startTime.set(Calendar.MONTH, newMonth - 1);
                         startTime.set(Calendar.YEAR, newYear);
 
@@ -382,10 +387,17 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
         });
     }
 
+    private int convertParsedDay(int day) {
+        day += 2;
+        if (day == 8) day = 1;
+        return day;
+    }
+
     public int getFirstDay(int year, int month, int day) {
         day += 2;
         if (day == 8) day = 1;
         Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.WEEK_OF_MONTH, 1);
         calendar.set(Calendar.DAY_OF_WEEK, day);
         calendar.set(Calendar.MONTH, month - 1);
         calendar.set(Calendar.YEAR, year);
