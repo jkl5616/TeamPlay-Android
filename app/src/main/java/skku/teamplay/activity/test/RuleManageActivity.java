@@ -1,6 +1,9 @@
 package skku.teamplay.activity.test;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -45,6 +48,8 @@ public class RuleManageActivity extends AppCompatActivity implements OnRestApiLi
 
     Team team;
 
+    BroadcastReceiver receiver;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +66,27 @@ public class RuleManageActivity extends AppCompatActivity implements OnRestApiLi
             }
         });
 
+        initReceiver();
+    }
 
+    private void initReceiver() {
+        if(receiver == null) {
+            receiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    new RestApiTask(RuleManageActivity.this).execute(new GetRulesByTeam(team.getId()));
+                }
+            };
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction("skku.teamplay.UPDATE_RULE");
+            registerReceiver(receiver, intentFilter);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(receiver != null) unregisterReceiver(receiver);
     }
 
     Spinner sp_ruletype;
