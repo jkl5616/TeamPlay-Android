@@ -35,12 +35,12 @@
                 android:layout_marginLeft="10dp"
                 android:text="Descriptions"
                 />
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/template_contribution_barchart"
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/template_contribution_pie_chart"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"></com.github.mikephil.charting.charts.BarChart>
+                android:layout_height="300dp"></com.github.mikephil.charting.charts.PieChart>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

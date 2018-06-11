@@ -1,5 +1,6 @@
 package skku.teamplay.fragment.test;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,21 +17,31 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+
+import javax.security.auth.callback.Callback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +63,7 @@ import skku.teamplay.model.KanbanBoard;
 import skku.teamplay.model.KanbanPost;
 import skku.teamplay.model.User;
 import skku.teamplay.util.AppointKanbanCombined;
+import skku.teamplay.widget.AnimationUtil;
 
 public class ResultFragment extends Fragment implements OnRestApiListener{
     final static private float GROUP_SPACE= 0.15f;
@@ -59,6 +71,7 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
     final static private float BAR_WIDTH = 0.45f;
     private boolean KANBAN_FLAG, APPOINT_FLAG;
     private ArrayList<KanbanBoard> kanbanBoards;
+    private ArrayList<KanbanPost> kanbanPosts = new ArrayList<>();
     private ArrayList<Appointment> appointments;
     private ArrayList<AppointKanbanCombined> combinedLists;
     private ArrayList<User> userList;
@@ -69,7 +82,8 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
 
     MaterialSpinner spinnerSelectUser;
     ViewGroup rootView;
-    BarChart mBarChart;
+//    BarChart mBarChart;
+    PieChart mPieChart;
     @BindView(R.id.result_timeline_recycler)RecyclerView mRecyclerView;
 
     @Override
@@ -86,7 +100,7 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
         KANBAN_FLAG = APPOINT_FLAG = false;
 
         bind_views();
-        setBarChart();
+//        setBarChart();
 
         userList = TeamPlayApp.getAppInstance().getUserList();
         curUser = TeamPlayApp.getAppInstance().getUser();
@@ -102,17 +116,20 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
                 String []tokens = item.toString().split("/");
                 if (tokens[1] != null) {
                     setUser(tokens[1]);
-                    Toast.makeText(getContext(), "Updated : " + tokens[1], Toast.LENGTH_SHORT).show();
+                    mPieChart.highlightValue(new Highlight(position, 0, 0));
+//                    Toast.makeText(getContext(), "Updated : " + tokens[1], Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
         new RestApiTask(this).execute(new GetKanbansByTeam(TeamPlayApp.getAppInstance().getTeam().getId()));
         new RestApiTask(this).execute(new GetAppointmentByTeam(TeamPlayApp.getAppInstance().getTeam().getId()));
+
+        initmPieChart();
         return rootView;
     }
 
-    ArrayList<KanbanPost> kanbanPosts = new ArrayList<>();
+
 
     private void setUser(String IDName){
         int userID = 0;
@@ -123,37 +140,84 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
                 break;
             }
         }
-        setTimeline(userID);
+        setTimeline(filterCombinedLists(userID));
     }
-    private void setBarChart(){
-        List<BarEntry> entriesCont = new ArrayList<>();
-        List<BarEntry> entriesAvg = new ArrayList<>();
+//    private void setBarChart(){
+//        List<BarEntry> entriesCont = new ArrayList<>();
+//        List<BarEntry> entriesAvg = new ArrayList<>();
+//
+//        Random rand = new Random();
+//        for (int week = 0; week < 10; week++){
+//            entriesCont.add(new BarEntry(week, rand.nextInt(100) + 1));
+//            entriesAvg.add(new BarEntry(week, rand.nextInt(40)));
+//        }
+//
+//        BarDataSet setCont = new BarDataSet(entriesCont, "User Score");
+//        setCont.setColor(ColorTemplate.COLORFUL_COLORS[0]);
+//        BarDataSet setAvg = new BarDataSet(entriesAvg, "Average Score");
+//        setAvg.setColors(ColorTemplate.COLORFUL_COLORS[1]);
+//
+//        BarData data = new BarData(setCont, setAvg);
+//        data.setBarWidth(BAR_WIDTH);
+//        mBarChart.setData(data);
+//        mBarChart.groupBars(0, GROUP_SPACE, BAR_SPACE);
+//
+//        Description desc = new Description();
+//        desc.setText("Contribution bar chart");
+//        mBarChart.setDescription(desc);
+//
+//
+//        XAxis xAxis = mBarChart.getXAxis();
+//        xAxis.setAxisMaximum(xAxis.getAxisMaximum() + GROUP_SPACE + BAR_WIDTH);
+//        xAxis.setCenterAxisLabels(true);
+//        mBarChart.invalidate();
+//
+//    }
 
-        Random rand = new Random();
-        for (int week = 0; week < 10; week++){
-            entriesCont.add(new BarEntry(week, rand.nextInt(100) + 1));
-            entriesAvg.add(new BarEntry(week, rand.nextInt(40)));
+    private void initmPieChart(){
+        Description des = new Description();
+        des.setText("팀원 총 점수 기여도");
+        mPieChart.setDescription(des);
+        mPieChart.setHighlightPerTapEnabled(true);
+        mPieChart.setTouchEnabled(true);
+        mPieChart.setDrawHoleEnabled(true);
+        mPieChart.setTransparentCircleRadius(Color.WHITE);
+
+        mPieChart.setHoleRadius(30f);
+        mPieChart.setUsePercentValues(true);
+        mPieChart.animateY(1000);
+
+    }
+
+
+    private PieEntry getPieEntry(User user){
+        float scores = 0;
+        for (AppointKanbanCombined combined : combinedLists){
+            if (combined.getUser_id() == user.getId()){
+                scores += combined.getReward();
+            }
         }
-
-        BarDataSet setCont = new BarDataSet(entriesCont, "User Score");
-        setCont.setColor(ColorTemplate.COLORFUL_COLORS[0]);
-        BarDataSet setAvg = new BarDataSet(entriesAvg, "Average Score");
-        setAvg.setColors(ColorTemplate.COLORFUL_COLORS[1]);
-
-        BarData data = new BarData(setCont, setAvg);
-        data.setBarWidth(BAR_WIDTH);
-        mBarChart.setData(data);
-        mBarChart.groupBars(0, GROUP_SPACE, BAR_SPACE);
-
-        Description desc = new Description();
-        desc.setText("Contribution bar chart");
-        mBarChart.setDescription(desc);
+        if (scores < 0) scores = 0;
+        return new PieEntry(scores, user.getName());
+    }
 
 
-        XAxis xAxis = mBarChart.getXAxis();
-        xAxis.setAxisMaximum(xAxis.getAxisMaximum() + GROUP_SPACE + BAR_WIDTH);
-        xAxis.setCenterAxisLabels(true);
-        mBarChart.invalidate();
+    private void setmPieChart(){
+        List<PieEntry> entries = new ArrayList<>();
+        entries.add(getPieEntry(curUser));
+        for (User user : userList)
+            entries.add(getPieEntry(user));
+
+        PieDataSet set = new PieDataSet(entries, "점수 결과");
+        set.setColors(ColorTemplate.MATERIAL_COLORS);
+        set.setSliceSpace(2f);
+
+        PieData data = new PieData(set);
+        data.setValueTextColor(Color.BLACK);
+        data.setValueTextSize(13f);
+
+        mPieChart.setData(data);
+        mPieChart.invalidate();
 
     }
 
@@ -173,30 +237,18 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
         for (AppointKanbanCombined combined : combinedLists) {
             if (combined.getType() == 1 || combined.getUser_id() == userID) filtered.add(combined);
         }
+
         return filtered;
     }
-    private void setTimeline(int userID){
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(rootView.getContext());
-//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        mRecyclerView.setLayoutManager(layoutManager);
-//
-//        //filter timeline data for the selecter user
-//        ArrayList<AppointKanbanCombined> filtered = new ArrayList<>();
-//        for (AppointKanbanCombined combined : combinedLists){
-//            if (combined.getUser_id() != userID && combined.getUser_id() != -1){ //-1 = no user id exists for appointment
-//                filtered.add(combined);
-//            }
-//        }
-//        timelineAdapter = new TimelineAdapter(filtered);
-//        mRecyclerView.setLayoutManager(layoutManager);
-//        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-//        mRecyclerView.setAdapter(timelineAdapter);
-        timelineAdapter.setCombinedList(filterCombinedLists(userID));
+    private void setTimeline(ArrayList<AppointKanbanCombined> filtered){
+
+        timelineAdapter.setCombinedList(filtered);
         timelineAdapter.notifyDataSetChanged();
     }
 
     private void bind_views(){
-        mBarChart = rootView.findViewById(R.id.template_contribution_barchart);
+//        mBarChart = rootView.findViewById(R.id.template_contribution_barchart);
+        mPieChart = rootView.findViewById(R.id.template_contribution_pie_chart);
         spinnerSelectUser = rootView.findViewById(R.id.result_user_spinner);
     }
 
@@ -239,8 +291,14 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
                     return appointKanbanCombined.getEndDate().compareTo(t1.getEndDate());
                 }
             });
-
+//            Date earliest, latest;
+//            earliest = combinedLists.get(0).getEndDate();
+//            latest = combinedLists.get(combinedLists.size() - 1).getEndDate();
+//            Calendar cal = Calendar.getInstance();
+//            cal.setTime(earliest);
             initTimeline(curUser.getId());
+            setmPieChart();
+            mPieChart.highlightValue(new Highlight(0, 0, 0));
         }
     }
 
