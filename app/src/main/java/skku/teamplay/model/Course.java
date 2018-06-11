@@ -7,7 +7,7 @@ public class Course {
     private int start;
     private int height;
     private int time;
-    private int day;
+    private transient int day;
 
     public Course() {
 

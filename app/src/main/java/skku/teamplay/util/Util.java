@@ -24,6 +24,7 @@ public class Util {
     public static SimpleDateFormat DATEFORMAT_HHmm = new SimpleDateFormat("HH시 mm분");
     public static SimpleDateFormat DATEFORMAT_HHmms = new SimpleDateFormat("HH:mm");
     public static SimpleDateFormat DATEFORMAT_MdEE = new SimpleDateFormat("M/d EE", Locale.getDefault());
+    public static SimpleDateFormat DATEFORMAT_DayOfWeek = new SimpleDateFormat("EEEE", Locale.getDefault());
 
     public static void updateToken() {
         try {

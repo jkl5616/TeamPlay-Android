@@ -19,9 +19,14 @@ public class VerticalWeekView extends WeekView {
         super(context, attrs, defStyleAttr);
     }
 
+    float x = 0;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        event.setLocation(0, event.getY());
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            x = event.getX();
+        }
+        event.setLocation(x, event.getY());
         return super.onTouchEvent(event);
     }
 }
