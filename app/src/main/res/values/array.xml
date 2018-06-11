@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="rewardType">
+    <string-array name="reward_type">
         <item >지갑</item>
         <item >전투력</item>
         <item >서포트</item>

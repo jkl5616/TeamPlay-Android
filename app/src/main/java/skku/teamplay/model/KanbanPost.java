@@ -19,7 +19,7 @@ public class KanbanPost implements Serializable {
     private Date startDate, endDate;
     private int writer_user_id;
     private int owner_id;
-    private int rewardType;
+    private int reward_type;
     private int reward;
 
     public KanbanPost() {    }
@@ -33,7 +33,7 @@ public class KanbanPost implements Serializable {
                       Date endDate,
                       int writer_user_id,
                       int owner_id,
-                      int rewardType,
+                      int reward_type,
                       int reward) {
         this.id = id;
         this.kanban_board_id = kanban_board_id;
@@ -44,7 +44,7 @@ public class KanbanPost implements Serializable {
         this.endDate = endDate;
         this.writer_user_id = writer_user_id;
         this.owner_id = owner_id;
-        this.rewardType = rewardType;       // 0 전투력, 1 지갑, 2 서포트
+        this.reward_type = reward_type;       // 0 전투력, 1 지갑, 2 서포트
         this.reward = reward;
     }
 
@@ -58,13 +58,13 @@ public class KanbanPost implements Serializable {
     public Date getEndDate() { return endDate; }
     public int getWriter_user_id() { return writer_user_id; }
     public int getOwner_id() { return owner_id; }
-    public int getRewardType() { return rewardType; }
+    public int getReward_type() { return reward_type; }
     public int getReward() { return reward; }
 
     public String getRewardType_String() {
-        if(this.rewardType == 0) return "전투력";
-        else if(this.rewardType == 1) return "지갑";
-        else if(this.rewardType == 2) return "서포트";
+        if(this.reward_type == 0) return "전투력";
+        else if(this.reward_type == 1) return "지갑";
+        else if(this.reward_type == 2) return "서포트";
         else return "";
     }
     public int getStartAtYear() {
@@ -115,7 +115,7 @@ public class KanbanPost implements Serializable {
     public void setEndDate(Date endDate) { this.endDate = endDate; }
     public void setWriter_user_id(int writter_user_id) { this.writer_user_id = writter_user_id; }
     public void setOwner(int ownerId) { this.owner_id = ownerId; }
-    public void setRewardType(int rewardType) { this.rewardType = rewardType; }
+    public void setReward_type(int reward_type) { this.reward_type = reward_type; }
     public void setReward(int reward) { this.reward = reward; }
 
     public void setStartAtInt(int year, int month, int day) throws ParseException {
@@ -150,10 +150,10 @@ public class KanbanPost implements Serializable {
     }
 
     public AddKanbanPost makeAddKanbanPost() {
-        return new AddKanbanPost(this.kanban_board_id, this.title, this.description, this.finished, this.startDate, this.endDate, this.writer_user_id, this.owner_id, this.rewardType, this.reward);
+        return new AddKanbanPost(this.kanban_board_id, this.title, this.description, this.finished, this.startDate, this.endDate, this.writer_user_id, this.owner_id, this.reward_type, this.reward);
     }
     public ModifyKanbanPost makeModifiyKanbanPost() {
-        return new ModifyKanbanPost(this.id, this.kanban_board_id, this.title, this.description, this.finished, this.startDate, this.endDate, this.writer_user_id, this.owner_id, this.rewardType, this.reward);
+        return new ModifyKanbanPost(this.id, this.kanban_board_id, this.title, this.description, this.finished, this.startDate, this.endDate, this.writer_user_id, this.owner_id, this.reward_type, this.reward);
     }
     public DeleteKanbanPost makeDeleteKanbanPost() {
         return new DeleteKanbanPost(this.id);
