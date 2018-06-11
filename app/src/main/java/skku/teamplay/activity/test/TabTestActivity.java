@@ -1,12 +1,16 @@
 package skku.teamplay.activity.test;
 
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -20,12 +24,13 @@ import skku.teamplay.fragment.test.MainFragment;
 import skku.teamplay.fragment.test.ReportFragment;
 import skku.teamplay.fragment.test.ResultFragment;
 import skku.teamplay.fragment.test.SettingsFragment;
+import skku.teamplay.util.CaptureActivity;
 
 /**
  * Created by woorim on 2018. 4. 17..
  */
 
-public class TabTestActivity extends AppCompatActivity {
+public class TabTestActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
     @BindView(R.id.tab_container) ViewPager viewPager;
 
     MainFragment mainFragment;
@@ -51,6 +56,30 @@ public class TabTestActivity extends AppCompatActivity {
 
         setViewPager(viewPager);
     }
+
+    public void requestPermission(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            Log.d("Permission", "granted");
+        }
+        else{
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d("Permission", "onRequestPermissionsResult: " + requestCode);
+        switch (requestCode){
+            case 1:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    Log.d("Permission", "Granted");
+                    CaptureActivity.takeScreenshot(this);
+
+                }
+        }
+    }
+
     private void setViewPager(ViewPager viewPager){
         screenSlidePagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mainFragment = new MainFragment();

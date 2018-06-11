@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/result_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v4.widget.NestedScrollView
@@ -20,14 +21,27 @@
                     android:layout_margin="10dp"
                     app:cardCornerRadius="3dp"
                     app:cardElevation="2dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:weightSum="15"
+                        android:orientation="horizontal">
                     <com.jaredrummler.materialspinner.MaterialSpinner
                         android:id="@+id/result_user_spinner"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="14"
                         android:layout_height="50dp"
                         android:layout_marginTop="0dp"
                         android:layout_marginBottom="0dp">
                     </com.jaredrummler.materialspinner.MaterialSpinner>
-
+                        <android.support.v7.widget.AppCompatImageButton
+                            android:id="@+id/result_take_screenshot"
+                            android:layout_width="40dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:scaleType="fitCenter"
+                            android:src="@mipmap/screenshot_xxl"/>
+                    </LinearLayout>
                 </android.support.v7.widget.CardView>
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
@@ -40,7 +54,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:elevation="5dp">
-
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:alpha="0.5"
+                        android:src="@mipmap/average_01"
+                        android:scaleType="centerCrop"/>
                     <TextView
                         android:id="@+id/result_layout_title"
                         android:layout_width="wrap_content"

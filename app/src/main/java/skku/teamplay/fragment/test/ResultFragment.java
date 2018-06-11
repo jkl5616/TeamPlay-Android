@@ -1,9 +1,13 @@
 package skku.teamplay.fragment.test;
 
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -45,7 +51,9 @@ import javax.security.auth.callback.Callback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import skku.teamplay.Manifest;
 import skku.teamplay.R;
+import skku.teamplay.activity.test.TabTestActivity;
 import skku.teamplay.adapter.TimelineAdapter;
 import skku.teamplay.api.OnRestApiListener;
 import skku.teamplay.api.RestApi;
@@ -63,6 +71,7 @@ import skku.teamplay.model.KanbanBoard;
 import skku.teamplay.model.KanbanPost;
 import skku.teamplay.model.User;
 import skku.teamplay.util.AppointKanbanCombined;
+import skku.teamplay.util.CaptureActivity;
 import skku.teamplay.widget.AnimationUtil;
 
 public class ResultFragment extends Fragment implements OnRestApiListener{
@@ -80,8 +89,10 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
     TimelineAdapter timelineAdapter;
 
 
+    ImageButton btnScreenShot;
     MaterialSpinner spinnerSelectUser;
     ViewGroup rootView;
+    TextView chartDes;
 //    BarChart mBarChart;
     PieChart mPieChart;
     @BindView(R.id.result_timeline_recycler)RecyclerView mRecyclerView;
@@ -117,17 +128,22 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
                 String []tokens = item.toString().split("/");
                 if (tokens[1] != null) {
-                    setUser(tokens[1]);
-                    //find the position in the userList
-                    int pos = -1;
-                    for (int idx = 0; idx < userList.size(); idx++){
-                        if (userList.get(idx).getEmail().equals(tokens[1])){
-                            pos = idx;
-                            break;
+                    int userID = getUserNameFromID(tokens[1]);
+                    if (userID != -1){
+                        setUser(userID);
+                        int pos = -1; //find position with userID
+                        for (int idx = 0; idx < userList.size(); idx++){
+                            if (userList.get(idx).getEmail().equals(tokens[1])){
+                                pos = idx;
+                                break;
+                            }
                         }
+                        if (pos != -1) mPieChart.highlightValue(new Highlight(pos, 0, 0));
                     }
-                    if (pos != -1) mPieChart.highlightValue(new Highlight(pos, 0, 0));
-//                    Toast.makeText(getContext(), "Updated : " + tokens[1], Toast.LENGTH_SHORT).show();
+                    else{
+                        Toast.makeText(getContext(), "선택된 유저를 찾지 못했습니다.", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
         });
@@ -139,18 +155,10 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
         return rootView;
     }
 
+    private void setUser(int userID){
+        setTimeline(filterCombinedLists(userID)); //update timeline
+        updateChartDescription(userID);
 
-
-    private void setUser(String IDName){
-        int userID = 0;
-        //set Timeline data
-        for (User user : userList){
-            if (user.getEmail().contentEquals(IDName)){
-                userID = user.getId();
-                break;
-            }
-        }
-        setTimeline(filterCombinedLists(userID));
     }
 //    private void setBarChart(){
 //        List<BarEntry> entriesCont = new ArrayList<>();
@@ -183,13 +191,25 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
 //        mBarChart.invalidate();
 //
 //    }
+    private void updateChartDescription(int userID){
+        int total_quests, total_fin;
+        total_quests = total_fin = 0;
+        for (AppointKanbanCombined combined : combinedLists){
+            if (combined.getType() == 0 && combined.getUser_id() == userID){
+                total_quests++;
+                if (combined.getIsFinished() == 1) total_fin++;
+            }
+        }
 
+        chartDes.setText("완료한 임무: " + total_fin + " 총 임무: " + total_quests);
+
+    }
     private void initmPieChart(){
         Description des = new Description();
         des.setText("팀원 총 점수 기여도");
         mPieChart.setDescription(des);
-//        mPieChart.setHighlightPerTapEnabled(true);
         mPieChart.setTouchEnabled(true);
+        mPieChart.setHighlightPerTapEnabled(false);
         mPieChart.setDrawHoleEnabled(true);
         mPieChart.setTransparentCircleRadius(Color.WHITE);
 
@@ -259,7 +279,17 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
 //        mBarChart = rootView.findViewById(R.id.template_contribution_barchart);
         mPieChart = rootView.findViewById(R.id.template_contribution_pie_chart);
         spinnerSelectUser = rootView.findViewById(R.id.result_user_spinner);
+        chartDes = rootView.findViewById(R.id.template_contribution_text_description);
+        btnScreenShot = rootView.findViewById(R.id.result_take_screenshot);
+        btnScreenShot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TabTestActivity tab = (TabTestActivity)getActivity();
+                tab.requestPermission();
+            }
+        });
     }
+
 
     @Override
     public void onRestApiDone(RestApiResult restApiResult) {
@@ -306,6 +336,7 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
 //            Calendar cal = Calendar.getInstance();
 //            cal.setTime(earliest);
             initTimeline(curUser.getId());
+            setUser(curUser.getId());
             setmPieChart();
             int pos = 0;
             for (int idx = 0; idx < userList.size(); idx++) {
@@ -317,5 +348,16 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
             mPieChart.highlightValue(new Highlight(pos, 0, 0));
         }
     }
+    private int getUserNameFromID(String IDName){
+        int userID = -1; //-1 = fail
+        for (User user : userList){
+            if (user.getEmail().contentEquals(IDName)){
+                userID = user.getId();
+                return userID;
+            }
+        }
+        return userID;
+    }
+
 
 }

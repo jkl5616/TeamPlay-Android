@@ -16,7 +16,7 @@ public class AppointKanbanCombined implements Comparable<AppointKanbanCombined>{
     private Date endDate;
     private String description;
     private String title;
-    private int team_id, user_id, reward;
+    private int team_id, user_id, reward, isFinished;
     private int attend_count, type; //type = 0 kanban, type = 1 appointment
 
     public static ArrayList<AppointKanbanCombined> combine(ArrayList<KanbanPost> kanbanPosts, ArrayList<Appointment> appointments) {
@@ -31,6 +31,7 @@ public class AppointKanbanCombined implements Comparable<AppointKanbanCombined>{
             temp.setAttend_count(-1); //unknown
             temp.setType(0);
             temp.setReward(kanban.getReward());
+            temp.setIsFinished(kanban.getFinished());
             if (kanban.getOwner_id() == -1) temp.setUser_id(0);
             else temp.setUser_id(kanban.getOwner_id());
             combinedList.add(temp);
@@ -49,6 +50,14 @@ public class AppointKanbanCombined implements Comparable<AppointKanbanCombined>{
         }
 
         return combinedList;
+    }
+
+    public int getIsFinished() {
+        return isFinished;
+    }
+
+    public void setIsFinished(int isFinished) {
+        this.isFinished = isFinished;
     }
 
     public int getReward() {
