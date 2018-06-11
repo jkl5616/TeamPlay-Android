@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="15dp"
                 android:layout_marginLeft="10dp"
-                android:text="Descriptions"
+                android:text=""
                 />
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/template_contribution_pie_chart"

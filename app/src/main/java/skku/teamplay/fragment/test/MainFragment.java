@@ -35,7 +35,9 @@ import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -116,32 +118,6 @@ public class MainFragment extends Fragment implements OnRestApiListener {
 
         setmRadarChart();
 
-//        scoreRecords = new ArrayList<>();
-//        Random rnd = new Random();
-//        for (int i = 0; i < 10; i++){
-//            ScoreRecord temp = new ScoreRecord();
-//            temp.setUser_id(selectedUser.getId());
-//            temp.setScore(rnd.nextInt(30) + 1);
-//            temp.setType(i % 3);
-//            scoreRecords.add(temp);
-//        }
-//        //create temp score records
-//        scoreRecordsGroup = new ArrayList<List<ScoreRecord>>(userList.size() - 1); //remove selected user
-//        for (int idx = 0; idx < userList.size(); idx++){
-//            List<ScoreRecord> tempList = new ArrayList<>();
-//            for (int j = 0; j < 10; j++){
-//                ScoreRecord rec = new ScoreRecord();
-//                rec.setType(j % 3);
-//                rec.setUser_id(userList.get(idx).getId());
-//                rec.setScore(rnd.nextInt(20) + 1);
-//                tempList.add(rec);
-//            }
-//            scoreRecordsGroup.add(tempList);
-//        }
-
-//        updateChartData(scoreRecords);
-        //get scorerecord
-
         new RestApiTask(this).execute(new GetScoreRecordByTeam(TeamPlayApp.getAppInstance().getTeam().getId()));
 
         return rootView;
@@ -152,6 +128,12 @@ public class MainFragment extends Fragment implements OnRestApiListener {
         for (int idx = 0; idx < userList.size(); idx++) {
             if (userList.get(idx).getId() == selectedUser.getId()) continue;
             List<ScoreRecord> tempScores = new ArrayList<>();
+            //insert dummy data
+            ScoreRecord dummy = new ScoreRecord();
+            dummy.setUser_id(userList.get(idx).getId());
+            dummy.setScore(0);
+            dummy.setType(0);
+            tempScores.add(dummy);
             for (ScoreRecord records : scoreRecords) {
                 if (records.getUser_id() == userList.get(idx).getId())
                     tempScores.add(records);
@@ -159,6 +141,12 @@ public class MainFragment extends Fragment implements OnRestApiListener {
             scoreRecordsGroup.add(tempScores);
         }
         selectedUserRecords = new ArrayList<>();
+
+        ScoreRecord dum = new ScoreRecord();
+        dum.setType(0);
+        dum.setScore(0);
+        dum.setUser_id(selectedUser.getId());
+        selectedUserRecords.add(dum);
         for (ScoreRecord record : scoreRecords) {
             if (record.getUser_id() == selectedUser.getId()) selectedUserRecords.add(record);
         }
@@ -179,11 +167,14 @@ public class MainFragment extends Fragment implements OnRestApiListener {
     }
 
     private void updateChartData() {
+        List<Boolean> checkList = adapter.getChecklist();
+
+
         setsRadar.clear();
+
         setChartData(selectedUserRecords);
 
 
-        List<Boolean> checkList = adapter.getChecklist();
         for (int idx = 0; idx < checkList.size(); idx++) {
             if (checkList.get(idx))
                 setChartData(scoreRecordsGroup.get(idx)); //set checked user's score
@@ -198,11 +189,9 @@ public class MainFragment extends Fragment implements OnRestApiListener {
 
     private void setChartData(List<ScoreRecord> recordList) {
         String userName = "";
-        if (recordList.size() == 0) return;
-
         int[] recordSums = new int[3];
         ArrayList<RadarEntry> entry = new ArrayList<>();
-        Random rnd = new Random();
+
 
         for (ScoreRecord record : recordList) {
             recordSums[record.getType()] += record.getScore();
@@ -256,14 +245,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
         int selectedId;
 
         public UserAdapter(ArrayList<User> userList, int selectedId) {
-//            this.userList = new ArrayList<>();
-////            Collections.copy(this.userList, userList);
-////
-//            for (User user : userList){
-//                if (user.getId() != selectedId)
-//                    this.userList.add(user);
-//            }
-        this.userList = userList;
+            this.userList = userList;
             this.selectedId = selectedId;
         }
 
@@ -282,6 +264,13 @@ public class MainFragment extends Fragment implements OnRestApiListener {
             return userList.get(i).getId();
         }
 
+        public int getCheckedItems(){
+            int cnt = 0;
+            for (AnimCheckBox checkBox : checkBoxes){
+                if (checkBox.isChecked()) cnt++;
+            }
+            return cnt;
+        }
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             final int pos = i;
@@ -294,21 +283,23 @@ public class MainFragment extends Fragment implements OnRestApiListener {
                 textUsername.setText(userList.get(i).getName());
                 AnimCheckBox checkUser = view.findViewById(R.id.layout_list_checkbox);
                 checkUser.setTag(pos);
-                checkBoxes.add(checkUser);
+                //check for duplications; assumption: added sub sequentially
+                if (pos == checkBoxes.size())
+                    checkBoxes.add(checkUser);
                 checkUser.setOnCheckedChangeListener(new AnimCheckBox.OnCheckedChangeListener() {
                     @Override
                     public void onChange(AnimCheckBox animCheckBox, boolean b) {
                         int idx = Integer.parseInt(animCheckBox.getTag().toString());
 
-                        ChartAnimatedText test = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, 5, ChartAnimatedText.RECORD_WALLET);
-                        ChartAnimatedText test1 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, -21, ChartAnimatedText.RECORD_STRENGTH);
-                        ChartAnimatedText test2 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, 120, ChartAnimatedText.RECORD_SUPPORT);
-
-                        test.start();
-                        test1.setDelay(900);
-                        test1.start();
-                        test2.setDelay(1800);
-                        test2.start();
+//                        ChartAnimatedText test = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, 5, ChartAnimatedText.RECORD_WALLET);
+//                        ChartAnimatedText test1 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, -21, ChartAnimatedText.RECORD_STRENGTH);
+//                        ChartAnimatedText test2 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, 120, ChartAnimatedText.RECORD_SUPPORT);
+//
+//                        test.start();
+//                        test1.setDelay(900);
+//                        test1.start();
+//                        test2.setDelay(1800);
+//                        test2.start();
 
                         //user id 로 세팅하고
                         updateChartData();
@@ -355,7 +346,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
         xAxis.setXOffset(0f);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
 
-            private String[] mActivities = new String[]{"지갑", "서포트", "전투력"};
+            private String[] mActivities = new String[]{"전투력", "지갑", "서포트"};
 
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
