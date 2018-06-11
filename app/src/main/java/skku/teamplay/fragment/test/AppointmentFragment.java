@@ -242,6 +242,7 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
 
         final TextView date = rootView.findViewById(R.id.textview_date);
         final ListView lv_appointment = rootView.findViewById(R.id.lv_appointment);
+        final TextView no_appointment = rootView.findViewById(R.id.tv_no_appointment);
         weekView.setScrollListener(new WeekView.ScrollListener() {
             @Override
             public void onFirstVisibleDayChanged(Calendar newFirstVisibleDay, Calendar oldFirstVisibleDay) {
@@ -251,9 +252,10 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
                 date.setText(Util.DATEFORMAT_MdEE.format(middle.getTime()));
                 if (appointmentMap == null) return;
                 ArrayList<Appointment> appointmentList = appointmentMap.get(Util.DATEFORMAT_yyyyMMdd.format(middle.getTime()));
-                if (appointmentList == null) {
+                if (appointmentList == null || appointmentList.size() == 0) {
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<String>());
                     lv_appointment.setAdapter(adapter);
+                    no_appointment.setVisibility(View.VISIBLE);
                 } else {
                     ArrayList<String> strings = new ArrayList<>();
                     for (Appointment appointment : appointmentList) {
@@ -261,6 +263,7 @@ public class AppointmentFragment extends Fragment implements OnRestApiListener {
                     }
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, strings);
                     lv_appointment.setAdapter(adapter);
+                    no_appointment.setVisibility(View.INVISIBLE);
                 }
             }
         });
