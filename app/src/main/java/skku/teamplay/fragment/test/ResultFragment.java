@@ -105,10 +105,12 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
         userList = TeamPlayApp.getAppInstance().getUserList();
         curUser = TeamPlayApp.getAppInstance().getUser();
         List<String> userNames = new ArrayList<>();
-        //userNames.add(curUser.getName() + "/" + curUser.getEmail());
+        userNames.add(curUser.getName() + "/" + curUser.getEmail());
         for (User user : userList){
+            if (user.getId() == curUser.getId()) continue;
             userNames.add(user.getName() + "/" + user.getEmail());
         }
+
         spinnerSelectUser.setItems(userNames);
         spinnerSelectUser.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
@@ -116,7 +118,15 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
                 String []tokens = item.toString().split("/");
                 if (tokens[1] != null) {
                     setUser(tokens[1]);
-                    mPieChart.highlightValue(new Highlight(position, 0, 0));
+                    //find the position in the userList
+                    int pos = -1;
+                    for (int idx = 0; idx < userList.size(); idx++){
+                        if (userList.get(idx).getEmail().equals(tokens[1])){
+                            pos = idx;
+                            break;
+                        }
+                    }
+                    if (pos != -1) mPieChart.highlightValue(new Highlight(pos, 0, 0));
 //                    Toast.makeText(getContext(), "Updated : " + tokens[1], Toast.LENGTH_SHORT).show();
                 }
             }
@@ -297,7 +307,14 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
 //            cal.setTime(earliest);
             initTimeline(curUser.getId());
             setmPieChart();
-            mPieChart.highlightValue(new Highlight(0, 0, 0));
+            int pos = 0;
+            for (int idx = 0; idx < userList.size(); idx++) {
+                if (userList.get(idx).getId() == curUser.getId()){
+                    pos = idx;
+                    break;
+                }
+            }
+            mPieChart.highlightValue(new Highlight(pos, 0, 0));
         }
     }
 

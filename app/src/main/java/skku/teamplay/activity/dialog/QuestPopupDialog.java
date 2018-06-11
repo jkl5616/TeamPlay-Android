@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -27,7 +26,6 @@ import skku.teamplay.adapter.RuleSpinnerAdapter;
 import skku.teamplay.api.OnRestApiListener;
 import skku.teamplay.api.RestApiResult;
 import skku.teamplay.api.RestApiTask;
-import skku.teamplay.api.impl.GetKanbanPostByBoard;
 import skku.teamplay.api.impl.GetRulesByTeam;
 import skku.teamplay.api.impl.res.RuleListResult;
 import skku.teamplay.app.TeamPlayApp;
@@ -116,8 +114,6 @@ public class QuestPopupDialog extends Activity implements OnRestApiListener {
         editDescription.setText(kanbanPost.getDescription());
         editStartAt.setText(kanbanPost.getStartAtSimple());
         editDueAt.setText(kanbanPost.getDueAtSimple());
-        spinnerRewardType.setSelection(kanbanPost.getRewardType());
-        editReward.setText(String.valueOf(kanbanPost.getReward()));
 
         new RestApiTask(this).execute(new GetRulesByTeam(team.getId()));
     }
@@ -184,25 +180,20 @@ public class QuestPopupDialog extends Activity implements OnRestApiListener {
         kanbanPost.setDescription(editDescription.getText().toString());
         kanbanPost.setStartAtSimple(editStartAt.getText().toString());
         kanbanPost.setDueAtSimple(editDueAt.getText().toString());
-        kanbanPost.setRewardType(spinnerRewardType.getSelectedItemPosition());
+        kanbanPost.setReward_type(spinnerRewardType.getSelectedItemPosition());
 
         int reward = Integer.parseInt(editReward.getText().toString());
-        if(reward < 0){
-            Toast.makeText(getApplicationContext(), "보상은 0보다 커야 합니다.", Toast.LENGTH_LONG).show();
+        kanbanPost.setReward(reward);
+
+        if(pos == -1) {
+            fillRetIntent();
+            setResult(1000, retIntent);
+            finish();
         }
         else {
-            kanbanPost.setReward(reward);
-
-            if(pos == -1) {
-                fillRetIntent();
-                setResult(1000, retIntent);
-                finish();
-            }
-            else {
-                fillRetIntent();
-                setResult(2000, retIntent);
-                finish();
-            }
+            fillRetIntent();
+            setResult(2000, retIntent);
+            finish();
         }
     }
 
@@ -255,8 +246,8 @@ public class QuestPopupDialog extends Activity implements OnRestApiListener {
                 ArrayList<Rule> ruleList = data.getRuleList();
                 Rule defaultRule = new Rule();
                 defaultRule.setName("직접 입력");
-                defaultRule.setType(0);
-                defaultRule.setScore(0);
+                defaultRule.setType(kanbanPost.getReward_type());
+                defaultRule.setScore(kanbanPost.getReward());
                 ruleList.add(0, defaultRule);
                 ruleSpinnerAdapter = new RuleSpinnerAdapter(this, ruleList);
                 spinnerRule.setAdapter(ruleSpinnerAdapter);
@@ -270,9 +261,12 @@ public class QuestPopupDialog extends Activity implements OnRestApiListener {
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
-                        spinnerRewardType.setSelection(0);
+                        Rule currentRule = ruleSpinnerAdapter.getItem(0);
+                        spinnerRewardType.setSelection(currentRule.getType());
+                        editReward.setText(String.valueOf(currentRule.getScore()));
                     }
                 });
+
         }
     }
 }

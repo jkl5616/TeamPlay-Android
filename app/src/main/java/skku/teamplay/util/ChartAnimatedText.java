@@ -20,7 +20,7 @@ public class ChartAnimatedText {
     private int delay;
     private int option, duration, deltaY, score;
     private static final float offsetsX[] = {0.2f, 0.50f, 0.70f};
-    private static final float offsetsY[] = {0.55f, 0f, 0.55f};
+    private static final float offsetsY[] = {0.60f, 0f, 0.60f};
     private static final String type_name[] = new String[]{"전투력", "지갑", "서포트"};
 
     Context context;
