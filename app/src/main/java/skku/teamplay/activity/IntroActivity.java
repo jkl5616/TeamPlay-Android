@@ -1,4 +1,4 @@
-package skku.teamplay.activity.test;
+package skku.teamplay.activity;
 
 /**
  * Created by woorim on 2018-04-16.

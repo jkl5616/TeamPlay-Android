@@ -1,11 +1,8 @@
-package skku.teamplay.activity.test;
+package skku.teamplay.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,20 +18,17 @@ import butterknife.ButterKnife;
 import io.github.yavski.fabspeeddial.FabSpeedDial;
 import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 import skku.teamplay.R;
-import skku.teamplay.adapter.TeamListAdapter;
 import skku.teamplay.adapter.TeamListCardAdapter;
 import skku.teamplay.api.OnRestApiListener;
 import skku.teamplay.api.RestApiResult;
 import skku.teamplay.api.RestApiTask;
 import skku.teamplay.api.impl.GetAllUsersByTeam;
 import skku.teamplay.api.impl.GetTeamByUser;
-import skku.teamplay.api.impl.MakeTeam;
 import skku.teamplay.api.impl.res.TeamListResult;
 import skku.teamplay.api.impl.res.UserListResult;
 import skku.teamplay.app.TeamPlayApp;
 import skku.teamplay.model.Team;
 import skku.teamplay.model.User;
-import skku.teamplay.util.RecyclerItemClickListener;
 
 /**
  * Created by 우림 on 2018-05-21.

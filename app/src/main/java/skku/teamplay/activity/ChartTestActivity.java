@@ -1,4 +1,4 @@
-package skku.teamplay.activity.test;
+package skku.teamplay.activity;
 
 import android.graphics.Color;
 import android.graphics.Typeface;

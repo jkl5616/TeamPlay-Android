@@ -1,18 +1,15 @@
-package skku.teamplay.activity.test;
+package skku.teamplay.activity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -21,7 +18,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 
@@ -37,7 +33,7 @@ import skku.teamplay.adapter.SimpleMemberAdapter;
 import skku.teamplay.api.OnRestApiListener;
 import skku.teamplay.api.RestApiResult;
 import skku.teamplay.api.RestApiTask;
-import skku.teamplay.api.impl.MakeTeam;
+import skku.teamplay.api.impl.ModifyTeam;
 import skku.teamplay.api.impl.SearchUser;
 import skku.teamplay.api.impl.SearchUserByCourse;
 import skku.teamplay.api.impl.res.UserListResult;
@@ -47,7 +43,7 @@ import skku.teamplay.model.User;
 import skku.teamplay.util.CourseList;
 import skku.teamplay.util.Util;
 
-public class MakeTeamActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, OnRestApiListener {
+public class ModifyTeamActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, OnRestApiListener {
 
     User user;
     int year, month, day;
@@ -72,6 +68,7 @@ public class MakeTeamActivity extends AppCompatActivity implements DatePickerDia
     MaterialDialog dialog;
     Course t_course;
     ArrayList<User> teamMembers;
+    ArrayList<User> addMembers;
     Date deadline;
 
     @Override
@@ -79,9 +76,10 @@ public class MakeTeamActivity extends AppCompatActivity implements DatePickerDia
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_team);
         ButterKnife.bind(this);
+        ((TextView) findViewById(R.id.custom_title)).setText("팀 정보 수정하기");
         user = TeamPlayApp.getAppInstance().getUser();
-        teamMembers = new ArrayList<>();
-        teamMembers.add(user);
+        teamMembers = TeamPlayApp.getAppInstance().getUserList();
+        addMembers = new ArrayList<>();
         gridview_members.setNumColumns(4);
         gridview_members.setAdapter(new GridMemberAdapter(teamMembers));
 
@@ -91,11 +89,10 @@ public class MakeTeamActivity extends AppCompatActivity implements DatePickerDia
         day = c.get(Calendar.DAY_OF_MONTH);
 
 
-
         edittext_team_deadline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(MakeTeamActivity.this, MakeTeamActivity.this, year, month, day).show();
+                new DatePickerDialog(ModifyTeamActivity.this, ModifyTeamActivity.this, year, month, day).show();
             }
         });
         edittext_team_course.setOnClickListener(new View.OnClickListener() {
@@ -119,32 +116,51 @@ public class MakeTeamActivity extends AppCompatActivity implements DatePickerDia
         btn_maketeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(teamMembers.size() == 1) {
+                if (teamMembers.size() == 1) {
                     Snackbar.make(findViewById(android.R.id.content), "팀원을 더 추가하세요", 0).show();
-                } else if(deadline == null) {
+                } else if (deadline == null) {
                     Snackbar.make(findViewById(android.R.id.content), "종강날짜를 설정하세요", 0).show();
-                } else if(edittext_team_name.getText().toString().length() == 0) {
+                } else if (edittext_team_name.getText().toString().length() == 0) {
                     Snackbar.make(findViewById(android.R.id.content), "팀 이름을 써주세요.", 0).show();
                 } else {
-                    new RestApiTask(MakeTeamActivity.this).execute(new MakeTeam(edittext_team_name.getText().toString(), deadline, t_course, user.getId(), teamMembers));
+                    TeamPlayApp.getAppInstance().getTeam().setName(edittext_team_name.getText().toString());
+                    TeamPlayApp.getAppInstance().getTeam().setDeadline(deadline);
+                    if (t_course != null)
+                        TeamPlayApp.getAppInstance().getTeam().setCoursename(t_course.getName() + "-" + t_course.getProf());
+                    new RestApiTask(ModifyTeamActivity.this).execute(new ModifyTeam(TeamPlayApp.getAppInstance().getTeam().getId(), edittext_team_name.getText().toString(), deadline, t_course.getName() + "-" + t_course.getProf(), user.getId(), addMembers));
                 }
             }
         });
+
+        edittext_team_name.setText(TeamPlayApp.getAppInstance().getTeam().getName());
+        String seg[] = TeamPlayApp.getAppInstance().getTeam().getCoursename().split("-");
+        if (seg.length > 1) {
+            Course course = new Course();
+            course.setName(seg[0]);
+            course.setProf(seg[1]);
+            setTeamCourse(course);
+        } else {
+            edittext_team_course.setText(TeamPlayApp.getAppInstance().getTeam().getCoursename());
+        }
+        Calendar calendar = Util.calendarFromDate(TeamPlayApp.getAppInstance().getTeam().getDeadline());
+        deadline = TeamPlayApp.getAppInstance().getTeam().getDeadline();
+        edittext_team_deadline.setText(String.format("%d-%d-%d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH)));
     }
 
     private void addUser(User user) {
         boolean contains = false;
-        for(int i = 0; i < teamMembers.size(); i++) {
-            if(teamMembers.get(i).getId() == user.getId()) {
+        for (int i = 0; i < teamMembers.size(); i++) {
+            if (teamMembers.get(i).getId() == user.getId()) {
                 contains = true;
                 break;
             }
         }
-        if(contains) {
+        if (contains) {
             Snackbar.make(findViewById(android.R.id.content), "이미 추가되어 있습니다", 0).show();
             return;
         }
         teamMembers.add(user);
+        addMembers.add(user);
         gridview_members.setAdapter(new GridMemberAdapter(teamMembers));
     }
 
@@ -166,14 +182,14 @@ public class MakeTeamActivity extends AppCompatActivity implements DatePickerDia
                 new RestApiTask(new OnRestApiListener() {
                     @Override
                     public void onRestApiDone(RestApiResult restApiResult) {
-                        if(restApiResult.getResult()) {
+                        if (restApiResult.getResult()) {
                             UserListResult result = (UserListResult) restApiResult;
                             final ArrayList<User> searched = result.getUserList();
                             lv.setAdapter(new SimpleMemberAdapter(searched));
                             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                    hideKeyboard(MakeTeamActivity.this);
+                                    hideKeyboard(ModifyTeamActivity.this);
                                     dialog.dismiss();
                                     addUser(searched.get(i));
                                 }
@@ -186,7 +202,7 @@ public class MakeTeamActivity extends AppCompatActivity implements DatePickerDia
     }
 
     private void showSearchByCourseDialog() {
-        if(t_course == null) {
+        if (t_course == null) {
             Snackbar.make(findViewById(android.R.id.content), "먼저 과목을 지정하세요.", 0).show();
             return;
         }
@@ -202,14 +218,14 @@ public class MakeTeamActivity extends AppCompatActivity implements DatePickerDia
         new RestApiTask(new OnRestApiListener() {
             @Override
             public void onRestApiDone(RestApiResult restApiResult) {
-                if(restApiResult.getResult()) {
+                if (restApiResult.getResult()) {
                     UserListResult result = (UserListResult) restApiResult;
                     final ArrayList<User> searched = result.getUserList();
                     lv.setAdapter(new SimpleMemberAdapter(searched));
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            hideKeyboard(MakeTeamActivity.this);
+                            hideKeyboard(ModifyTeamActivity.this);
                             dialog.dismiss();
                             addUser(searched.get(i));
                         }
@@ -220,11 +236,11 @@ public class MakeTeamActivity extends AppCompatActivity implements DatePickerDia
     }
 
     private void showCoursePickDialog() {
-        if(user.getTimetable().length() == 0) {
+        if (user.getTimetable().length() == 0) {
             Snackbar.make(findViewById(android.R.id.content), "과목을 선택하시려면 프로필 화면에서 시간표를 등록하세요", Snackbar.LENGTH_LONG).show();
         }
         String cols[] = {"#FE816D", "#68C4AF", "#45B4E7", "#D187FE", "#ffb331", "#4573E7", "#6AECF4", "#ADA7FC", "#95CB9C", "#01579B"};
-        final View rootlayout = getLayoutInflater().inflate(R.layout.dialog_team_timetable, null);
+        final View rootlayout = getLayoutInflater().inflate(R.layout.activity_team_timetable, null);
         dialog =
                 new MaterialDialog.Builder(this)
                         .title("과목 선택")
@@ -249,22 +265,22 @@ public class MakeTeamActivity extends AppCompatActivity implements DatePickerDia
     public void renderTimeTableDialog() {
         Gson gson = new Gson();
         ArrayList<User> userList = TeamPlayApp.getAppInstance().getUserList();
-        String cols[] = {"#FE816D","#68C4AF","#45B4E7","#D187FE","#ffb331","#4573E7","#6AECF4","#ADA7FC","#95CB9C","#01579B"};
+        String cols[] = {"#FE816D", "#68C4AF", "#45B4E7", "#D187FE", "#ffb331", "#4573E7", "#6AECF4", "#ADA7FC", "#95CB9C", "#01579B"};
         ArrayList<Integer> colArray = new ArrayList<Integer>();
         String alpha = "77";
-        for(int i = 0; i < cols.length; i++) {
-            colArray.add(Color.parseColor("#"+alpha+cols[i].split("#")[1]));
+        for (int i = 0; i < cols.length; i++) {
+            colArray.add(Color.parseColor("#" + alpha + cols[i].split("#")[1]));
         }
 
 
-        Integer colors[] =  colArray.toArray(new Integer[colArray.size()]);
+        Integer colors[] = colArray.toArray(new Integer[colArray.size()]);
 
         int i = 0;
         int layoutHeight = layout_timetable.getMeasuredHeight();
         int layoutWidth = layout_timetable.getMeasuredWidth();
 
         CourseList courseList = gson.fromJson(user.getTimetable(), CourseList.class);
-        for(int day = 0; day < 5; day++) {
+        for (int day = 0; day < 5; day++) {
             ArrayList<Course> courses = courseList.get(day);
             for (Course course : courses) {
                 int color = colors[(i++) % colors.length];
@@ -280,11 +296,11 @@ public class MakeTeamActivity extends AppCompatActivity implements DatePickerDia
                 });
                 TextView tv_coursename = (TextView) course_layout.findViewById(R.id.tv_coursename);
                 tv_coursename.setText(course.getName());
-                int width = layoutWidth/5;
-                int height = layoutHeight*course.getTime()/780;
+                int width = layoutWidth / 5;
+                int height = layoutHeight * course.getTime() / 780;
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
-                int left = layoutWidth*day/5;
-                int top = layoutHeight*(course.getTop()-540)/780;
+                int left = layoutWidth * day / 5;
+                int top = layoutHeight * (course.getTop() - 540) / 780;
                 params.setMargins(left, top, 0, 0);
                 course_layout.setLayoutParams(params);
                 layout_timetable.addView(course_layout);
@@ -294,7 +310,7 @@ public class MakeTeamActivity extends AppCompatActivity implements DatePickerDia
 
     private void setTeamCourse(Course course) {
         t_course = course;
-        edittext_team_course.setText(course.getName()+"-"+course.getProf());
+        edittext_team_course.setText(course.getName() + "-" + course.getProf());
     }
 
     @Override
@@ -305,8 +321,7 @@ public class MakeTeamActivity extends AppCompatActivity implements DatePickerDia
 
     @Override
     public void onRestApiDone(RestApiResult restApiResult) {
-        if(restApiResult.getResult()) {
-            startActivity(new Intent(MakeTeamActivity.this, ProfileActivity.class));
+        if (restApiResult.getResult()) {
             finish();
         }
     }

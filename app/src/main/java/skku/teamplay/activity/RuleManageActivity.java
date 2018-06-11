@@ -1,4 +1,4 @@
-package skku.teamplay.activity.test;
+package skku.teamplay.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -25,7 +24,6 @@ import io.github.yavski.fabspeeddial.FabSpeedDial;
 import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 import skku.teamplay.R;
 import skku.teamplay.adapter.RuleCardAdapter;
-import skku.teamplay.adapter.TeamListCardAdapter;
 import skku.teamplay.api.OnRestApiListener;
 import skku.teamplay.api.RestApiResult;
 import skku.teamplay.api.RestApiTask;
@@ -33,7 +31,6 @@ import skku.teamplay.api.impl.AddRule;
 import skku.teamplay.api.impl.GetRulesByTeam;
 import skku.teamplay.api.impl.res.RuleListResult;
 import skku.teamplay.app.TeamPlayApp;
-import skku.teamplay.model.Rule;
 import skku.teamplay.model.Team;
 
 public class RuleManageActivity extends AppCompatActivity implements OnRestApiListener {

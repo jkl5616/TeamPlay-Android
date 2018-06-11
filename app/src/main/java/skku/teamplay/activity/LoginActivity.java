@@ -1,7 +1,6 @@
-package skku.teamplay.activity.test;
+package skku.teamplay.activity;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -19,12 +18,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +29,6 @@ import skku.teamplay.api.RestApiResult;
 import skku.teamplay.api.RestApiTask;
 import skku.teamplay.api.impl.Login;
 import skku.teamplay.api.impl.Register;
-import skku.teamplay.api.impl.UpdateToken;
 import skku.teamplay.api.impl.res.LoginResult;
 import skku.teamplay.app.TeamPlayApp;
 import skku.teamplay.util.SharedPreferencesUtil;

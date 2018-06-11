@@ -1,7 +1,5 @@
-package skku.teamplay.activity.test;
+package skku.teamplay.activity;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.RectF;
 import android.os.Bundle;
@@ -9,9 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
@@ -35,13 +31,10 @@ import skku.teamplay.R;
 import skku.teamplay.api.OnRestApiListener;
 import skku.teamplay.api.RestApiResult;
 import skku.teamplay.api.RestApiTask;
-import skku.teamplay.api.impl.AddAppointment;
 import skku.teamplay.api.impl.Login;
 import skku.teamplay.api.impl.UpdateTimeTable;
 import skku.teamplay.api.impl.res.LoginResult;
 import skku.teamplay.app.TeamPlayApp;
-import skku.teamplay.fragment.test.AppointmentFragment;
-import skku.teamplay.model.Appointment;
 import skku.teamplay.model.Course;
 import skku.teamplay.model.User;
 import skku.teamplay.util.CourseList;

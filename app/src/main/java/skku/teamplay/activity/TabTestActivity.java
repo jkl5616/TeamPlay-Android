@@ -1,4 +1,4 @@
-package skku.teamplay.activity.test;
+package skku.teamplay.activity;
 
 
 import android.Manifest;
@@ -18,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import skku.teamplay.R;
 import skku.teamplay.adapter.ScreenSlidePagerAdapter;
+import skku.teamplay.app.TeamPlayApp;
 import skku.teamplay.fragment.test.AppointmentFragment;
 import skku.teamplay.fragment.test.KanbanMainFragment;
 import skku.teamplay.fragment.test.MainFragment;
@@ -47,7 +48,7 @@ public class TabTestActivity extends AppCompatActivity implements ActivityCompat
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_test);
-
+        getSupportActionBar().setTitle(TeamPlayApp.getAppInstance().getTeam().getName());
         ButterKnife.bind(this);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.tab_bottom_navigation);
         viewPager.addOnPageChangeListener(onPageChangeListener);

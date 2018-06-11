@@ -29,7 +29,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.test.TestActivity"
+            android:name=".activity.LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -44,23 +44,23 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.test.KanbanViewpagerActivity"
+            android:name=".activity.KanbanViewpagerActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".activity.test.ChartTestActivity"
+            android:name=".activity.ChartTestActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.test.ViewPagerTestActivity"
+            android:name=".activity.ViewPagerTestActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.test.UserProfileActivity"
-            android:label="TeamPlay"
+            android:name=".activity.UserProfileActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -68,70 +68,76 @@
             android:screenOrientation="portrait"
             android:theme="@style/QuestDialogTheme" />
         <activity
-            android:name=".activity.test.TabTestActivity"
-            android:label="TeamPlay"
+            android:name=".activity.TabTestActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".activity.test.ProfileActivity"
-            android:label="TeamPlay"
+            android:name=".activity.ProfileActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.test.LoginActivity"
-            android:label="TeamPlay"
+            android:name=".activity.TestActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".activity.test.EverytimeParseTestActivity"
+            android:name=".activity.EverytimeParseTestActivity"
             android:screenOrientation="portrait"
             android:theme="@style/QuestDialogTheme" />
 
         <activity
-            android:name=".activity.test.PenaltyTestActivity"
+            android:name=".activity.PenaltyTestActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".activity.test.DummyActivity"
+            android:name=".activity.DummyActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoDisplay" />
 
         <activity
-            android:name=".activity.test.TimetableViewActivity"
+            android:name=".activity.TimetableViewActivity"
             android:screenOrientation="portrait"
+            android:label="시간표 보기"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".activity.test.TimetableModifyActivity"
+            android:name=".activity.TimetableModifyActivity"
             android:screenOrientation="portrait"
+            android:label="시간표 수정"
             android:theme="@style/AppTheme" />
 
 
         <activity
-            android:name=".activity.test.MakeTeamActivity"
+            android:name=".activity.MakeTeamActivity"
             android:screenOrientation="portrait"
+            android:label="팀 만들기"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.test.ModifyTeamActivity"
+            android:name=".activity.ModifyTeamActivity"
             android:screenOrientation="portrait"
+            android:label="팀 정보 수정"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.test.RuleManageActivity"
+            android:name=".activity.RuleManageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="규칙 관리"
+            android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".activity.test.TokenTestActivity"
+            android:name=".activity.TokenTestActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
-            android:name=".activity.test.PenaltyManageActivity"
+            android:name=".activity.PenaltyManageActivity"
             android:screenOrientation="portrait"
+            android:label="패널티 관리"
             android:theme="@style/AppTheme"></activity>
 
         <receiver

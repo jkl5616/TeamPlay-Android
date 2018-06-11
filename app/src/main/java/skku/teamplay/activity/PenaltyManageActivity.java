@@ -1,4 +1,4 @@
-package skku.teamplay.activity.test;
+package skku.teamplay.activity;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,7 +23,6 @@ import skku.teamplay.api.RestApiResult;
 import skku.teamplay.api.RestApiTask;
 import skku.teamplay.api.impl.SendPenalty;
 import skku.teamplay.app.TeamPlayApp;
-import skku.teamplay.model.Penalty;
 import skku.teamplay.model.User;
 
 public class PenaltyManageActivity extends AppCompatActivity {
