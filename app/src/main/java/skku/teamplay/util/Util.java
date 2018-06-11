@@ -1,6 +1,10 @@
 package skku.teamplay.util;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.view.View;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -71,6 +75,18 @@ public class Util {
 
     public static void setColorIndex(int iz) {
         index = iz;
+    }
+
+    public static Bitmap getBitmapFromView(View view, int height, int width) {
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        Drawable bgDrawable = view.getBackground();
+        if (bgDrawable != null)
+            bgDrawable.draw(canvas);
+        else
+            canvas.drawColor(Color.WHITE);
+        view.draw(canvas);
+        return bitmap;
     }
 
     private static void initColors() {

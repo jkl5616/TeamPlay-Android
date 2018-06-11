@@ -29,13 +29,6 @@ public class PenaltyTestActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_penalty_test);
         //Check whether app has permission to ACTION_MANAGE_OVERLAY_PERMISSION
-        if(Build.VERSION.SDK_INT >= 23) {
-            if (!Settings.canDrawOverlays(PenaltyTestActivity.this)) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:" + getPackageName()));
-                startActivityForResult(intent, 1234);
-            }
-        }
         ButterKnife.bind(this);
         startSvc.setOnClickListener(new View.OnClickListener() {
             @Override
