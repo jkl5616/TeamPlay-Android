@@ -19,8 +19,11 @@ public class ChartAnimatedText {
     private String topic;
     private int delay;
     private int option, duration, deltaY, score;
-    private static final float offsetsX[] = {0.2f, 0.50f, 0.70f};
-    private static final float offsetsY[] = {0.60f, 0f, 0.60f};
+//    private static final float offsetsX[] = {0.2f, 0.50f, 0.70f};
+//    private static final float offsetsY[] = {0.60f, 0f, 0.60f};
+    //전투력 지갑 서포트
+    private static final float offsetsX[] = {0.50f, 0.70f, 0.20f};
+    private static final float offsetsY[] = {0.0f, 0.60f, 0.60f};
     private static final String type_name[] = new String[]{"전투력", "지갑", "서포트"};
 
     Context context;
@@ -28,7 +31,7 @@ public class ChartAnimatedText {
         this.layoutBase = layoutBase;
         this.score = score;
         this.topic = topic;
-        this.option = option; //0 지갑 1 전투력 2 서포트
+        this.option = option; //0 지갑 1 전투력 2 서포트 ==> 0 전투력 1 지갑 2서포트
         this.context = context;
         this.targetView = view; //radar chart
 

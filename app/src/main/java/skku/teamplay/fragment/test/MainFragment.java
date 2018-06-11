@@ -116,32 +116,6 @@ public class MainFragment extends Fragment implements OnRestApiListener {
 
         setmRadarChart();
 
-//        scoreRecords = new ArrayList<>();
-//        Random rnd = new Random();
-//        for (int i = 0; i < 10; i++){
-//            ScoreRecord temp = new ScoreRecord();
-//            temp.setUser_id(selectedUser.getId());
-//            temp.setScore(rnd.nextInt(30) + 1);
-//            temp.setType(i % 3);
-//            scoreRecords.add(temp);
-//        }
-//        //create temp score records
-//        scoreRecordsGroup = new ArrayList<List<ScoreRecord>>(userList.size() - 1); //remove selected user
-//        for (int idx = 0; idx < userList.size(); idx++){
-//            List<ScoreRecord> tempList = new ArrayList<>();
-//            for (int j = 0; j < 10; j++){
-//                ScoreRecord rec = new ScoreRecord();
-//                rec.setType(j % 3);
-//                rec.setUser_id(userList.get(idx).getId());
-//                rec.setScore(rnd.nextInt(20) + 1);
-//                tempList.add(rec);
-//            }
-//            scoreRecordsGroup.add(tempList);
-//        }
-
-//        updateChartData(scoreRecords);
-        //get scorerecord
-
         new RestApiTask(this).execute(new GetScoreRecordByTeam(TeamPlayApp.getAppInstance().getTeam().getId()));
 
         return rootView;
@@ -179,11 +153,18 @@ public class MainFragment extends Fragment implements OnRestApiListener {
     }
 
     private void updateChartData() {
-        setsRadar.clear();
+        List<Boolean> checkList = adapter.getChecklist();
+        boolean isDataExist = false;
+        //clear data only if there exist at least one dat
+        if (selectedUserRecords.size() == 0){
+            for (int idx = 0; idx <checkList.size(); idx++){
+                if (checkList.get(idx).equals(true) && scoreRecordsGroup.get(idx).size() > 0) isDataExist = true;
+            }
+        }
+        if (isDataExist) setsRadar.clear();
         setChartData(selectedUserRecords);
 
 
-        List<Boolean> checkList = adapter.getChecklist();
         for (int idx = 0; idx < checkList.size(); idx++) {
             if (checkList.get(idx))
                 setChartData(scoreRecordsGroup.get(idx)); //set checked user's score
@@ -198,21 +179,24 @@ public class MainFragment extends Fragment implements OnRestApiListener {
 
     private void setChartData(List<ScoreRecord> recordList) {
         String userName = "";
-        if (recordList.size() == 0) return;
-
         int[] recordSums = new int[3];
         ArrayList<RadarEntry> entry = new ArrayList<>();
-        Random rnd = new Random();
-
-        for (ScoreRecord record : recordList) {
-            recordSums[record.getType()] += record.getScore();
+        if (recordList.size() == 0){
+            for (int idx = 0; idx < 3; idx++){
+                recordSums[idx] = 0;
+            }
         }
-
+        else {
+            for (ScoreRecord record : recordList) {
+                recordSums[record.getType()] += record.getScore();
+            }
+        }
         for (int num : recordSums) {
             entry.add(new RadarEntry(num));
         }
 
         //set name
+        if (recordList.size() == 0) return;
         if (recordList.get(0).getUser_id() == selectedUser.getId())
             userName = selectedUser.getName();
         else {
@@ -256,14 +240,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
         int selectedId;
 
         public UserAdapter(ArrayList<User> userList, int selectedId) {
-//            this.userList = new ArrayList<>();
-////            Collections.copy(this.userList, userList);
-////
-//            for (User user : userList){
-//                if (user.getId() != selectedId)
-//                    this.userList.add(user);
-//            }
-        this.userList = userList;
+            this.userList = userList;
             this.selectedId = selectedId;
         }
 
@@ -294,7 +271,9 @@ public class MainFragment extends Fragment implements OnRestApiListener {
                 textUsername.setText(userList.get(i).getName());
                 AnimCheckBox checkUser = view.findViewById(R.id.layout_list_checkbox);
                 checkUser.setTag(pos);
-                checkBoxes.add(checkUser);
+                //check for duplications; assumption: added sub sequentially
+                if (pos == checkBoxes.size())
+                    checkBoxes.add(checkUser);
                 checkUser.setOnCheckedChangeListener(new AnimCheckBox.OnCheckedChangeListener() {
                     @Override
                     public void onChange(AnimCheckBox animCheckBox, boolean b) {
@@ -355,7 +334,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
         xAxis.setXOffset(0f);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
 
-            private String[] mActivities = new String[]{"지갑", "서포트", "전투력"};
+            private String[] mActivities = new String[]{"전투력", "지갑", "서포트"};
 
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
