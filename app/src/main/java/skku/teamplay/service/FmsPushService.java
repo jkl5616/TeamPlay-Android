@@ -18,6 +18,8 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import skku.teamplay.R;
 import skku.teamplay.activity.MainActivity;
+import skku.teamplay.app.TeamPlayApp;
+import skku.teamplay.util.SharedPreferencesUtil;
 
 public class FmsPushService extends FirebaseMessagingService {
 
@@ -27,8 +29,17 @@ public class FmsPushService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         String title = remoteMessage.getData().get("title");
-        String content = remoteMessage.getData().get("content");
-        showNoti(title, content);
+        if(title != null && title.length() > 0) {
+            String content = remoteMessage.getData().get("content");
+            showNoti(title, content);
+        } else {
+            String penalty_description = remoteMessage.getData().get("penalty_description");
+            String penalty_seconds = remoteMessage.getData().get("penalty_seconds");
+            SharedPreferencesUtil.putString("penalty_description", penalty_description);
+            SharedPreferencesUtil.putString("penalty_seconds", penalty_seconds);
+            SharedPreferencesUtil.putInt("leftTime", 120);
+            startService(new Intent(getBaseContext(), PenaltyService.class));
+        }
     }
 
     private void showNoti(String title, String content) {
