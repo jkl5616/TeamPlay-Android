@@ -43,8 +43,8 @@ public class AppointKanbanCombined implements Comparable<AppointKanbanCombined>{
             AppointKanbanCombined temp = new AppointKanbanCombined();
             temp.setStartDate(appointment.getStartDate());
             temp.setEndDate(appointment.getEndDate());
-            temp.setDescription(appointment.getDescription());
-            temp.setTitle("[일정]");
+//            temp.setDescription(appointment.getDescription());
+            temp.setTitle(appointment.getDescription());
             temp.setTeam_id(appointment.getTeam_id());
             temp.setAttend_count(appointment.getAttend_count());
             temp.setType(1);

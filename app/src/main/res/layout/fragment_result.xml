@@ -86,6 +86,38 @@
                         android:textColor="#1cff36"/>
                 </RelativeLayout>
                 </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    app:cardCornerRadius="3dp"
+                    app:cardElevation="2dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/result_frag_ranking_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="순위"
+                            android:textSize="16dp"
+                            android:padding="10dp"/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="#dddddd"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"/>
+                        <TextView
+                            android:id="@+id/result_frag_ranking_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:lineSpacingMultiplier="1.5"
+                            android:text="순위"/>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
 
                 <include layout="@layout/template_contribution_result" />
 

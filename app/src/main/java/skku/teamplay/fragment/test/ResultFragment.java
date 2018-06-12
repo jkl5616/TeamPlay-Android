@@ -95,7 +95,7 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
     ImageButton btnScreenShot;
     MaterialSpinner spinnerSelectUser;
     ViewGroup rootView;
-    TextView chartDes, imageDes;
+    TextView chartDes, imageDes, rankingText;
 //    BarChart mBarChart;
     PieChart mPieChart;
     @BindView(R.id.result_timeline_recycler)RecyclerView mRecyclerView;
@@ -217,6 +217,7 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
             entries.add(getPieEntry(user));
 
         PieDataSet set = new PieDataSet(entries, "점수 결과");
+//        set.getEntryForIndex(0).getValue();
         set.setColors(ColorTemplate.MATERIAL_COLORS);
         set.setSliceSpace(2f);
 
@@ -224,11 +225,67 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
         data.setValueTextColor(Color.BLACK);
         data.setValueTextSize(13f);
 
+        setRankingText();
+
         mPieChart.setData(data);
         mPieChart.invalidate();
 
     }
+    private void setRankingText(){
+        final ArrayList<RankedStructure> rankedList = new ArrayList<>();
+        float scores;
+        for (User user : userList) {
+            scores = 0;
+            for (AppointKanbanCombined combined : combinedLists) {
+                if (combined.getUser_id() == user.getId() && combined.getIsFinished() == 1) {
+                    scores += combined.getReward();
+                }
+            }
+            if (scores < 0) scores = 0;
+            rankedList.add(new RankedStructure(user.getName(), scores));
+        }
 
+        Collections.sort(rankedList, new Comparator<RankedStructure>() {
+            @Override
+            public int compare(RankedStructure rankedStructure, RankedStructure t1) {
+                if (rankedStructure.getScore() >= t1.getScore()) return -1;
+                else return 0;
+
+            }
+        });
+
+        String textRanked = "";
+        int idx = 1;
+        for (RankedStructure ranked : rankedList){
+            textRanked = textRanked + idx++ + ". " + ranked.getName() + ", " + ranked.score + "\n";
+        }
+        rankingText.setText(textRanked);
+    }
+    class RankedStructure{
+        String name;
+        float score;
+
+        public RankedStructure(String name, float score) {
+            this.name = name;
+            this.score = score;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public float getScore() {
+            return score;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setScore(float score) {
+            this.score = score;
+        }
+    }
     private void initTimeline(int userID){
         LinearLayoutManager layoutManager = new LinearLayoutManager(rootView.getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -262,6 +319,7 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
         btnScreenShot = rootView.findViewById(R.id.result_take_screenshot);
         imageVIew = rootView.findViewById(R.id.result_image);
         imageDes = rootView.findViewById(R.id.result_layout_title);
+        rankingText = rootView.findViewById(R.id.result_frag_ranking_text);
         btnScreenShot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

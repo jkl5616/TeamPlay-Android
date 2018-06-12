@@ -37,6 +37,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -129,27 +130,49 @@ public class MainFragment extends Fragment implements OnRestApiListener {
             if (userList.get(idx).getId() == selectedUser.getId()) continue;
             List<ScoreRecord> tempScores = new ArrayList<>();
             //insert dummy data
-            ScoreRecord dummy = new ScoreRecord();
-            dummy.setUser_id(userList.get(idx).getId());
-            dummy.setScore(0);
-            dummy.setType(0);
-            tempScores.add(dummy);
+            for (int i = 0; i < 3; i++) {
+                ScoreRecord dummy = new ScoreRecord();
+                Date date;
+                date = Calendar.getInstance().getTime();
+                dummy.setUser_id(userList.get(idx).getId());
+                dummy.setScore(0);
+                dummy.setType(0);
+                dummy.setDate(date);
+                tempScores.add(dummy);
+            }
             for (ScoreRecord records : scoreRecords) {
                 if (records.getUser_id() == userList.get(idx).getId())
                     tempScores.add(records);
             }
+            Collections.sort(tempScores, new Comparator<ScoreRecord>() {
+                @Override
+                public int compare(ScoreRecord scoreRecord, ScoreRecord t1) {
+                    return scoreRecord.getDate().compareTo(t1.getDate());
+                }
+            });
             scoreRecordsGroup.add(tempScores);
         }
         selectedUserRecords = new ArrayList<>();
 
-        ScoreRecord dum = new ScoreRecord();
-        dum.setType(0);
-        dum.setScore(0);
-        dum.setUser_id(selectedUser.getId());
-        selectedUserRecords.add(dum);
+        for (int i = 0; i < 3; i++) {
+            ScoreRecord dum = new ScoreRecord();
+            dum.setType(0);
+            dum.setScore(0);
+            dum.setUser_id(selectedUser.getId());
+            Date date = Calendar.getInstance().getTime();
+            dum.setDate(date);
+            selectedUserRecords.add(dum);
+        }
         for (ScoreRecord record : scoreRecords) {
             if (record.getUser_id() == selectedUser.getId()) selectedUserRecords.add(record);
         }
+        Collections.sort(scoreRecords, new Comparator<ScoreRecord>() {
+            @Override
+            public int compare(ScoreRecord scoreRecord, ScoreRecord t1) {
+                return scoreRecord.getDate().compareTo(t1.getDate());
+            }
+        });
+
     }
 
     @Override
