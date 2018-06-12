@@ -51,7 +51,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import skku.teamplay.R;
-import skku.teamplay.activity.test.MakeTeamActivity;
 import skku.teamplay.adapter.GridMemberAdapter;
 import skku.teamplay.api.OnRestApiListener;
 import skku.teamplay.api.RestApi;

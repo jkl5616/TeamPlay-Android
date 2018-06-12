@@ -28,9 +28,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import skku.teamplay.R;
-import skku.teamplay.activity.test.DummyActivity;
-import skku.teamplay.activity.test.PenaltyTestActivity;
-import skku.teamplay.activity.test.TabTestActivity;
+import skku.teamplay.activity.DummyActivity;
 import skku.teamplay.util.SharedPreferencesUtil;
 
 public class PenaltyService extends Service {

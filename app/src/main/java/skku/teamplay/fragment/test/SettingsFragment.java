@@ -13,9 +13,9 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import skku.teamplay.R;
-import skku.teamplay.activity.test.ModifyTeamActivity;
-import skku.teamplay.activity.test.PenaltyManageActivity;
-import skku.teamplay.activity.test.RuleManageActivity;
+import skku.teamplay.activity.ModifyTeamActivity;
+import skku.teamplay.activity.PenaltyManageActivity;
+import skku.teamplay.activity.RuleManageActivity;
 import skku.teamplay.app.TeamPlayApp;
 import skku.teamplay.util.SharedPreferencesUtil;
 
@@ -57,7 +57,7 @@ public class SettingsFragment extends Fragment {
                 if(TeamPlayApp.getAppInstance().getTeam().getLeader_id() == TeamPlayApp.getAppInstance().getUser().getId()) {
                     startActivity(new Intent(getActivity(), PenaltyManageActivity.class));
                 } else {
-                    Toast.makeText(getActivity(), "팀장만 패널티를 부여 할 수 있습니다.", 0).show();
+                    Toast.makeText(getActivity(), "팀장만 패널티를 부여 할 수 있습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -40,9 +40,9 @@ public class TestActivity extends AppCompatActivity {
 
 
         final ArrayList<String> activites = new ArrayList<>();
-        for(Class c : Constants.ACTIVITES) {
-            activites.add(c.getName());
-        }
+//        for(Class c : Constants.ACTIVITES) {
+//            activites.add(c.getName());
+//        }
         lv.setAdapter(new BaseAdapter() {
 
             @Override
@@ -52,7 +52,8 @@ public class TestActivity extends AppCompatActivity {
 
             @Override
             public Class getItem(int position) {
-                return Constants.ACTIVITES[position];
+                return null;
+//                return Constants.ACTIVITES[position];
             }
 
             @Override
@@ -73,8 +74,8 @@ public class TestActivity extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(TestActivity.this, Constants.ACTIVITES[position]);
-                startActivity(intent);
+//                Intent intent = new Intent(TestActivity.this, Constants.ACTIVITES[position]);
+//                startActivity(intent);
             }
         });
     }

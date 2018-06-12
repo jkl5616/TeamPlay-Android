@@ -54,7 +54,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import skku.teamplay.Manifest;
 import skku.teamplay.R;
-import skku.teamplay.activity.test.TabTestActivity;
 import skku.teamplay.adapter.ScoreEvaluator;
 import skku.teamplay.adapter.TimelineAdapter;
 import skku.teamplay.api.OnRestApiListener;
