@@ -83,6 +83,8 @@ public class KanbanMainFragment extends Fragment implements OnRestApiListener {
 //        });
 
         adapter = new KanbanQuestlistAdapter();
+        questList.setAdapter(adapter);
+
         initReceiver();
         return rootView;
     }
@@ -95,7 +97,6 @@ public class KanbanMainFragment extends Fragment implements OnRestApiListener {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     Log.e("BroadcastReceiver", "update test");
-                    adapter = new KanbanQuestlistAdapter();
                     new RestApiTask(KanbanMainFragment.this).execute(new GetKanbansByTeam(team.getId()));
                 }
             };
@@ -147,12 +148,14 @@ public class KanbanMainFragment extends Fragment implements OnRestApiListener {
                 if (temp != null) {
                     for (KanbanPost i : temp) {
                         if (i.getOwner_id() == user_id) {
+                            adapter.getList().removeIf(e -> e.getId() == i.getId());
                             adapter.addItem(i);
                         }
                     }
                 }
                 Collections.sort(adapter.getList());
-                questList.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+
                 TextView tv = (TextView) header.findViewById(R.id.count);
                 tv.setText(String.valueOf(adapter.getCount()));
                 break;

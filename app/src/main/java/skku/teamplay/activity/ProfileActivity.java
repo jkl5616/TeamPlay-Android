@@ -75,7 +75,6 @@ public class ProfileActivity extends AppCompatActivity implements OnRestApiListe
                         temp = 1;
                         break;
                 }
-                Toast.makeText(getApplicationContext(), "Fab selected #" + temp, Toast.LENGTH_LONG).show();
                 return false;
             }
         });

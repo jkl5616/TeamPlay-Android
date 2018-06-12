@@ -47,6 +47,9 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
     public KanbanQuestlistAdapter() { }
     public KanbanQuestlistAdapter(ArrayList kanbanPostList) { this.kanbanPostList = kanbanPostList; }
 
+    public void clear() {
+        kanbanPostList = new ArrayList<>();
+    }
     @Override
     public int getCount() { return kanbanPostList.size(); }
 
@@ -86,7 +89,6 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
                 constLayout.setBackground(quest_other);
             }
         }
-        notifyDataSetChanged();
         return rootView;
     }
 
@@ -102,7 +104,6 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
 
     public void addItem(KanbanPost item) {
         kanbanPostList.add(item);
-        this.notifyDataSetChanged();
     }
 
     public ArrayList<KanbanPost> getList() {

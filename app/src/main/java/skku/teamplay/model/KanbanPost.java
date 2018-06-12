@@ -165,4 +165,12 @@ public class KanbanPost implements Serializable, Comparable<KanbanPost> {
     public int compareTo(@NonNull KanbanPost kanbanPost) {
         return kanbanPost.startDate.compareTo(startDate);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof KanbanPost) {
+            return ((KanbanPost)obj).getId() == getId();
+        }
+        return false;
+    }
 }

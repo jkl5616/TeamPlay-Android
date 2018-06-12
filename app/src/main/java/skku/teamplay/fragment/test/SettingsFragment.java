@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,7 @@ public class SettingsFragment extends Fragment {
         rootView.findViewById(R.id.tv_give_penalty).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.e("TeamPlayTest", TeamPlayApp.getAppInstance().getTeam().getLeader_id()+" "+TeamPlayApp.getAppInstance().getUser().getId());
                 if(TeamPlayApp.getAppInstance().getTeam().getLeader_id() == TeamPlayApp.getAppInstance().getUser().getId()) {
                     startActivity(new Intent(getActivity(), PenaltyManageActivity.class));
                 } else {
