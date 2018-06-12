@@ -125,6 +125,8 @@ public class MainFragment extends Fragment implements OnRestApiListener {
     }
 
     private void init_scoreRecords() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, -100);
         scoreRecordsGroup = new ArrayList<List<ScoreRecord>>(userList.size() - 1);
         for (int idx = 0; idx < userList.size(); idx++) {
             if (userList.get(idx).getId() == selectedUser.getId()) continue;
@@ -133,7 +135,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
             for (int i = 0; i < 3; i++) {
                 ScoreRecord dummy = new ScoreRecord();
                 Date date;
-                date = Calendar.getInstance().getTime();
+                date = cal.getTime();
                 dummy.setUser_id(userList.get(idx).getId());
                 dummy.setScore(0);
                 dummy.setType(0);
@@ -147,7 +149,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
             Collections.sort(tempScores, new Comparator<ScoreRecord>() {
                 @Override
                 public int compare(ScoreRecord scoreRecord, ScoreRecord t1) {
-                    return scoreRecord.getDate().compareTo(t1.getDate());
+                    return t1.getDate().compareTo(scoreRecord.getDate());
                 }
             });
             scoreRecordsGroup.add(tempScores);
@@ -159,7 +161,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
             dum.setType(0);
             dum.setScore(0);
             dum.setUser_id(selectedUser.getId());
-            Date date = Calendar.getInstance().getTime();
+            Date date = cal.getTime();
             dum.setDate(date);
             selectedUserRecords.add(dum);
         }
@@ -169,9 +171,10 @@ public class MainFragment extends Fragment implements OnRestApiListener {
         Collections.sort(scoreRecords, new Comparator<ScoreRecord>() {
             @Override
             public int compare(ScoreRecord scoreRecord, ScoreRecord t1) {
-                return scoreRecord.getDate().compareTo(t1.getDate());
+                return t1.getDate().compareTo(scoreRecord.getDate());
             }
         });
+
 
     }
 
@@ -188,7 +191,27 @@ public class MainFragment extends Fragment implements OnRestApiListener {
 //
 
     }
+    boolean isUserTextAnimated = false;
 
+    private void setAnimatedText(List<ScoreRecord> recordList, boolean isCurUser){
+        if (isCurUser){
+            for (int i = 0; i < 3; i++){
+                if (recordList.get(i).getScore() <= 0) continue;
+                ChartAnimatedText animatedText = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, recordList.get(i).getScore(),
+                        recordList.get(i).getType());
+                animatedText.setDelay(i * animatedText.getDuration());
+                animatedText.start();
+            }
+        }
+        else{
+            for (int i = 0; i < 3; i++){
+                if (recordList.get(i).getScore() <= 0) continue;
+                ChartAnimatedText animatedText = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, recordList.get(i).getScore(), recordList.get(i).getType());
+                animatedText.setDelay(i * 500);
+                animatedText.start();
+            }
+        }
+    }
     private void updateChartData() {
         List<Boolean> checkList = adapter.getChecklist();
 
@@ -196,11 +219,20 @@ public class MainFragment extends Fragment implements OnRestApiListener {
         setsRadar.clear();
 
         setChartData(selectedUserRecords);
-
+        if (isUserTextAnimated == false){
+            setAnimatedText(selectedUserRecords, true );
+            isUserTextAnimated = true;
+        }
 
         for (int idx = 0; idx < checkList.size(); idx++) {
-            if (checkList.get(idx))
+            if (checkList.get(idx)) {
                 setChartData(scoreRecordsGroup.get(idx)); //set checked user's score
+                //animate first three scoring events
+                if (idx == lastSelected) {
+                    setAnimatedText(scoreRecordsGroup.get(idx), false);
+                    lastSelected = 0;
+                }
+            }
         }
 
         YAxis yAxis = mRadarChart.getYAxis();
@@ -261,7 +293,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
         mRadarChart.setData(data);
 
     }
-
+    int lastSelected = 0;
     private class UserAdapter extends BaseAdapter {
         ArrayList<User> userList;
         List<AnimCheckBox> checkBoxes = new ArrayList<>();
@@ -313,7 +345,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
                     @Override
                     public void onChange(AnimCheckBox animCheckBox, boolean b) {
                         int idx = Integer.parseInt(animCheckBox.getTag().toString());
-
+                        if (animCheckBox.isChecked()) lastSelected = pos;
 //                        ChartAnimatedText test = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, 5, ChartAnimatedText.RECORD_WALLET);
 //                        ChartAnimatedText test1 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, -21, ChartAnimatedText.RECORD_STRENGTH);
 //                        ChartAnimatedText test2 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, 120, ChartAnimatedText.RECORD_SUPPORT);
