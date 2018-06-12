@@ -54,6 +54,10 @@ public class TimetableModifyActivity extends AppCompatActivity implements OnRest
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        init();
+    }
+
+    private void init() {
         setContentView(R.layout.activity_timetable_modify);
         user = TeamPlayApp.getAppInstance().getUser();
         ButterKnife.bind(this);
@@ -295,10 +299,7 @@ public class TimetableModifyActivity extends AppCompatActivity implements OnRest
         } else if (restApiResult instanceof LoginResult) {
             LoginResult result = (LoginResult) restApiResult;
             TeamPlayApp.getAppInstance().getUser().setTimetable(result.user.getTimetable());
-            Calendar c = Calendar.getInstance();
-            c.set(Calendar.DAY_OF_WEEK, 3);
-            c.set(Calendar.WEEK_OF_MONTH, 3);
-            weekView.goToDate(c);
+            init();
         }
     }
 }
