@@ -1,14 +1,18 @@
 package skku.teamplay.fragment.test;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +27,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -39,6 +45,9 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -73,6 +82,7 @@ import skku.teamplay.model.KanbanPost;
 import skku.teamplay.model.User;
 import skku.teamplay.util.AppointKanbanCombined;
 import skku.teamplay.util.CaptureActivity;
+import skku.teamplay.util.Util;
 import skku.teamplay.widget.AnimationUtil;
 
 public class ResultFragment extends Fragment implements OnRestApiListener{
@@ -320,12 +330,47 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
         imageVIew = rootView.findViewById(R.id.result_image);
         imageDes = rootView.findViewById(R.id.result_layout_title);
         rankingText = rootView.findViewById(R.id.result_frag_ranking_text);
+        final NestedScrollView scrollview = rootView.findViewById(R.id.scr_report);
         btnScreenShot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                TabTestActivity tab = (TabTestActivity)getActivity();
-//                tab.requestPermission();
+                Toast.makeText(getActivity(), "보고서를 생성중입니다.", 0).show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Bitmap bitmap = Util.getBitmapFromView(scrollview, scrollview.getChildAt(0).getHeight(), scrollview.getChildAt(0).getWidth());
+                        final String path = Environment.getExternalStorageDirectory() + "/teamplay_report_" + System.currentTimeMillis() + ".png";
+                        try {
+                            FileOutputStream output = new FileOutputStream(path);
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, output);
+                            output.close();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //Android mediascanner에 등록
+                                getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + path)));
+                                new MaterialDialog.Builder(getActivity()).title("결과리포트 저장 완료").content(path + "에 리포트가 저장되었습니다. 공유할까요?").positiveText(android.R.string.ok).negativeText(android.R.string.no).onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        Intent share = new Intent(Intent.ACTION_SEND);
+                                        share.setType("image/png");
+                                        Uri imageUri = Uri.parse(path);
+                                        share.putExtra(Intent.EXTRA_STREAM, imageUri);
+                                        startActivity(Intent.createChooser(share, "공유 선택"));
+                                    }
+                                }).show();
+                            }
+                        });
+                    }
+                }).start();
+
             }
+
         });
     }
 
