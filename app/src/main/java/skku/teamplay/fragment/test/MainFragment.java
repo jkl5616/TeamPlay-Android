@@ -423,7 +423,9 @@ public class MainFragment extends Fragment implements OnRestApiListener {
         yAxis.setTypeface(mTfLight);
         yAxis.setLabelCount(4, false);
         yAxis.setTextSize(9f);
-        yAxis.setAxisMaximum(140f);
+        yAxis.setAxisMinimum(0f);
+        yAxis.setAxisMaximum(80f);
+        yAxis.resetAxisMaximum();
         yAxis.setDrawLabels(false);
 
         Legend l = mRadarChart.getLegend();
