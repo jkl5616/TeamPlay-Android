@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import skku.teamplay.R;
@@ -69,11 +70,19 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             String htmlTxt;
             if (combinedList.get(position).getIsFinished() == 1)
                 htmlTxt =  "<font color='#03d100'>[완료]</font> " + combinedList.get(position).getDescription();
-            else
-                htmlTxt = "<font color='#cf001c'>[실패]</font> " + combinedList.get(position).getDescription();
-            holder.description.setText(Html.fromHtml(htmlTxt));
-        }
+            else{
+                if (combinedList.get(position).getEndDate().before(Calendar.getInstance().getTime())){
+                    //if passed time
+                    htmlTxt = "<font color='#cf001c'>[실패]</font> " + combinedList.get(position).getDescription();
+                }
+                else{
+                    htmlTxt = "<font color='#0121d4'>[진행중]</font> " + combinedList.get(position).getDescription();
+                }
+            }
 
+            holder.description.setText(Html.fromHtml(htmlTxt));
+        }else
+            holder.description.setText("");
         if (combinedList.get(position).getType() == 0){
             String title = "", htmlTxt;
             if (combinedList.get(position).getReward() > 0) {
