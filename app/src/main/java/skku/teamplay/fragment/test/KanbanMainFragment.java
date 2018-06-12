@@ -19,6 +19,7 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -150,6 +151,7 @@ public class KanbanMainFragment extends Fragment implements OnRestApiListener {
                         }
                     }
                 }
+                Collections.sort(adapter.getList());
                 questList.setAdapter(adapter);
                 TextView tv = (TextView) header.findViewById(R.id.count);
                 tv.setText(String.valueOf(adapter.getCount()));

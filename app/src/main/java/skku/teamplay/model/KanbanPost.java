@@ -1,5 +1,7 @@
 package skku.teamplay.model;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,7 +12,7 @@ import skku.teamplay.api.impl.DeleteKanbanPost;
 import skku.teamplay.api.impl.ModifyKanbanPost;
 
 
-public class KanbanPost implements Serializable {
+public class KanbanPost implements Serializable, Comparable<KanbanPost> {
     private int id;
     private int kanban_board_id;
     private String title;
@@ -157,5 +159,10 @@ public class KanbanPost implements Serializable {
     }
     public DeleteKanbanPost makeDeleteKanbanPost() {
         return new DeleteKanbanPost(this.id);
+    }
+
+    @Override
+    public int compareTo(@NonNull KanbanPost kanbanPost) {
+        return kanbanPost.startDate.compareTo(startDate);
     }
 }

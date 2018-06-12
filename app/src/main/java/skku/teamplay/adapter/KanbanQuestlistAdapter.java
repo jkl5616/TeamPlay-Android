@@ -105,6 +105,10 @@ public class KanbanQuestlistAdapter extends BaseAdapter {
         this.notifyDataSetChanged();
     }
 
+    public ArrayList<KanbanPost> getList() {
+        return kanbanPostList;
+    }
+
     public void deleteItem(int position) {
         kanbanPostList.remove(position);
         this.notifyDataSetChanged();

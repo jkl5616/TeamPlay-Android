@@ -18,6 +18,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -135,6 +136,7 @@ public class KanbanFragment extends Fragment implements OnRestApiListener {
             case "getkanbanpostbyboard":
                 KanbanPostListResult result = (KanbanPostListResult) restApiResult;
                 kanbanPosts = result.getPostList();
+                Collections.sort(kanbanPosts);
                 adapter = new KanbanQuestlistAdapter(kanbanPosts);
                 QuestList.setAdapter(adapter);
                 QuestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
