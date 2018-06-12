@@ -60,19 +60,19 @@
                         android:adjustViewBounds="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:alpha="0.5"
-                        android:src="@mipmap/average_1"
+                        android:alpha="1"
+                        android:src="@mipmap/ic_pac_icon"
                         />
                     <TextView
                         android:id="@+id/result_layout_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
+                        android:layout_below="@+id/result_image"
                         android:layout_marginLeft="10dp"
                         android:layout_marginBottom="5dp"
-                        android:lines="2"
-                        android:text="Result of\nThis user"
-                        android:textColor="#000000"
+                        android:maxLines="2"
+                        android:text="Evaluation to be done"
+
                         android:textSize="20dp" />
                     <TextView
                         android:id="@+id/result_layout_grade"

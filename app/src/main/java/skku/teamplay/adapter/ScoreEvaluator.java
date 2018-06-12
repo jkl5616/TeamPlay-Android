@@ -17,14 +17,18 @@ public class ScoreEvaluator {
     private ArrayList<AppointKanbanCombined> allUser;
     private User selectedUser;
     private ImageView imageView;
-    private TextView textView;
+    private TextView textResult;
+    final private static String[] AVERAGE_TEXTS={"늦었다고 생각했을 때가 가장 늦었을 때다.\n더 늦기 전에 더 일하자", "이거 마감전까지 다 해야한다", "오늘도 내일도 했던만큼만 하자", "중간만 하자"};
+    final private static String[] BAD_TEXTS={"후우... 일좀 합시다", "멘탈 챙기자아아", "으어어어어 팀플이라는 이름으로 버티자", "안돼 가지마..", "see see I can't see"};
+    final private static String[] BEST_TEXTS={"넌 너무 멋있어 어플인 내가 봐도 반하겠어", "너 나랑 다음에도 팀플할래?", "팀플 좀 할줄 아는 놈인가", "우리팀 운전기사"};
+    final private static String[] GOOD_TEXTS={"에이쁠 가즈아", "호수같은 그대의 눈동자에 건배", "너는 팀플할때 가장 멋져", "팀플 떡상 가즈아아"};
+    final private static String[] WORST_TEXTS={"놉 안돼 돌아가 일해", "가지마..", "본 조교는 굉장히 실망했습니다."};
     final private static int NUM_TYPES = 3;
-    final private static int NUM_BAD_IMAGES = 5;
-    final private static int NUM_AVERAGE_IMAGES = 3;
-    final private static int NUM_BEST_IMAGES = 4;
-    final private static int NUM_GOOD_IMAGES = 3;
-    final private static int NUM_WORST_IMAGES = 4;
-
+    final private static int NUM_BAD_IMAGES = BAD_TEXTS.length;
+    final private static int NUM_AVERAGE_IMAGES = AVERAGE_TEXTS.length;
+    final private static int NUM_BEST_IMAGES = BEST_TEXTS.length;
+    final private static int NUM_GOOD_IMAGES = GOOD_TEXTS.length;
+    final private static int NUM_WORST_IMAGES = WORST_TEXTS.length;
     private int average, selectedAvg;
     private int[] avgForType = new int[NUM_TYPES];
     private int[] userAvgForType = new int [NUM_TYPES];
@@ -32,7 +36,7 @@ public class ScoreEvaluator {
         this.selectedUser = selectedUser;
         this.allUser = allUser;
         this.imageView = imageView;
-        this.textView = textView;
+        this.textResult = textView;
 
         notifyChange();
     }
@@ -43,7 +47,7 @@ public class ScoreEvaluator {
     public void notifyChange(){
         setAverageScore();
         Log.d("Score: ", evaluateScore() +".");
-        this.textView.setText("Score: " + evaluateScore());
+//        this.textView.setText("Score: " + evaluateScore());
         setImageAndText(evaluateScore());
 //        for (AppointKanbanCombined combined : allUser){
 //            if (combined.getType() == AppointKanbanCombined.KANBAN_POST && combined.getReward_Type() == 2 && combined.getIsFinished() == 1)
@@ -55,9 +59,7 @@ public class ScoreEvaluator {
 //            Log.d("Avg type:", i + ": " + avgForType[i] + ", " + userAvgForType[i]);
 //        }
     }
-    private void initImageAndText(){
 
-    }
     private void setImageAndText(int score){
         //0~2 worst  3~6 bad, 7~9, avg, 10~13 good, 14~15 good
         Resources res = TeamPlayApp.getAppInstance().getResources();
@@ -67,27 +69,33 @@ public class ScoreEvaluator {
         if (score <= 2){
             image_idx = random.nextInt(NUM_WORST_IMAGES) + 1;
             image_name = "worst_" + image_idx;
+            this.textResult.setText(WORST_TEXTS[image_idx - 1]);
         }
         else if (score > 2 && score <= 6){
             image_idx = random.nextInt(NUM_BAD_IMAGES) + 1;
             image_name = "bad_" + image_idx;
+            this.textResult.setText(BAD_TEXTS[image_idx - 1]);
         }
         else if (score > 6 && score <= 9){
             image_idx = random.nextInt(NUM_AVERAGE_IMAGES) + 1;
             image_name = "average_" + image_idx;
+            this.textResult.setText(AVERAGE_TEXTS[image_idx - 1]);
         }
         else if (score > 9 && score <= 13){
             image_idx = random.nextInt(NUM_GOOD_IMAGES) + 1;
             image_name = "good_" + image_idx;
+            this.textResult.setText(GOOD_TEXTS[image_idx - 1]);
         }
         else{
             image_idx = random.nextInt(NUM_BEST_IMAGES) + 1;
             image_name = "best_" + image_idx;
+            this.textResult.setText(BEST_TEXTS[image_idx - 1]);
         }
         int resID = res.getIdentifier(image_name, "mipmap", TeamPlayApp.getAppInstance().getPackageName());
         Log.d("image name: ", resID + ": " + image_name);
         Drawable drawable = res.getDrawable(resID, null);
         imageView.setImageDrawable(drawable);
+
 
     }
     private int evaluateScore(){
