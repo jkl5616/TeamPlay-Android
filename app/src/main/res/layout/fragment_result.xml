@@ -53,15 +53,16 @@
                 <RelativeLayout
                     android:id="@+id/result_layout_character"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="wrap_content"
                     android:elevation="5dp">
-                    <ImageView
+                    <skku.teamplay.widget.AspectRatioImageView
                         android:id="@+id/result_image"
+                        android:adjustViewBounds="true"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:alpha="0.5"
-                        android:src="@mipmap/average_01"
-                        android:scaleType="centerCrop"/>
+                        android:src="@mipmap/average_1"
+                        />
                     <TextView
                         android:id="@+id/result_layout_title"
                         android:layout_width="wrap_content"

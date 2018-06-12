@@ -162,7 +162,13 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
     private void setUser(int userID){
         setTimeline(filterCombinedLists(userID)); //update timeline
         updateChartDescription(userID);
-
+        for (User user : userList){
+            if (user.getId() == userID){
+                evaluator.setSelectedUser(user);
+                break;
+            }
+        }
+        evaluator.notifyChange();
     }
     private void updateChartDescription(int userID){
         int total_quests, total_fin;
@@ -311,7 +317,6 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
 //            Calendar cal = Calendar.getInstance();
 //            cal.setTime(earliest);
             initTimeline(curUser.getId());
-            setUser(curUser.getId());
             setmPieChart();
             int pos = 0;
             for (int idx = 0; idx < userList.size(); idx++) {
@@ -322,6 +327,7 @@ public class ResultFragment extends Fragment implements OnRestApiListener{
             }
             mPieChart.highlightValue(new Highlight(pos, 0, 0));
             evaluator = new ScoreEvaluator(curUser ,combinedLists, imageVIew, imageDes);
+            setUser(curUser.getId());
         }
     }
     private int getUserNameFromID(String IDName){
