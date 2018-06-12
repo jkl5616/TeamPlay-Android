@@ -42,6 +42,7 @@ public class EverytimeParseTestActivity extends Activity implements OnRestApiLis
                 textView.setText(json);
                 setContentView(textView);
                 User user = TeamPlayApp.getAppInstance().getUser();
+                user.setTimetable(json);
                 new RestApiTask(EverytimeParseTestActivity.this).execute(new UpdateTimeTable(user.getEmail(), user.getPw(), json));
             }
         });
