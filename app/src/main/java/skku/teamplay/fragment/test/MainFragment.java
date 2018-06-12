@@ -97,7 +97,7 @@ public class MainFragment extends Fragment implements OnRestApiListener {
             }
         }*/
         ArrayList<User> userWithRemoved = new ArrayList<>();
-        for (User user : userList){
+        for (User user : userList) {
             if (user.getId() != selectedUser.getId()) userWithRemoved.add(user);
         }
         adapter = new UserAdapter(userWithRemoved, selectedUser.getId()); //set the listview
@@ -266,10 +266,15 @@ public class MainFragment extends Fragment implements OnRestApiListener {
         ArrayList<User> userList;
         List<AnimCheckBox> checkBoxes = new ArrayList<>();
         int selectedId;
+        Boolean[] tests;
 
         public UserAdapter(ArrayList<User> userList, int selectedId) {
             this.userList = userList;
             this.selectedId = selectedId;
+            tests = new Boolean[getCount()];
+            for(int i = 0; i < getCount(); i++) {
+                tests[i] = false;
+            }
         }
 
         @Override
@@ -287,13 +292,14 @@ public class MainFragment extends Fragment implements OnRestApiListener {
             return userList.get(i).getId();
         }
 
-        public int getCheckedItems(){
+        public int getCheckedItems() {
             int cnt = 0;
-            for (AnimCheckBox checkBox : checkBoxes){
+            for (AnimCheckBox checkBox : checkBoxes) {
                 if (checkBox.isChecked()) cnt++;
             }
             return cnt;
         }
+
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             final int pos = i;
@@ -302,18 +308,19 @@ public class MainFragment extends Fragment implements OnRestApiListener {
             if (view == null) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.layout_custom_userlist, null, false);
-                TextView textUsername = view.findViewById(R.id.layout_list_user_name);
-                textUsername.setText(userList.get(i).getName());
-                AnimCheckBox checkUser = view.findViewById(R.id.layout_list_checkbox);
-                checkUser.setTag(pos);
-                //check for duplications; assumption: added sub sequentially
-                if (pos == checkBoxes.size())
-                    checkBoxes.add(checkUser);
-                checkUser.setOnCheckedChangeListener(new AnimCheckBox.OnCheckedChangeListener() {
-                    @Override
-                    public void onChange(AnimCheckBox animCheckBox, boolean b) {
-                        int idx = Integer.parseInt(animCheckBox.getTag().toString());
 
+            }
+            TextView textUsername = view.findViewById(R.id.layout_list_user_name);
+            textUsername.setText(userList.get(i).getName());
+            AnimCheckBox checkUser = view.findViewById(R.id.layout_list_checkbox);
+            checkUser.setTag(pos);
+            //check for duplications; assumption: added sub sequentially
+            checkBoxes.add(checkUser);
+            checkUser.setOnCheckedChangeListener(new AnimCheckBox.OnCheckedChangeListener() {
+                @Override
+                public void onChange(AnimCheckBox animCheckBox, boolean b) {
+                    int idx = Integer.parseInt(animCheckBox.getTag().toString());
+                    tests[idx] = b;
 //                        ChartAnimatedText test = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, 5, ChartAnimatedText.RECORD_WALLET);
 //                        ChartAnimatedText test1 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, -21, ChartAnimatedText.RECORD_STRENGTH);
 //                        ChartAnimatedText test2 = new ChartAnimatedText(getContext(), layoutBase, mRadarChart, 120, ChartAnimatedText.RECORD_SUPPORT);
@@ -324,22 +331,21 @@ public class MainFragment extends Fragment implements OnRestApiListener {
 //                        test2.setDelay(1800);
 //                        test2.start();
 
-                        //user id 로 세팅하고
-                        updateChartData();
+                    //user id 로 세팅하고
+                    updateChartData();
 //                        updateChartData(scoreRecordsGroup.get(idx));
-                    }
-                });
-            }
+                }
+            });
 //            ImageView imageUser = (ImageView)view.findViewById(R.id.layout_list_profile_pic);
             return view;
         }
 
         public List<Boolean> getChecklist() {
-            List<Boolean> res = new ArrayList<>();
-            for (AnimCheckBox checkBox : checkBoxes)
-                res.add(checkBox.isChecked());
-
-            return res;
+            ArrayList<Boolean> list = new ArrayList<>();
+            for(int i  = 0 ; i < getCount(); i++) {
+                list.add(tests[i]);
+            }
+            return list;
         }
 
         public void addItem(String name) {
